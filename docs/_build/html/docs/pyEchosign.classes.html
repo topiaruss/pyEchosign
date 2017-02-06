@@ -1,0 +1,444 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pyEchosign.classes package &mdash; pyEchosign 0.1.0a0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="pyEchosign 0.1.0a0 documentation" href="../index.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> pyEchosign
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <!-- Local TOC -->
+                <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">pyEchosign.classes package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-pyEchosign.classes.account">pyEchosign.classes.account module</a></li>
+<li><a class="reference internal" href="#module-pyEchosign.classes.documents">pyEchosign.classes.documents module</a></li>
+<li><a class="reference internal" href="#module-pyEchosign.classes">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">pyEchosign</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+    <li>pyEchosign.classes package</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/docs/pyEchosign.classes.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="pyechosign-classes-package">
+<h1>pyEchosign.classes package<a class="headerlink" href="#pyechosign-classes-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-pyEchosign.classes.account">
+<span id="pyechosign-classes-account-module"></span><h2>pyEchosign.classes.account module<a class="headerlink" href="#module-pyEchosign.classes.account" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pyEchosign.classes.account.EchosignAccount">
+<em class="property">class </em><code class="descclassname">pyEchosign.classes.account.</code><code class="descname">EchosignAccount</code><span class="sig-paren">(</span><em>access_token: str</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pyEchosign.classes.account.EchosignAccount" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Saves OAuth Information for connecting to Echosign
+:param access_token = The OAuth Access token to use for authenticating to Echosign:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Keyword Arguments:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><ul class="first last simple">
+<li><strong>user_id</strong> &#8211; The ID of the user to specify as the API caller, if not provided the caller is inferred from the token</li>
+<li><strong>user_email</strong> &#8211; The email of the user to specify as the API caller, if not provided the caller is inferred from the token</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="pyEchosign.classes.account.EchosignAccount.access_token">
+<code class="descname">access_token</code><em class="property"> = None</em><a class="headerlink" href="#pyEchosign.classes.account.EchosignAccount.access_token" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-pyEchosign.classes.documents">
+<span id="pyechosign-classes-documents-module"></span><h2>pyEchosign.classes.documents module<a class="headerlink" href="#module-pyEchosign.classes.documents" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pyEchosign.classes.documents.AgreementCreator">
+<em class="property">class </em><code class="descclassname">pyEchosign.classes.documents.</code><code class="descname">AgreementCreator</code><a class="headerlink" href="#pyEchosign.classes.documents.AgreementCreator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyEchosign.classes.documents.DocumentCreationInfo">
+<em class="property">class </em><code class="descclassname">pyEchosign.classes.documents.</code><code class="descname">DocumentCreationInfo</code><a class="headerlink" href="#pyEchosign.classes.documents.DocumentCreationInfo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dl class="attribute">
+<dt id="pyEchosign.classes.documents.DocumentCreationInfo.callback_info">
+<code class="descname">callback_info</code><em class="property"> = None</em><a class="headerlink" href="#pyEchosign.classes.documents.DocumentCreationInfo.callback_info" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyEchosign.classes.documents.DocumentCreationInfo.cc">
+<code class="descname">cc</code><em class="property"> = []</em><a class="headerlink" href="#pyEchosign.classes.documents.DocumentCreationInfo.cc" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyEchosign.classes.documents.DocumentCreationInfo.days_until_signing_deadline">
+<code class="descname">days_until_signing_deadline</code><em class="property"> = None</em><a class="headerlink" href="#pyEchosign.classes.documents.DocumentCreationInfo.days_until_signing_deadline" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyEchosign.classes.documents.DocumentCreationInfo.external_id">
+<code class="descname">external_id</code><em class="property"> = None</em><a class="headerlink" href="#pyEchosign.classes.documents.DocumentCreationInfo.external_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyEchosign.classes.documents.DocumentCreationInfo.files_info">
+<code class="descname">files_info</code><em class="property"> = []</em><a class="headerlink" href="#pyEchosign.classes.documents.DocumentCreationInfo.files_info" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyEchosign.classes.documents.DocumentCreationInfo.locale">
+<code class="descname">locale</code><em class="property"> = None</em><a class="headerlink" href="#pyEchosign.classes.documents.DocumentCreationInfo.locale" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyEchosign.classes.documents.DocumentCreationInfo.message">
+<code class="descname">message</code><em class="property"> = None</em><a class="headerlink" href="#pyEchosign.classes.documents.DocumentCreationInfo.message" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyEchosign.classes.documents.DocumentCreationInfo.name">
+<code class="descname">name</code><em class="property"> = None</em><a class="headerlink" href="#pyEchosign.classes.documents.DocumentCreationInfo.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyEchosign.classes.documents.DocumentCreationInfo.reminder_frequency">
+<code class="descname">reminder_frequency</code><em class="property"> = None</em><a class="headerlink" href="#pyEchosign.classes.documents.DocumentCreationInfo.reminder_frequency" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyEchosign.classes.documents.DocumentCreationInfo.signature_flow">
+<code class="descname">signature_flow</code><em class="property"> = None</em><a class="headerlink" href="#pyEchosign.classes.documents.DocumentCreationInfo.signature_flow" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyEchosign.classes.documents.DocumentCreationInfo.signature_type">
+<code class="descname">signature_type</code><em class="property"> = 'ESIGN'</em><a class="headerlink" href="#pyEchosign.classes.documents.DocumentCreationInfo.signature_type" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyEchosign.classes.documents.FileInfo">
+<em class="property">class </em><code class="descclassname">pyEchosign.classes.documents.</code><code class="descname">FileInfo</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pyEchosign.classes.documents.FileInfo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Used with DocumentCreationInfo to specify which documents should be used in an agreement. One of the following
+arguments must be provided.</p>
+<dl class="attribute">
+<dt id="pyEchosign.classes.documents.FileInfo.library_document_id">
+<code class="descname">library_document_id</code><a class="headerlink" href="#pyEchosign.classes.documents.FileInfo.library_document_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>&#8220;The ID for a library document that is available to the sender&#8221;</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyEchosign.classes.documents.FileInfo.library_document_name">
+<code class="descname">library_document_name</code><a class="headerlink" href="#pyEchosign.classes.documents.FileInfo.library_document_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>&#8220;The name of a library document that is available to the sender&#8221;</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyEchosign.classes.documents.FileInfo.transient_document">
+<code class="descname">transient_document</code><a class="headerlink" href="#pyEchosign.classes.documents.FileInfo.transient_document" title="Permalink to this definition">¶</a></dt>
+<dd><p>A <a class="reference internal" href="#pyEchosign.classes.documents.TransientDocument" title="pyEchosign.classes.documents.TransientDocument"><code class="xref py py-class docutils literal"><span class="pre">TransientDocument</span></code></a> (or ID) to use in the agreement</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">library_document_id</code><em class="property"> = None</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">library_document_name</code><em class="property"> = None</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">transient_document</code><em class="property"> = None</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyEchosign.classes.documents.FileInfo.web_file">
+<code class="descname">web_file</code><em class="property"> = None</em><a class="headerlink" href="#pyEchosign.classes.documents.FileInfo.web_file" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyEchosign.classes.documents.RecipientInfo">
+<em class="property">class </em><code class="descclassname">pyEchosign.classes.documents.</code><code class="descname">RecipientInfo</code><a class="headerlink" href="#pyEchosign.classes.documents.RecipientInfo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dl class="attribute">
+<dt id="pyEchosign.classes.documents.RecipientInfo.ACCEPTOR">
+<code class="descname">ACCEPTOR</code><em class="property"> = 'ACCEPTOR'</em><a class="headerlink" href="#pyEchosign.classes.documents.RecipientInfo.ACCEPTOR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyEchosign.classes.documents.RecipientInfo.APPROVER">
+<code class="descname">APPROVER</code><em class="property"> = 'APPROVER'</em><a class="headerlink" href="#pyEchosign.classes.documents.RecipientInfo.APPROVER" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyEchosign.classes.documents.RecipientInfo.CERTIFIED_RECIPIENT">
+<code class="descname">CERTIFIED_RECIPIENT</code><em class="property"> = 'CERTIFIED_RECIPIENT'</em><a class="headerlink" href="#pyEchosign.classes.documents.RecipientInfo.CERTIFIED_RECIPIENT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyEchosign.classes.documents.RecipientInfo.DELEGATE_TO_ACCEPTOR">
+<code class="descname">DELEGATE_TO_ACCEPTOR</code><em class="property"> = 'DELEGATE_TO_ACCEPTOR'</em><a class="headerlink" href="#pyEchosign.classes.documents.RecipientInfo.DELEGATE_TO_ACCEPTOR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyEchosign.classes.documents.RecipientInfo.DELEGATE_TO_APPROVER">
+<code class="descname">DELEGATE_TO_APPROVER</code><em class="property"> = 'DELEGATE_TO_APPROVER'</em><a class="headerlink" href="#pyEchosign.classes.documents.RecipientInfo.DELEGATE_TO_APPROVER" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyEchosign.classes.documents.RecipientInfo.DELEGATE_TO_CERTIFIED_RECIPIENT">
+<code class="descname">DELEGATE_TO_CERTIFIED_RECIPIENT</code><em class="property"> = 'DELEGATE_TO_CERTIFIED_RECIPIENT'</em><a class="headerlink" href="#pyEchosign.classes.documents.RecipientInfo.DELEGATE_TO_CERTIFIED_RECIPIENT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyEchosign.classes.documents.RecipientInfo.DELEGATE_TO_FORM_FILLER">
+<code class="descname">DELEGATE_TO_FORM_FILLER</code><em class="property"> = 'DELEGATE_TO_FORM_FILLER'</em><a class="headerlink" href="#pyEchosign.classes.documents.RecipientInfo.DELEGATE_TO_FORM_FILLER" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyEchosign.classes.documents.RecipientInfo.DELEGATE_TO_SIGNER">
+<code class="descname">DELEGATE_TO_SIGNER</code><em class="property"> = 'DELEGATE_TO_SIGNER'</em><a class="headerlink" href="#pyEchosign.classes.documents.RecipientInfo.DELEGATE_TO_SIGNER" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyEchosign.classes.documents.RecipientInfo.FORM_FILLER">
+<code class="descname">FORM_FILLER</code><em class="property"> = 'FORM_FILLER'</em><a class="headerlink" href="#pyEchosign.classes.documents.RecipientInfo.FORM_FILLER" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyEchosign.classes.documents.RecipientInfo.SIGNER">
+<code class="descname">SIGNER</code><em class="property"> = 'SIGNER'</em><a class="headerlink" href="#pyEchosign.classes.documents.RecipientInfo.SIGNER" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyEchosign.classes.documents.RecipientInfo.email">
+<code class="descname">email</code><em class="property"> = None</em><a class="headerlink" href="#pyEchosign.classes.documents.RecipientInfo.email" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyEchosign.classes.documents.RecipientInfo.fax">
+<code class="descname">fax</code><em class="property"> = None</em><a class="headerlink" href="#pyEchosign.classes.documents.RecipientInfo.fax" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyEchosign.classes.documents.RecipientInfo.private_message">
+<code class="descname">private_message</code><em class="property"> = None</em><a class="headerlink" href="#pyEchosign.classes.documents.RecipientInfo.private_message" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyEchosign.classes.documents.RecipientInfo.role">
+<code class="descname">role</code><em class="property"> = None</em><a class="headerlink" href="#pyEchosign.classes.documents.RecipientInfo.role" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyEchosign.classes.documents.RecipientInfo.signing_order">
+<code class="descname">signing_order</code><em class="property"> = None</em><a class="headerlink" href="#pyEchosign.classes.documents.RecipientInfo.signing_order" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyEchosign.classes.documents.TransientDocument">
+<em class="property">class </em><code class="descclassname">pyEchosign.classes.documents.</code><code class="descname">TransientDocument</code><span class="sig-paren">(</span><em>file_name: str</em>, <em>file: io.IOBase</em><span class="sig-paren">)</span><a class="headerlink" href="#pyEchosign.classes.documents.TransientDocument" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dl class="attribute">
+<dt id="pyEchosign.classes.documents.TransientDocument.document_id">
+<code class="descname">document_id</code><em class="property"> = None</em><a class="headerlink" href="#pyEchosign.classes.documents.TransientDocument.document_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-pyEchosign.classes">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pyEchosign.classes" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Jens Astrup.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.1.0a0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

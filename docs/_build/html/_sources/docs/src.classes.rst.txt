@@ -1,0 +1,30 @@
+src.classes package
+===================
+
+Submodules
+----------
+
+src.classes.account module
+--------------------------
+
+.. automodule:: src.classes.account
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+src.classes.documents module
+----------------------------
+
+.. automodule:: src.classes.documents
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: src.classes
+    :members:
+    :undoc-members:
+    :show-inheritance:

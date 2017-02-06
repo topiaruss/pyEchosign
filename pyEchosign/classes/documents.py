@@ -35,10 +35,12 @@ class RecipientInfo(object):
 class FileInfo(object):
     """ Used with DocumentCreationInfo to specify which documents should be used in an agreement. One of the following
     arguments must be provided.
-    Kwargs:
+
+    Attributes:
         library_document_id: "The ID for a library document that is available to the sender"
         library_document_name: "The name of a library document that is available to the sender"
-        transient_document: A ::class::TransientDocument (or ID) to use in the agreement
+        transient_document: A :class:`TransientDocument` (or ID) to use in the agreement
+
     """
     library_document_id: str = None
     library_document_name: str = None

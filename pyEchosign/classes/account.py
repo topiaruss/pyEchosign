@@ -2,7 +2,7 @@ import logging
 
 import requests
 
-from utils.endpoints import BASE_URIS
+from pyEchosign.utils.endpoints import BASE_URIS
 log = logging.getLogger('pyOutlook - {}'.format(__name__))
 
 

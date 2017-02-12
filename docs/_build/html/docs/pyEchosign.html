@@ -85,6 +85,8 @@
                 <!-- Local TOC -->
                 <div class="local-toc"><ul>
 <li><a class="reference internal" href="#">pyEchosign package</a><ul>
+<li><a class="reference internal" href="#echosignaccount">EchosignAccount</a></li>
+<li><a class="reference internal" href="#agreement">Agreement</a></li>
 <li><a class="reference internal" href="#subpackages">Subpackages</a></li>
 <li><a class="reference internal" href="#module-pyEchosign">Module contents</a></li>
 </ul>
@@ -135,14 +137,115 @@
             
   <div class="section" id="pyechosign-package">
 <h1>pyEchosign package<a class="headerlink" href="#pyechosign-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="echosignaccount">
+<h2>EchosignAccount<a class="headerlink" href="#echosignaccount" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pyEchosign.classes.account.EchosignAccount">
+<em class="property">class </em><code class="descname">EchosignAccount</code><span class="sig-paren">(</span><em>access_token: str</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pyEchosign.classes.account.EchosignAccount" title="Permalink to this definition">¶</a></dt>
+<dd><p>Saves OAuth Information for connecting to Echosign</p>
+<dl class="attribute">
+<dt id="EchosignAccount.access_token">
+<code class="descname">access_token</code><a class="headerlink" href="#EchosignAccount.access_token" title="Permalink to this definition">¶</a></dt>
+<dd><p>The OAuth Access token to use for authenticating to Echosign</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="EchosignAccount.user_id">
+<code class="descname">user_id</code><a class="headerlink" href="#EchosignAccount.user_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>The ID of the user to specify as the API caller, if not provided the caller is inferred from the token</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="EchosignAccount.user_email">
+<code class="descname">user_email</code><a class="headerlink" href="#EchosignAccount.user_email" title="Permalink to this definition">¶</a></dt>
+<dd><p>The email of the user to specify as the API caller, if not provided the caller is inferred from the token</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="EchosignAccount.api_access_point">
+<code class="descname">api_access_point</code><a class="headerlink" href="#EchosignAccount.api_access_point" title="Permalink to this definition">¶</a></dt>
+<dd><p>The API endpoint used as a base for all API calls</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyEchosign.classes.account.EchosignAccount.get_agreements">
+<code class="descname">get_agreements</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyEchosign.classes.account.EchosignAccount.get_agreements" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets all agreements for the EchosignAccount</p>
+<p>Returns: A list of <a class="reference internal" href="pyEchosign.classes.html#pyEchosign.classes.agreement.Agreement" title="pyEchosign.classes.agreement.Agreement"><code class="xref py py-class docutils literal"><span class="pre">Agreement</span></code></a> objects</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="agreement">
+<h2>Agreement<a class="headerlink" href="#agreement" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pyEchosign.classes.agreement.Agreement">
+<em class="property">class </em><code class="descname">Agreement</code><span class="sig-paren">(</span><em>account: pyEchosign.classes.account.EchosignAccount</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pyEchosign.classes.agreement.Agreement" title="Permalink to this definition">¶</a></dt>
+<dd><p>Represents a created agreement in Echosign.</p>
+<dl class="attribute">
+<dt id="Agreement.account">
+<code class="descname">account</code><a class="headerlink" href="#Agreement.account" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>EchosignAccount</em> &#8211; An instance of <a class="reference internal" href="pyEchosign.classes.html#pyEchosign.classes.account.EchosignAccount" title="pyEchosign.classes.account.EchosignAccount"><code class="xref py py-class docutils literal"><span class="pre">EchosignAccount</span></code></a>. All Agreement actions will be conducted under this account.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Agreement.fully_retrieved">
+<code class="descname">fully_retrieved</code><a class="headerlink" href="#Agreement.fully_retrieved" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>bool</em> &#8211; Whether or not the agreement has all information retrieved, or if only the basic information was pulled (such as when getting all agreements instead of requesting the specific agreement)</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Agreement.id">
+<code class="descname">id</code><a class="headerlink" href="#Agreement.id" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em> &#8211; The ID assigned to the agreement by Echosign, used to identify the agreement via the API</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Agreement.name">
+<code class="descname">name</code><a class="headerlink" href="#Agreement.name" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em> &#8211; The name of the document as specified by the sender</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Agreement.status">
+<code class="descname">status</code><a class="headerlink" href="#Agreement.status" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>Agreement.Status</em> &#8211; The current status of the document (OUT_FOR_SIGNATURE, SIGNED, APPROVED, etc)</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyEchosign.classes.agreement.Agreement.Status">
+<em class="property">class </em><code class="descname">Status</code><a class="headerlink" href="#pyEchosign.classes.agreement.Agreement.Status" title="Permalink to this definition">¶</a></dt>
+<dd><p>Possible status of agreements</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyEchosign.classes.agreement.Agreement.cancel">
+<code class="descclassname">Agreement.</code><code class="descname">cancel</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyEchosign.classes.agreement.Agreement.cancel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Cancels the agreement on Echosign. Agreement will still be visible in the Manage page.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyEchosign.classes.agreement.Agreement.delete">
+<code class="descclassname">Agreement.</code><code class="descname">delete</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyEchosign.classes.agreement.Agreement.delete" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deletes the agreement on Echosign. Agreement will not be visible in the Manage page.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">This action requires the &#8216;agreement_retention&#8217; scope, which doesn&#8217;t appear to be actually available via OAuth</p>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</div>
 <div class="section" id="subpackages">
 <h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="pyEchosign.classes.html">pyEchosign.classes package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="pyEchosign.classes.html#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pyEchosign.classes.html#module-pyEchosign.classes.account">pyEchosign.classes.account module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pyEchosign.classes.html#module-pyEchosign.classes.documents">pyEchosign.classes.documents module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyEchosign.classes.html#module-pyEchosign.classes.account">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyEchosign.classes.html#module-pyEchosign.classes.agreement">pyEchosign.classes.agreement module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyEchosign.classes.html#pyechosign-classes-documents-module">pyEchosign.classes.documents module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pyEchosign.classes.html#module-pyEchosign.classes">Module contents</a></li>
 </ul>
 </li>

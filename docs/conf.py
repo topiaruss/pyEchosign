@@ -21,6 +21,7 @@ import os
 import sys
 
 import sphinx_rtd_theme
+
 sys.path.insert(0, os.path.abspath('C:\\Users\Jens\PycharmProjects\pyEchosign'))
 
 # os.path.abspath('../../')
@@ -28,8 +29,8 @@ sys.path.insert(0, os.path.abspath('C:\\Users\Jens\PycharmProjects\pyEchosign'))
 # -- General configuration ------------------------------------------------
 
 # If your documentation needs a minimal Sphinx version, state it here.
-#needs_sphinx = '1.0'
-
+# needs_sphinx = '1.0'
+add_module_names = False
 html_theme = "sphinx_rtd_theme"
 html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
 # Add any Sphinx extension module names here, as strings. They can be
@@ -85,7 +86,6 @@ pygments_style = 'sphinx'
 # If true, `todo` and `todoList` produce output, else they produce nothing.
 todo_include_todos = False
 
-
 # -- Options for HTML output ----------------------------------------------
 
 # Theme options are theme-specific and customize the look and feel of a theme
@@ -99,12 +99,10 @@ todo_include_todos = False
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
 
-
 # -- Options for HTMLHelp output ------------------------------------------
 
 # Output file base name for HTML help builder.
 htmlhelp_basename = 'pyEchosigndoc'
-
 
 # -- Options for LaTeX output ---------------------------------------------
 
@@ -134,7 +132,6 @@ latex_documents = [
      'Jens Astrup', 'manual'),
 ]
 
-
 # -- Options for manual page output ---------------------------------------
 
 # One entry per manual page. List of tuples
@@ -143,7 +140,6 @@ man_pages = [
     (master_doc, 'pyechosign', 'pyEchosign Documentation',
      [author], 1)
 ]
-
 
 # -- Options for Texinfo output -------------------------------------------
 
@@ -155,6 +151,3 @@ texinfo_documents = [
      author, 'pyEchosign', 'One line description of project.',
      'Miscellaneous'),
 ]
-
-
-

@@ -1,6 +1,16 @@
 pyEchosign package
 ==================
 
+EchosignAccount
+---------------
+.. autoclass:: pyEchosign.classes.account.EchosignAccount
+   :members:
+
+Agreement
+---------
+.. autoclass:: pyEchosign.classes.agreement.Agreement
+   :members:
+
 Subpackages
 -----------
 

@@ -21,6 +21,7 @@ class Agreement(object):
         echosign_id (str): The ID assigned to the agreement by Echosign, used to identify the agreement via the API
         name (str): The name of the document as specified by the sender
         status (Agreement.Status): The current status of the document (OUT_FOR_SIGNATURE, SIGNED, APPROVED, etc)
+        users (list[DisplayUser]): The users associated with this agreement, represented by :class:`DisplayUser <pyEchosign.classes.users.DisplayUser>`
     """
 
     def __init__(self, account: 'eaccount.EchosignAccount', **kwargs):

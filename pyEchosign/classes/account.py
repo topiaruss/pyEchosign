@@ -3,6 +3,7 @@ import logging
 import requests
 
 from pyEchosign.classes import agreement
+from pyEchosign.classes.users import UserEndpoints
 from pyEchosign.utils import endpoints
 from pyEchosign.utils.request_parameters import get_headers
 
@@ -59,6 +60,10 @@ class AgreementEndpoints(object):
             echosign_id = json_agreement.get('agreementId', None)
             name = json_agreement.get('name', None)
             status = json_agreement.get('status', None)
+            user_set = json_agreement.get('displayUserSetInfos', None)[0]
+            user_set = user_set.get('displayUserSetMemberInfos', None)
+            users = UserEndpoints.get_users_from_bulk_agreements(user_set)
             new_agreement = agreement.Agreement(echosign_id=echosign_id, name=name, account=self.account, status=status)
+            new_agreement.users = users
             agreements.append(new_agreement)
         return agreements

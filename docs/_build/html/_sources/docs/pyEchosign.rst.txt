@@ -11,6 +11,11 @@ Agreement
 .. autoclass:: pyEchosign.classes.agreement.Agreement
    :members:
 
+Users
+-----
+.. autoclass:: pyEchosign.classes.users.DisplayUser
+   :members:
+
 Subpackages
 -----------
 

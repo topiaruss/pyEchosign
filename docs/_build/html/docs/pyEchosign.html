@@ -87,6 +87,7 @@
 <li><a class="reference internal" href="#">pyEchosign package</a><ul>
 <li><a class="reference internal" href="#echosignaccount">EchosignAccount</a></li>
 <li><a class="reference internal" href="#agreement">Agreement</a></li>
+<li><a class="reference internal" href="#users">Users</a></li>
 <li><a class="reference internal" href="#subpackages">Subpackages</a></li>
 <li><a class="reference internal" href="#module-pyEchosign">Module contents</a></li>
 </ul>
@@ -196,8 +197,8 @@
 </dd></dl>
 
 <dl class="attribute">
-<dt id="Agreement.id">
-<code class="descname">id</code><a class="headerlink" href="#Agreement.id" title="Permalink to this definition">¶</a></dt>
+<dt id="Agreement.echosign_id">
+<code class="descname">echosign_id</code><a class="headerlink" href="#Agreement.echosign_id" title="Permalink to this definition">¶</a></dt>
 <dd><p><em>str</em> &#8211; The ID assigned to the agreement by Echosign, used to identify the agreement via the API</p>
 </dd></dl>
 
@@ -211,6 +212,12 @@
 <dt id="Agreement.status">
 <code class="descname">status</code><a class="headerlink" href="#Agreement.status" title="Permalink to this definition">¶</a></dt>
 <dd><p><em>Agreement.Status</em> &#8211; The current status of the document (OUT_FOR_SIGNATURE, SIGNED, APPROVED, etc)</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Agreement.users">
+<code class="descname">users</code><a class="headerlink" href="#Agreement.users" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>list[DisplayUser]</em> &#8211; The users associated with this agreement, represented by <a class="reference internal" href="#pyEchosign.classes.users.DisplayUser" title="pyEchosign.classes.users.DisplayUser"><code class="xref py py-class docutils literal"><span class="pre">DisplayUser</span></code></a></p>
 </dd></dl>
 
 <dl class="class">
@@ -235,6 +242,15 @@
 </div>
 </dd></dl>
 
+</dd></dl>
+
+</div>
+<div class="section" id="users">
+<h2>Users<a class="headerlink" href="#users" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pyEchosign.classes.users.DisplayUser">
+<em class="property">class </em><code class="descname">DisplayUser</code><span class="sig-paren">(</span><em>email: str</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pyEchosign.classes.users.DisplayUser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Maps to the DisplayUserInfo provided by Echosign for agreements fetched in bulk</p>
 </dd></dl>
 
 </div>

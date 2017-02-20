@@ -6,6 +6,7 @@ from pyEchosign.classes.agreement import AgreementEndpoints
 from pyEchosign.utils import endpoints
 
 log = logging.getLogger('pyOutlook - {}'.format(__name__))
+__all__ = ['EchosignAccount']
 
 
 class EchosignAccount(object):

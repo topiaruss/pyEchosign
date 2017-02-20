@@ -1,9 +1,10 @@
 import json
 import logging
 from enum import Enum
+from typing import TYPE_CHECKING
+
 
 import arrow
-from typing import TYPE_CHECKING
 
 import requests
 

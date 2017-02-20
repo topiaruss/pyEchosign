@@ -17,20 +17,3 @@ Users
 -----
 .. autoclass:: pyEchosign.classes.users.DisplayUser
    :members:
-
-Subpackages
------------
-
-.. toctree::
-
-    pyEchosign.classes
-    pyEchosign.exceptions
-    pyEchosign.utils
-
-Module contents
----------------
-
-.. automodule:: pyEchosign
-    :members:
-    :undoc-members:
-    :show-inheritance:

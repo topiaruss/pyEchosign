@@ -1,5 +1,5 @@
-src
-===
+pyEchosign
+==========
 
 .. toctree::
    :maxdepth: 4

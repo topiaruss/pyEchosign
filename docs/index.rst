@@ -6,9 +6,12 @@
 Welcome to pyEchosign's documentation!
 ======================================
 
+.. include:: ../README.rst
+
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
+
+   pyEchosign
 
 
 

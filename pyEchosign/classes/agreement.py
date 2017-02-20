@@ -2,14 +2,21 @@ import json
 import logging
 from enum import Enum
 
+import arrow
+from typing import TYPE_CHECKING
+
 import requests
+
+from pyEchosign.classes.users import UserEndpoints
 
 from pyEchosign.utils import endpoints
 from pyEchosign.utils.request_parameters import get_headers
 from pyEchosign.utils.handle_response import check_error, response_success
-from pyEchosign.classes import account as eaccount
 
 log = logging.getLogger('pyEchosign.' + __name__)
+
+if TYPE_CHECKING:
+    from pyEchosign.classes.account import EchosignAccount
 
 
 class Agreement(object):
@@ -24,11 +31,12 @@ class Agreement(object):
         users (list[DisplayUser]): The users associated with this agreement, represented by :class:`DisplayUser <pyEchosign.classes.users.DisplayUser>`
     """
 
-    def __init__(self, account: 'eaccount.EchosignAccount', **kwargs):
+    def __init__(self, account: 'EchosignAccount', **kwargs):
         self.account = account
         self.fully_retrieved = kwargs.pop('fully_retrieved', None)
         self.echosign_id = kwargs.pop('echosign_id', None)
         self.name = kwargs.pop('name', None)
+        self.date = kwargs.pop('date', None)
         provided_status = kwargs.pop('provided_status', None)
         if provided_status is not None:
             self.status = self.Status[provided_status]
@@ -39,7 +47,11 @@ class Agreement(object):
             setattr(self, kwarg, kwargs[kwarg])
 
     class Status(Enum):
-        """ Possible status of agreements """
+        """ Possible status of agreements 
+        
+        Note: 
+            Echosign provides 'WAITING_FOR_FAXIN' in their API documentation, so pyEchosign has also included 'WAITING_FOR_FAXING' in case that's just a typo in their documentation. Once it's determined which is used, the other will be removed.
+        """
         WAITING_FOR_MY_SIGNATURE = 'WAITING_FOR_MY_SIGNATURE'
         WAITING_FOR_MY_APPROVAL = 'WAITING_FOR_MY_APPROVAL'
         WAITING_FOR_MY_DELEGATION = 'WAITING_FOR_MY_DELEGATION'
@@ -102,3 +114,37 @@ class Agreement(object):
                                                                                                 r.content))
             finally:
                 check_error(r)
+
+
+class AgreementEndpoints(object):
+    base_api_url = None
+
+    def __init__(self, account: 'EchosignAccount'):
+        self.account = account
+        self.api_access_point = account.api_access_point
+
+    def get_agreements(self):
+        """ Gets all agreements for the EchosignAccount """
+        url = self.api_access_point + endpoints.GET_AGREEMENTS
+        r = requests.get(url, headers=get_headers(self.account.access_token))
+        response_body = r.json()
+        json_agreements = response_body.get('userAgreementList', None)
+        # Check if there are errors before proceeding
+        if not response_success(r):
+            check_error(r)
+        agreements = []
+        for json_agreement in json_agreements:
+            echosign_id = json_agreement.get('agreementId', None)
+            name = json_agreement.get('name', None)
+            status = json_agreement.get('status', None)
+            user_set = json_agreement.get('displayUserSetInfos', None)[0]
+            user_set = user_set.get('displayUserSetMemberInfos', None)
+            users = UserEndpoints.get_users_from_bulk_agreements(user_set)
+            date = json_agreement.get('displayDate', None)
+            if date is not None:
+                date = arrow.get(date)
+            new_agreement = Agreement(echosign_id=echosign_id, name=name, account=self.account, status=status,
+                                      date=date)
+            new_agreement.users = users
+            agreements.append(new_agreement)
+        return agreements

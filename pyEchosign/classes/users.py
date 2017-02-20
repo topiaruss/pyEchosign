@@ -5,7 +5,10 @@ class UserEndpoints(object):
         users = []
         for user_data in data:
             email = user_data.get('email')
-            users.append(DisplayUser(email))
+            name = user_data.get('fullName', None)
+            company = user_data.get('company', None)
+            user = DisplayUser(email, full_name=name, company=company)
+            users.append(user)
         return users
 
 

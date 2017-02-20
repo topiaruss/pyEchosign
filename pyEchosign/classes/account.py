@@ -2,10 +2,8 @@ import logging
 
 import requests
 
-from pyEchosign.classes import agreement
-from pyEchosign.classes.users import UserEndpoints
+from pyEchosign.classes.agreement import AgreementEndpoints
 from pyEchosign.utils import endpoints
-from pyEchosign.utils.request_parameters import get_headers
 
 log = logging.getLogger('pyOutlook - {}'.format(__name__))
 
@@ -41,29 +39,3 @@ class EchosignAccount(object):
         return AgreementEndpoints(self).get_agreements()
 
 
-class AgreementEndpoints(object):
-    base_api_url = None
-
-    def __init__(self, account: EchosignAccount):
-        self.account = account
-        self.api_access_point = account.api_access_point
-
-    def get_agreements(self):
-        """ Gets all agreements for the EchosignAccount """
-        url = self.api_access_point + endpoints.GET_AGREEMENTS
-        r = requests.get(url, headers=get_headers(self.account.access_token))
-        response_body = r.json()
-        json_agreements = response_body.get('userAgreementList', None)
-
-        agreements = []
-        for json_agreement in json_agreements:
-            echosign_id = json_agreement.get('agreementId', None)
-            name = json_agreement.get('name', None)
-            status = json_agreement.get('status', None)
-            user_set = json_agreement.get('displayUserSetInfos', None)[0]
-            user_set = user_set.get('displayUserSetMemberInfos', None)
-            users = UserEndpoints.get_users_from_bulk_agreements(user_set)
-            new_agreement = agreement.Agreement(echosign_id=echosign_id, name=name, account=self.account, status=status)
-            new_agreement.users = users
-            agreements.append(new_agreement)
-        return agreements

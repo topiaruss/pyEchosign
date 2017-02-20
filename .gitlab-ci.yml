@@ -6,6 +6,6 @@ testing:
   type: test
   stage: test
   before_script:
-    - pip install -r requirements.txt
+    - pip install -r development_requirements.txt
   script:
    - nosetests --cover-package=pyEchosign --with-coverage

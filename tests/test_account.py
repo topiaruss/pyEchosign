@@ -23,29 +23,28 @@ class TestAccount(TestCase):
         expected_dict = {
             "userAgreementList": [
                 {
-                    "agreementId": "1",
-                    "displayDate": "date",
+                    "displayDate": "2017-02-19T08:22:34-08:00",
                     "displayUserSetInfos": [
                         {
                             "displayUserSetMemberInfos": [
                                 {
-                                    "email": "",
-                                    "company": "",
-                                    "fullName": ""
+                                    "company": "Test Company",
+                                    "email": "test@pyechosign.com",
+                                    "fullName": "Jens Astrup"
                                 }
-                            ],
-                            "displayUserSetName": ""
+                            ]
                         }
                     ],
-                    "esign": False,
-                    "latestVersionId": "",
-                    "name": "Test Document",
-                    "status": "WAITING_FOR_SIGNATURE"
-                }
+                    "esign": True,
+                    "agreementId": "3AAABLblqZhzzzzwYDpSW8yUnA44scCLW0tpPZzCSLE2TStghgWFCOvIwqLm50znN_m-cHICV3fUsdsUT_41BKA-f00OgL",
+                    "latestVersionId": "3AA60C0ZzCSc33wB7Ka5bQ2iuuU51eD4MMjWLE2TStghgWUycxgFTabUcAs4Pape63WTXzKMbvAVUyXSEbMwIK7",
+                    "name": "test agreement",
+                    "status": "RECALLED"
+                },
             ]
         }
         mock_response.json.return_value = expected_dict
-
+        mock_response.status_code = 200
         # Assign our mock response as the result of our patched function
         self.mock_get.return_value = mock_response
 

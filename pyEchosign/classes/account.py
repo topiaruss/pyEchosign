@@ -2,6 +2,7 @@ import logging
 
 import requests
 
+from pyEchosign.classes.library_document import LibraryDocumentsEndpoint
 from pyEchosign.classes.agreement import AgreementEndpoints
 from pyEchosign.utils import endpoints
 
@@ -38,5 +39,12 @@ class EchosignAccount(object):
         Returns: A list of :class:`Agreement <pyEchosign.classes.agreement.Agreement>` objects
         """
         return AgreementEndpoints(self).get_agreements()
+
+    def get_library_documents(self):
+        """ Gets all Library Documents for the EchosignAccount
+
+        Returns: A list of :class:`Agreement <pyEchosign.classes.library_document.LibraryDocument>` objects
+        """
+        return LibraryDocumentsEndpoint(self).get_library_documents()
 
 

@@ -12,6 +12,11 @@ Agreement
    :members:
    :undoc-members:
 
+Library Document
+----------------
+.. autoclass:: pyEchosign.classes.library_document.LibraryDocument
+   :members:
+   :undoc-members:
 
 Users
 -----

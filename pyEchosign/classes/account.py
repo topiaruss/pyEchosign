@@ -2,9 +2,9 @@ import logging
 
 import requests
 
-from pyEchosign.classes.library_document import LibraryDocumentsEndpoint
-from pyEchosign.classes.agreement import AgreementEndpoints
-from pyEchosign.utils import endpoints
+from .library_document import LibraryDocumentsEndpoint
+from .agreement import AgreementEndpoints
+from utils import endpoints
 
 log = logging.getLogger('pyOutlook - {}'.format(__name__))
 __all__ = ['EchosignAccount']

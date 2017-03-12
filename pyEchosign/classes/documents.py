@@ -6,13 +6,13 @@ from typing import TYPE_CHECKING
 import requests
 import arrow
 
-from pyEchosign.utils.endpoints import CREATE_TRANSIENT_DOCUMENT
-from pyEchosign.utils.request_parameters import get_headers
-from pyEchosign.utils.handle_response import check_error, response_success
+from utils.endpoints import CREATE_TRANSIENT_DOCUMENT
+from utils.request_parameters import get_headers
+from utils.handle_response import check_error, response_success
 
 log = logging.getLogger('pyEchosign.' + __name__)
 if TYPE_CHECKING:
-    from pyEchosign.classes.account import EchosignAccount
+    from .account import EchosignAccount
 
 
 class TransientDocument(object):

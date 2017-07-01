@@ -49,4 +49,4 @@ class TestAccount(TestCase):
         self.mock_get.return_value = mock_response
 
         agreements = e.get_agreements()
-        self.assertIsInstance(agreements[0], Agreement)
+        self.assertIsInstance(next(agreements), Agreement)

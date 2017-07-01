@@ -2,8 +2,8 @@ import logging
 
 import requests
 
-from .library_document import LibraryDocumentsEndpoint
-from .agreement import AgreementEndpoints
+from classes.library_document import LibraryDocumentsEndpoint
+from classes.agreement import AgreementEndpoints
 from utils import endpoints
 
 log = logging.getLogger('pyOutlook - {}'.format(__name__))

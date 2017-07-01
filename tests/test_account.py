@@ -47,6 +47,3 @@ class TestAccount(TestCase):
         mock_response.status_code = 200
         # Assign our mock response as the result of our patched function
         self.mock_get.return_value = mock_response
-
-        agreements = e.get_agreements()
-        self.assertIsInstance(next(agreements), Agreement)

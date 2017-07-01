@@ -3,9 +3,9 @@ from typing import TYPE_CHECKING
 import arrow
 import requests
 
-from pyEchosign.utils.endpoints import GET_LIBRARY_DOCUMENT, GET_LIBRARY_DOCUMENTS, DELETE_LIBRARY_DOCUMENT
-from pyEchosign.utils.request_parameters import get_headers
-from pyEchosign.utils.handle_response import check_error
+from utils.endpoints import GET_LIBRARY_DOCUMENT, GET_LIBRARY_DOCUMENTS, DELETE_LIBRARY_DOCUMENT
+from utils.request_parameters import get_headers
+from utils.handle_response import check_error
 
 if TYPE_CHECKING:
     from .account import EchosignAccount

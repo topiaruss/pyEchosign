@@ -6,9 +6,9 @@ from typing import TYPE_CHECKING
 import requests
 import arrow
 
-from pyEchosign.utils.endpoints import CREATE_TRANSIENT_DOCUMENT
-from pyEchosign.utils.request_parameters import get_headers
-from pyEchosign.utils.handle_response import check_error, response_success
+from utils.endpoints import CREATE_TRANSIENT_DOCUMENT
+from utils.request_parameters import get_headers
+from utils.handle_response import check_error, response_success
 
 log = logging.getLogger('pyEchosign.' + __name__)
 if TYPE_CHECKING:
@@ -18,6 +18,12 @@ if TYPE_CHECKING:
 class TransientDocument(object):
     """
     A document which can be used in Agreements - is deleted by Echosign after 7 days.
+
+    Args:
+        account: The :class:`EchosignAccount <classes.account.EchosignAccount>` to be associated with this document
+        file_name (str): The name of the file
+        file: The actual file object to upload to Echosign, accepts a stream of bytes.
+        mime_type: The MIME type of the file
     
     Attributes:
         file_name: The name of the file

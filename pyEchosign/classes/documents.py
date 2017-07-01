@@ -6,9 +6,9 @@ from typing import TYPE_CHECKING
 import requests
 import arrow
 
-from utils.endpoints import CREATE_TRANSIENT_DOCUMENT
-from utils.request_parameters import get_headers
-from utils.handle_response import check_error, response_success
+from pyEchosign.utils.endpoints import CREATE_TRANSIENT_DOCUMENT
+from pyEchosign.utils.request_parameters import get_headers
+from pyEchosign.utils.handle_response import check_error, response_success
 
 log = logging.getLogger('pyEchosign.' + __name__)
 if TYPE_CHECKING:

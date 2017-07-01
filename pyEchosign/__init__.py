@@ -1,2 +1,2 @@
-from classes import *
+from .classes import *
 __all__ = ['EchosignAccount']

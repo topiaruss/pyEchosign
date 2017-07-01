@@ -10,9 +10,9 @@ import requests
 
 from .users import UserEndpoints
 
-from utils import endpoints
-from utils.request_parameters import get_headers
-from utils.handle_response import check_error, response_success
+from pyEchosign.utils import endpoints
+from pyEchosign.utils.request_parameters import get_headers
+from pyEchosign.utils.handle_response import check_error, response_success
 
 log = logging.getLogger('pyEchosign.' + __name__)
 

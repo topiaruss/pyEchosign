@@ -7,7 +7,7 @@ Submodules
 pyEchosign.utils.endpoints module
 ---------------------------------
 
-.. automodule:: pyEchosign.utils.endpoints
+.. automodule:: utils.endpoints
     :members:
     :undoc-members:
     :show-inheritance:
@@ -16,7 +16,7 @@ pyEchosign.utils.endpoints module
 Module contents
 ---------------
 
-.. automodule:: pyEchosign.utils
+.. automodule:: utils
     :members:
     :undoc-members:
     :show-inheritance:

@@ -4,23 +4,23 @@ pyEchosign.classes package
 Submodules
 ----------
 
-.. automodule:: pyEchosign.classes.account
+.. automodule:: classes.account
     :members:
     :undoc-members:
     :show-inheritance:
 
-pyEchosign.classes.agreement module
------------------------------------
+classes.agreement module
+------------------------
 
-.. automodule:: pyEchosign.classes.agreement
+.. automodule:: classes.agreement
     :members:
     :undoc-members:
     :show-inheritance:
 
-pyEchosign.classes.documents module
------------------------------------
+classes.documents module
+------------------------
 
-.. automodule:: pyEchosign.classes.documents
+.. automodule:: classes.documents
     :members:
     :undoc-members:
     :show-inheritance:
@@ -29,7 +29,7 @@ pyEchosign.classes.documents module
 Module contents
 ---------------
 
-.. automodule:: pyEchosign.classes
+.. automodule:: classes
     :members:
     :undoc-members:
     :show-inheritance:

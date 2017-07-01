@@ -13,6 +13,8 @@
 
   
   
+  
+  
 
   
 
@@ -42,6 +44,7 @@
 
 <body class="wy-body-for-nav" role="document">
 
+   
   <div class="wy-grid-for-nav">
 
     
@@ -82,10 +85,19 @@
           
             
             
-                <ul>
-<li class="toctree-l1"><a class="reference internal" href="pyEchosign.html">pyEchosign package</a></li>
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">pyEchosign.exceptions package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-exceptions.exceptions">pyEchosign.exceptions.exceptions module</a></li>
+<li><a class="reference internal" href="#module-exceptions">Module contents</a></li>
 </ul>
-
+</li>
+</ul>
+</div>
             
           
         </div>
@@ -96,8 +108,10 @@
 
       
       <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
-        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="index.html">pyEchosign</a>
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">pyEchosign</a>
+        
       </nav>
 
 
@@ -106,23 +120,40 @@
         <div class="rst-content">
           
 
- 
+
+
+
+
+
+
+
+
+
+
+
 
 
 
 <div role="navigation" aria-label="breadcrumbs navigation">
+
   <ul class="wy-breadcrumbs">
-    <li><a href="index.html">Docs</a> &raquo;</li>
-      
-    <li>pyEchosign.exceptions package</li>
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>pyEchosign.exceptions package</li>
+    
+    
       <li class="wy-breadcrumbs-aside">
         
-          
+            
             <a href="_sources/pyEchosign.exceptions.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
+    
   </ul>
+
+  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
@@ -133,85 +164,88 @@
 <div class="section" id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
 </div>
-<div class="section" id="module-pyEchosign.exceptions.exceptions">
-<span id="pyechosign-exceptions-exceptions-module"></span><h2>pyEchosign.exceptions.exceptions module<a class="headerlink" href="#module-pyEchosign.exceptions.exceptions" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-exceptions.exceptions">
+<span id="pyechosign-exceptions-exceptions-module"></span><h2>pyEchosign.exceptions.exceptions module<a class="headerlink" href="#module-exceptions.exceptions" title="Permalink to this headline">¶</a></h2>
 <dl class="exception">
-<dt id="pyEchosign.exceptions.exceptions.AccessTokenError">
-<em class="property">exception </em><code class="descname">AccessTokenError</code><span class="sig-paren">(</span><em>message=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pyEchosign.exceptions.exceptions.AccessTokenError" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#pyEchosign.exceptions.exceptions.BaseEchosignException" title="pyEchosign.exceptions.exceptions.BaseEchosignException"><code class="xref py py-class docutils literal"><span class="pre">pyEchosign.exceptions.exceptions.BaseEchosignException</span></code></a>, <code class="xref py py-class docutils literal"><span class="pre">ValueError</span></code></p>
+<dt id="exceptions.exceptions.AccessTokenError">
+<em class="property">exception </em><code class="descname">AccessTokenError</code><span class="sig-paren">(</span><em>message=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#exceptions.exceptions.AccessTokenError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#exceptions.exceptions.BaseEchosignException" title="exceptions.exceptions.BaseEchosignException"><code class="xref py py-class docutils literal"><span class="pre">exceptions.exceptions.BaseEchosignException</span></code></a>, <code class="xref py py-class docutils literal"><span class="pre">ValueError</span></code></p>
 <p>Access token not provided or invalid</p>
 </dd></dl>
 
 <dl class="exception">
-<dt id="pyEchosign.exceptions.exceptions.BaseEchosignException">
-<em class="property">exception </em><code class="descname">BaseEchosignException</code><span class="sig-paren">(</span><em>message=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pyEchosign.exceptions.exceptions.BaseEchosignException" title="Permalink to this definition">¶</a></dt>
+<dt id="exceptions.exceptions.BaseEchosignException">
+<em class="property">exception </em><code class="descname">BaseEchosignException</code><span class="sig-paren">(</span><em>message=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#exceptions.exceptions.BaseEchosignException" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">Exception</span></code></p>
 <dl class="attribute">
-<dt id="pyEchosign.exceptions.exceptions.BaseEchosignException.base_echosign_error">
-<code class="descname">base_echosign_error</code><em class="property"> = None</em><a class="headerlink" href="#pyEchosign.exceptions.exceptions.BaseEchosignException.base_echosign_error" title="Permalink to this definition">¶</a></dt>
+<dt id="exceptions.exceptions.BaseEchosignException.base_echosign_error">
+<code class="descname">base_echosign_error</code><em class="property"> = None</em><a class="headerlink" href="#exceptions.exceptions.BaseEchosignException.base_echosign_error" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="exception">
-<dt id="pyEchosign.exceptions.exceptions.FileTooLargeError">
-<em class="property">exception </em><code class="descname">FileTooLargeError</code><span class="sig-paren">(</span><em>message=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pyEchosign.exceptions.exceptions.FileTooLargeError" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#pyEchosign.exceptions.exceptions.BaseEchosignException" title="pyEchosign.exceptions.exceptions.BaseEchosignException"><code class="xref py py-class docutils literal"><span class="pre">pyEchosign.exceptions.exceptions.BaseEchosignException</span></code></a></p>
+<dt id="exceptions.exceptions.FileTooLargeError">
+<em class="property">exception </em><code class="descname">FileTooLargeError</code><span class="sig-paren">(</span><em>message=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#exceptions.exceptions.FileTooLargeError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#exceptions.exceptions.BaseEchosignException" title="exceptions.exceptions.BaseEchosignException"><code class="xref py py-class docutils literal"><span class="pre">exceptions.exceptions.BaseEchosignException</span></code></a></p>
 </dd></dl>
 
 <dl class="exception">
-<dt id="pyEchosign.exceptions.exceptions.InvalidMultipart">
-<em class="property">exception </em><code class="descname">InvalidMultipart</code><span class="sig-paren">(</span><em>message=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pyEchosign.exceptions.exceptions.InvalidMultipart" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#pyEchosign.exceptions.exceptions.BaseEchosignException" title="pyEchosign.exceptions.exceptions.BaseEchosignException"><code class="xref py py-class docutils literal"><span class="pre">pyEchosign.exceptions.exceptions.BaseEchosignException</span></code></a>, <code class="xref py py-class docutils literal"><span class="pre">ValueError</span></code></p>
+<dt id="exceptions.exceptions.InvalidMultipart">
+<em class="property">exception </em><code class="descname">InvalidMultipart</code><span class="sig-paren">(</span><em>message=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#exceptions.exceptions.InvalidMultipart" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#exceptions.exceptions.BaseEchosignException" title="exceptions.exceptions.BaseEchosignException"><code class="xref py py-class docutils literal"><span class="pre">exceptions.exceptions.BaseEchosignException</span></code></a>, <code class="xref py py-class docutils literal"><span class="pre">ValueError</span></code></p>
 <p>An invalid multipart was specified.</p>
 </dd></dl>
 
 <dl class="exception">
-<dt id="pyEchosign.exceptions.exceptions.PermissionDenied">
-<em class="property">exception </em><code class="descname">PermissionDenied</code><span class="sig-paren">(</span><em>message=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pyEchosign.exceptions.exceptions.PermissionDenied" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#pyEchosign.exceptions.exceptions.BaseEchosignException" title="pyEchosign.exceptions.exceptions.BaseEchosignException"><code class="xref py py-class docutils literal"><span class="pre">pyEchosign.exceptions.exceptions.BaseEchosignException</span></code></a>, <code class="xref py py-class docutils literal"><span class="pre">PermissionError</span></code></p>
+<dt id="exceptions.exceptions.PermissionDenied">
+<em class="property">exception </em><code class="descname">PermissionDenied</code><span class="sig-paren">(</span><em>message=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#exceptions.exceptions.PermissionDenied" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#exceptions.exceptions.BaseEchosignException" title="exceptions.exceptions.BaseEchosignException"><code class="xref py py-class docutils literal"><span class="pre">exceptions.exceptions.BaseEchosignException</span></code></a>, <code class="xref py py-class docutils literal"><span class="pre">PermissionError</span></code></p>
 <p>The API caller do not have the permission to execute this operation.</p>
 </dd></dl>
 
 <dl class="exception">
-<dt id="pyEchosign.exceptions.exceptions.ProcessingError">
-<em class="property">exception </em><code class="descname">ProcessingError</code><span class="sig-paren">(</span><em>message=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pyEchosign.exceptions.exceptions.ProcessingError" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#pyEchosign.exceptions.exceptions.BaseEchosignException" title="pyEchosign.exceptions.exceptions.BaseEchosignException"><code class="xref py py-class docutils literal"><span class="pre">pyEchosign.exceptions.exceptions.BaseEchosignException</span></code></a></p>
+<dt id="exceptions.exceptions.ProcessingError">
+<em class="property">exception </em><code class="descname">ProcessingError</code><span class="sig-paren">(</span><em>message=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#exceptions.exceptions.ProcessingError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#exceptions.exceptions.BaseEchosignException" title="exceptions.exceptions.BaseEchosignException"><code class="xref py py-class docutils literal"><span class="pre">exceptions.exceptions.BaseEchosignException</span></code></a></p>
 <p>The transient document was deleted from the system because Adobe Sign could not process the document.
 This can happen if uploaded document contains scripts, macros or Visual Basic code. You may wish to inspect your
 document for these elements, remove them, and try uploading the document again.</p>
 <dl class="attribute">
-<dt id="pyEchosign.exceptions.exceptions.ProcessingError.base_echosign_error">
-<code class="descname">base_echosign_error</code><em class="property"> = 'The transient document was deleted from the system because Adobe Sign could not process the document. This can happen if uploaded document contains scripts, macros or Visual Basic code. You may wish to inspect your document for these elements, remove them, and try uploading the document again.'</em><a class="headerlink" href="#pyEchosign.exceptions.exceptions.ProcessingError.base_echosign_error" title="Permalink to this definition">¶</a></dt>
+<dt id="exceptions.exceptions.ProcessingError.base_echosign_error">
+<code class="descname">base_echosign_error</code><em class="property"> = ‘The transient document was deleted from the system because Adobe Sign could not process the document. This can happen if uploaded document contains scripts, macros or Visual Basic code. You may wish to inspect your document for these elements, remove them, and try uploading the document again.’</em><a class="headerlink" href="#exceptions.exceptions.ProcessingError.base_echosign_error" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="exception">
-<dt id="pyEchosign.exceptions.exceptions.ResourceVirusDetected">
-<em class="property">exception </em><code class="descname">ResourceVirusDetected</code><span class="sig-paren">(</span><em>message=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pyEchosign.exceptions.exceptions.ResourceVirusDetected" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#pyEchosign.exceptions.exceptions.ProcessingError" title="pyEchosign.exceptions.exceptions.ProcessingError"><code class="xref py py-class docutils literal"><span class="pre">pyEchosign.exceptions.exceptions.ProcessingError</span></code></a></p>
+<dt id="exceptions.exceptions.ResourceVirusDetected">
+<em class="property">exception </em><code class="descname">ResourceVirusDetected</code><span class="sig-paren">(</span><em>message=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#exceptions.exceptions.ResourceVirusDetected" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#exceptions.exceptions.ProcessingError" title="exceptions.exceptions.ProcessingError"><code class="xref py py-class docutils literal"><span class="pre">exceptions.exceptions.ProcessingError</span></code></a></p>
 <dl class="attribute">
-<dt id="pyEchosign.exceptions.exceptions.ResourceVirusDetected.base_echosign_error">
-<code class="descname">base_echosign_error</code><em class="property"> = 'The transient document was deleted because a virus was detected in the file.'</em><a class="headerlink" href="#pyEchosign.exceptions.exceptions.ResourceVirusDetected.base_echosign_error" title="Permalink to this definition">¶</a></dt>
+<dt id="exceptions.exceptions.ResourceVirusDetected.base_echosign_error">
+<code class="descname">base_echosign_error</code><em class="property"> = ‘The transient document was deleted because a virus was detected in the file.’</em><a class="headerlink" href="#exceptions.exceptions.ResourceVirusDetected.base_echosign_error" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="exception">
-<dt id="pyEchosign.exceptions.exceptions.UnsupportedMediaError">
-<em class="property">exception </em><code class="descname">UnsupportedMediaError</code><span class="sig-paren">(</span><em>message=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pyEchosign.exceptions.exceptions.UnsupportedMediaError" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#pyEchosign.exceptions.exceptions.BaseEchosignException" title="pyEchosign.exceptions.exceptions.BaseEchosignException"><code class="xref py py-class docutils literal"><span class="pre">pyEchosign.exceptions.exceptions.BaseEchosignException</span></code></a>, <code class="xref py py-class docutils literal"><span class="pre">NotImplementedError</span></code></p>
+<dt id="exceptions.exceptions.UnsupportedMediaError">
+<em class="property">exception </em><code class="descname">UnsupportedMediaError</code><span class="sig-paren">(</span><em>message=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#exceptions.exceptions.UnsupportedMediaError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#exceptions.exceptions.BaseEchosignException" title="exceptions.exceptions.BaseEchosignException"><code class="xref py py-class docutils literal"><span class="pre">exceptions.exceptions.BaseEchosignException</span></code></a>, <code class="xref py py-class docutils literal"><span class="pre">NotImplementedError</span></code></p>
 <p>Content type was not provided or is not supported.</p>
 </dd></dl>
 
 </div>
-<div class="section" id="module-pyEchosign.exceptions">
-<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pyEchosign.exceptions" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-exceptions">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-exceptions" title="Permalink to this headline">¶</a></h2>
 </div>
 </div>
 
 
+           </div>
+           <div class="articleComments">
+            
            </div>
           </div>
           <footer>
@@ -246,7 +280,8 @@ document for these elements, remove them, and try uploading the document again.<
             VERSION:'0.1.0a0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
         };
     </script>
       <script type="text/javascript" src="_static/jquery.js"></script>

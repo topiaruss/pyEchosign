@@ -8,4 +8,4 @@ testing:
   before_script:
     - pip install -r development_requirements.txt
   script:
-   - nosetests --path=. --cover-package=pyEchosign --with-coverage
+   - nosetests . --cover-package=pyEchosign --with-coverage

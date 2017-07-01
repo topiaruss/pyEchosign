@@ -10,14 +10,14 @@ import requests
 
 from .users import UserEndpoints
 
-from pyEchosign.utils import endpoints
-from pyEchosign.utils.request_parameters import get_headers
-from pyEchosign.utils.handle_response import check_error, response_success
+from utils import endpoints
+from utils.request_parameters import get_headers
+from utils.handle_response import check_error, response_success
 
 log = logging.getLogger('pyEchosign.' + __name__)
 
 if TYPE_CHECKING:
-    from .account import EchosignAccount
+    from classes.account import EchosignAccount
 
 
 class Agreement(object):

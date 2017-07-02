@@ -1,4 +1,4 @@
-from pyEchosign.exceptions.exceptions import BaseEchosignException
+from pyEchosign.exceptions.echosign import BaseEchosignException
 
 
 class ApiError(BaseEchosignException):

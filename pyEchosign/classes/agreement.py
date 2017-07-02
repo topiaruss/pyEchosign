@@ -24,7 +24,7 @@ class Agreement(object):
     """ Represents a created agreement in Echosign.
 
     Args:
-        account (EchosignAccount): An instance of :class:`EchosignAccount <classes.account.EchosignAccount>`.
+        account (EchosignAccount): An instance of :class:`EchosignAccount <pyEchosign.classes.account.EchosignAccount>`.
             All Agreement actions will be conducted under this account.
 
     Keyword Args:
@@ -35,13 +35,13 @@ class Agreement(object):
         name (str): The name of the document as specified by the sender
         status (Agreement.Status): The current status of the document (OUT_FOR_SIGNATURE, SIGNED, APPROVED, etc)
         users (list[DisplayUser]): The users associated with this agreement, represented by
-            :class:`DisplayUser <classes.users.DisplayUser>`
-        files (list): A list of :class:`TransientDocument <classes.documents.TransientDocument>` instances
+            :class:`EchosignAccount <pyEchosign.classes.account.EchosignAccount>`
+        files (list): A list of :class:`TransientDocument <pyEchosign.classes.documents.TransientDocument>` instances
             which will become the documents within the agreement. This information is not provided when retrieving
             agreements from Echosign.
     
     Attributes:
-        account (EchosignAccount): An instance of :class:`EchosignAccount <classes.account.EchosignAccount>`.
+        account (EchosignAccount): An instance of :class:`EchosignAccount <pyEchosign.classes.account.EchosignAccount>`.
             All Agreement actions will be conducted under this account.
         fully_retrieved (bool): Whether or not the agreement has all information retrieved,
             or if only the basic information was pulled (such as when getting all agreements instead
@@ -50,8 +50,8 @@ class Agreement(object):
         name (str): The name of the document as specified by the sender
         status (Agreement.Status): The current status of the document (OUT_FOR_SIGNATURE, SIGNED, APPROVED, etc)
         users (list[DisplayUser]): The users associated with this agreement, represented by
-            :class:`DisplayUser <classes.users.DisplayUser>`
-        files (list): A list of :class:`TransientDocument <classes.documents.TransientDocument>` instances
+            :class:`EchosignAccount <pyEchosign.classes.account.EchosignAccount>`
+        files (list): A list of :class:`TransientDocument <pyEchosign.classes.documents.TransientDocument>` instances
             which will become the documents within the agreement. This information is not provided when retrieving
             agreements from Echosign.
     """
@@ -190,7 +190,7 @@ class AgreementEndpoints(object):
     """ An internal class to handle making calls to the endpoints associated with Agreements.
 
     Args:
-        account: An instance of :class:`EchosignAccount <classes.account.EchosignAccount>` to be used for all
+        account: An instance of :class:`EchosignAccount <pyEchosign.classes.account.EchosignAccount>` to be used for all
             API calls
     """
     base_api_url = None

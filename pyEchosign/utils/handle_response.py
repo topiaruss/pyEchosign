@@ -1,6 +1,6 @@
 from requests import Response
 
-from pyEchosign.exceptions.internal_exceptions import ApiError
+from pyEchosign.exceptions.internal import ApiError
 
 
 def check_error(response: Response):

@@ -18,7 +18,8 @@ class LibraryDocument(object):
     full document information.
 
     Attributes:
-        account (EchosignAccount): An instance of :class:`EchosignAccount <pyEchosign.classes.account.EchosignAccount>`. All Agreement actions will be conducted under this account.
+        account (EchosignAccount): An instance of :class:`EchosignAccount <pyEchosign.classes.account.EchosignAccount>`.
+         All Agreement actions will be conducted under this account.
         echosign_id (str): The ID for this document in Echosign
         document (bool): If this LibraryDocument is a document in Echosign
         form_field_layer (bool): If this LibraryDocument is a form field layer

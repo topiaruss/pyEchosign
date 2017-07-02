@@ -20,7 +20,7 @@ class TransientDocument(object):
     A document which can be used in Agreements - is deleted by Echosign after 7 days.
 
     Args:
-        account: The :class:`EchosignAccount <classes.account.EchosignAccount>` to be associated with this document
+        account: The :class:`EchosignAccount <pyEchosign.classes.account.EchosignAccount>` to be associated with this document
         file_name (str): The name of the file
         file: The actual file object to upload to Echosign, accepts a stream of bytes.
         mime_type: The MIME type of the file

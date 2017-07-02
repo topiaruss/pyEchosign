@@ -7,10 +7,13 @@ Submodules
 pyEchosign.exceptions.exceptions module
 ---------------------------------------
 
-.. automodule:: pyEchosign.exceptions.exceptions
+.. automodule:: pyEchosign.exceptions.echosign
     :members:
     :undoc-members:
-    :show-inheritance:
+
+.. automodule:: pyEchosign.exceptions.internal
+    :members:
+    :undoc-members:
 
 
 Module contents

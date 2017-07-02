@@ -145,7 +145,7 @@ class Agreement(object):
                 check_error(r)
 
     @staticmethod
-    def __construct_recipient_agreement_request(recipients: List[Recipient]) -> List[dict]:
+    def __construct_recipient_agreement_request(recipients: List[Recipient]) -> dict:
         """ Takes a list of :class:`Recipients <pyEchosign.classes.users.Recipient>` and returns the JSON required by
         the Echosign API.
 
@@ -156,7 +156,7 @@ class Agreement(object):
         recipient_info = []
 
         for recipient in recipients:
-            recipient_info.append(dict(recipientSetMemberInfos=[dict(email=recipient.email)]))
+            recipient_info.append(dict(email=recipient.email))
 
         recipient_set_info = dict(recipientSetMemberInfos=recipient_info,
                                   securityOptions=[dict(authenticationMethod="", password="CONTENT FILTERED",
@@ -234,7 +234,7 @@ class Agreement(object):
             expiration = response_data.get('expiration', None)
             url = response_data.get('url', None)
 
-            response = response(response_data['agreement_id'], embedded_code, expiration, url)
+            response = response(response_data['agreementId'], embedded_code, expiration, url)
 
             return response
 

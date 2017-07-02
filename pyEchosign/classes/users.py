@@ -24,3 +24,19 @@ class DisplayUser(object):
             return self.full_name
         else:
             return self.email
+
+
+class Recipient(DisplayUser):
+    """ Provides additional attributes to facilitate sending documents to recipients, such as Security Options.
+
+     Attributes:
+         authentication_method (str): "The authentication method for the recipients to have access to
+            view and sign the document" (Echosign API Docs). Available options are 'NONE' (string),
+            'INHERITED_FROM_DOCUMENT' or 'PASSWORD' or 'WEB_IDENTITY' or 'KBA' or 'PHONE'.
+         password (str): Optional - "The password required for the recipient to view and sign the document"
+
+     """
+    def __init__(self, email: str, **kwargs):
+        super().__init__(email, **kwargs)
+        self.authentication_method = kwargs.get('authentication_method', 'NONE')
+        self.password = kwargs.get('password', None)

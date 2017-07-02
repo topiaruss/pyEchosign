@@ -1,14 +1,14 @@
 import json
 import logging
+from collections import namedtuple
 from enum import Enum
-from typing import TYPE_CHECKING
-
+from typing import TYPE_CHECKING, List
 
 import arrow
 
 import requests
 
-from .users import UserEndpoints
+from .users import UserEndpoints, Recipient
 
 from pyEchosign.utils import endpoints
 from pyEchosign.utils.request_parameters import get_headers
@@ -129,7 +129,7 @@ class Agreement(object):
         
         Warnings:
             This action requires the 'agreement_retention' scope, which doesn't appear
-                to be actually available via OAuth
+            to be actually available via OAuth
         """
         url = self.account.api_access_point + endpoints.DELETE_AGREEMENT + self.echosign_id
 
@@ -143,6 +143,47 @@ class Agreement(object):
                                                                                                 r.content))
             finally:
                 check_error(r)
+
+    @staticmethod
+    def _construct_agreement_request(recipients: List[Recipient]) -> List[dict]:
+        recipient_info = []
+
+        for recipient in recipients:
+            recipient_info.append(dict(recipientSetMemberInfos=[{
+                "fax": "",
+                "securityOptions": [{
+                    "authenticationMethod": "",
+                    "password": "CONTENT FILTERED",
+                    "phoneInfos": [{
+                        "phone": "",
+                        "countryCode": ""
+                    }]
+                }],
+                "email": recipient.email
+            }], securityOptions=[{
+                "authenticationMethod": "",
+                "password": "CONTENT FILTERED",
+                "phoneInfos": [{
+                    "phone": "",
+                    "countryCode": ""
+                }]
+            }], recipientSetRole="SIGNER"))
+
+        return recipient_info
+
+    def send_agreement(self, agreement_name: str, recipients: List[Recipient]):
+        """ Sends this agreement to Echosign for signature
+
+        Args:
+            recipients: A list of :class:`Recipients <pyEchosign.classes.users.Recipient>`. The order which they are provided
+                in the list determines the order in which they sign.
+
+        Returns: A dict representing the information received back from
+
+        """
+        recipients_data = self._construct_agreement_request(recipients)
+        response = namedtuple('Response', ('agreement_id', 'embedded_code', 'expiration', 'url'))
+        # TODO complete this method...
 
 
 class AgreementEndpoints(object):

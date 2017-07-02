@@ -446,18 +446,47 @@ to be actually available via OAuth</p>
 
 <dl class="method">
 <dt id="pyEchosign.classes.agreement.Agreement.send_agreement">
-<code class="descname">send_agreement</code><span class="sig-paren">(</span><em>agreement_name: str, recipients: typing.List[pyEchosign.classes.users.Recipient]</em><span class="sig-paren">)</span><a class="headerlink" href="#pyEchosign.classes.agreement.Agreement.send_agreement" title="Permalink to this definition">¶</a></dt>
+<code class="descname">send_agreement</code><span class="sig-paren">(</span><em>agreement_name: str, recipients: typing.List[pyEchosign.classes.users.Recipient], ccs=None, days_until_signing_deadline=0, external_id=”, sender_signature_required=False, merge_fields: typing.List[dict] = None, message=”</em><span class="sig-paren">)</span><a class="headerlink" href="#pyEchosign.classes.agreement.Agreement.send_agreement" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sends this agreement to Echosign for signature</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>recipients</strong> – A list of <a class="reference internal" href="#pyEchosign.classes.users.Recipient" title="pyEchosign.classes.users.Recipient"><code class="xref py py-class docutils literal"><span class="pre">Recipients</span></code></a>. The order which they are provided
-in the list determines the order in which they sign.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>agreement_name</strong> – A string for the document name which will appear in the Echosign Manage page, the email
+to recipients, etc.</li>
+<li><strong>recipients</strong> – A list of <a class="reference internal" href="#pyEchosign.classes.users.Recipient" title="pyEchosign.classes.users.Recipient"><code class="xref py py-class docutils literal"><span class="pre">Recipients</span></code></a>.
+The order which they are provided in the list determines the order in which they sign.</li>
+<li><strong>ccs</strong> – (optional) A list of email addresses to be CC’d on the Echosign agreement emails
+(document sent, document fully signed, etc)</li>
+<li><strong>days_until_signing_deadline</strong> – (optional) “The number of days that remain before the document expires.
+You cannot sign the document after it expires” Defaults to 0, for no expiration.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><p>A namedtuple representing the information received back from the API. Contains attributes</p>
+<dl class="docutils">
+<dt><cite>agreement_id</cite></dt>
+<dd><p class="first last"><em>The unique identifier that can be used to query status and download signed documents</em></p>
+</dd>
+<dt><cite>embedded_code</cite></dt>
+<dd><p class="first last"><em>”Javascript snippet suitable for an embedded page taking a user to a URL”</em></p>
+</dd>
+<dt><cite>expiration</cite></dt>
+<dd><p class="first last"><em>”Expiration date for autologin. This is based on the user setting, API_AUTO_LOGIN_LIFETIME”</em></p>
+</dd>
+<dt><cite>url</cite></dt>
+<dd><p class="first last"><em>”Standalone URL to direct end users to”</em></p>
+</dd>
+</dl>
+</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-exc docutils literal"><span class="pre">ApiError</span></code> – If the API returns an error, such as a 403. The exact response from the API is provided.</p>
+</td>
 </tr>
 </tbody>
 </table>
-<p>Returns: A dict representing the information received back from</p>
 </dd></dl>
 
 </dd></dl>
@@ -479,6 +508,11 @@ API calls</td>
 <dl class="attribute">
 <dt id="pyEchosign.classes.agreement.AgreementEndpoints.base_api_url">
 <code class="descname">base_api_url</code><em class="property"> = None</em><a class="headerlink" href="#pyEchosign.classes.agreement.AgreementEndpoints.base_api_url" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyEchosign.classes.agreement.AgreementEndpoints.create_agreement">
+<code class="descname">create_agreement</code><span class="sig-paren">(</span><em>request_body</em><span class="sig-paren">)</span><a class="headerlink" href="#pyEchosign.classes.agreement.AgreementEndpoints.create_agreement" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">

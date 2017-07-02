@@ -15,7 +15,7 @@ def check_error(response: Response):
         except ValueError:
             json_response = ''
         raise ApiError(f'Received status code {response.status_code} from the Echosign API with the following '
-                       f'JSON: "{json_response}" and content: "{response.content}""')
+                       f'JSON: "{json_response}" and content: "{response.content}"')
 
 
 def response_success(response: Response):

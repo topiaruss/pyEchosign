@@ -13,7 +13,9 @@ Welcome to pyEchosign's documentation!
 
    pyEchosign
 
+Any content in between double quotes ("like this") is taken from the `Echosign API documentation`_.
 
+.. _Echosign API documentation: https://secure.na1.echosign.com/public/docs/restapi/v5
 
 Indices and tables
 ==================

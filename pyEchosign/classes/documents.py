@@ -17,7 +17,15 @@ if TYPE_CHECKING:
 
 class TransientDocument(object):
     """
-    A document which can be used in Agreements - is deleted by Echosign after 7 days.
+    A document which can be used in Agreements - is deleted by Echosign after 7 days. The TransientDocument is created
+    in Echosign on instantiation.
+
+    Args:
+        account: The :class:`EchosignAccount <pyEchosign.classes.account.EchosignAccount>`
+            to be associated with this document
+        file_name (str): The name of the file
+        file: The actual file object to upload to Echosign, accepts a stream of bytes.
+        mime_type: The MIME type of the file
     
     Attributes:
         file_name: The name of the file
@@ -37,8 +45,8 @@ class TransientDocument(object):
         # With file data provided, make request to Echosign API for transient document
         url = account.api_access_point + CREATE_TRANSIENT_DOCUMENT
         # Create post_data
-        files = dict(File=(file_name, file, mime_type))
-        r = requests.post(url, headers=get_headers(account.access_token), files=files)
+        files = {'File': (file_name, file, mime_type)}
+        r = requests.post(url, headers=get_headers(account.access_token, content_type=None), files=files)
 
         if response_success(r):
             log.debug('Request to create document {} successful.'.format(self.file_name))

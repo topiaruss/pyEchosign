@@ -21,4 +21,6 @@ Library Document
 Users
 -----
 .. autoclass:: pyEchosign.classes.users.DisplayUser
+.. autoclass:: pyEchosign.classes.users.Recipient
    :members:
+   :show-inheritance:

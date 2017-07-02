@@ -1,4 +1,4 @@
-def get_headers(access_token, api_user_email=None):
+def get_headers(access_token, api_user_email=None, content_type='application/json'):
     """
     Generates the headers for a request to the API - can specify which user the API call should be made under.
     Args:
@@ -8,8 +8,10 @@ def get_headers(access_token, api_user_email=None):
     Returns: A dictionary to be used as the headers argument in requests
 
     """
-    headers = {'Access-Token': access_token,
-               'Content-Type': 'application/json'}
+    headers = {'Access-Token': access_token}
+
+    if content_type is not None:
+        headers.update({'Content-Type': content_type})
     if api_user_email:
         headers.update({'x-user-email': api_user_email})
 

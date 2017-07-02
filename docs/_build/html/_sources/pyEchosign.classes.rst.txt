@@ -9,22 +9,28 @@ Submodules
     :undoc-members:
     :show-inheritance:
 
-pyEchosign.classes.agreement module
------------------------------------
+classes.agreement module
+------------------------
 
 .. automodule:: pyEchosign.classes.agreement
     :members:
     :undoc-members:
     :show-inheritance:
 
-pyEchosign.classes.documents module
------------------------------------
+classes.documents module
+------------------------
 
 .. automodule:: pyEchosign.classes.documents
     :members:
     :undoc-members:
     :show-inheritance:
 
+classes.users module
+--------------------
+
+.. automodule:: pyEchosign.classes.users
+    :members:
+    :show-inheritance:
 
 Module contents
 ---------------

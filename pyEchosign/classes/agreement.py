@@ -1,14 +1,14 @@
 import json
 import logging
+from collections import namedtuple
 from enum import Enum
-from typing import TYPE_CHECKING
-
+from typing import TYPE_CHECKING, List, Dict
 
 import arrow
 
 import requests
 
-from .users import UserEndpoints
+from .users import UserEndpoints, Recipient
 
 from utils import endpoints
 from utils.request_parameters import get_headers
@@ -21,16 +21,40 @@ if TYPE_CHECKING:
 
 
 class Agreement(object):
-    """ Represents a created agreement in Echosign.
-    
-    Attributes:
-        account (EchosignAccount): An instance of :class:`EchosignAccount <pyEchosign.classes.account.EchosignAccount>`. All Agreement actions will be conducted under this account.
-        fully_retrieved (bool): Whether or not the agreement has all information retrieved, or if only the basic information was pulled (such as when getting all agreements instead of requesting the specific agreement)
+    """ Represents either a created agreement in Echosign, or one built in Python which can be sent through, and created
+    in Echosign.
+
+    Args:
+        account (EchosignAccount): An instance of :class:`EchosignAccount <pyEchosign.classes.account.EchosignAccount>`.
+            All Agreement actions will be conducted under this account.
+
+    Keyword Args:
+        fully_retrieved (bool): Whether or not the agreement has all information retrieved,
+            or if only the basic information was pulled (such as when getting all agreements instead
+            of requesting the specific agreement)
         echosign_id (str): The ID assigned to the agreement by Echosign, used to identify the agreement via the API
         name (str): The name of the document as specified by the sender
         status (Agreement.Status): The current status of the document (OUT_FOR_SIGNATURE, SIGNED, APPROVED, etc)
-        users (list[DisplayUser]): The users associated with this agreement, represented by :class:`DisplayUser <pyEchosign.classes.users.DisplayUser>`
-        
+        users (list[DisplayUser]): The users associated with this agreement, represented by
+            :class:`EchosignAccount <pyEchosign.classes.account.EchosignAccount>`
+        files (list): A list of :class:`TransientDocument <pyEchosign.classes.documents.TransientDocument>` instances
+            which will become the documents within the agreement. This information is not provided when retrieving
+            agreements from Echosign.
+    
+    Attributes:
+        account (EchosignAccount): An instance of :class:`EchosignAccount <pyEchosign.classes.account.EchosignAccount>`.
+            All Agreement actions will be conducted under this account.
+        fully_retrieved (bool): Whether or not the agreement has all information retrieved,
+            or if only the basic information was pulled (such as when getting all agreements instead
+            of requesting the specific agreement)
+        echosign_id (str): The ID assigned to the agreement by Echosign, used to identify the agreement via the API
+        name (str): The name of the document as specified by the sender
+        status (Agreement.Status): The current status of the document (OUT_FOR_SIGNATURE, SIGNED, APPROVED, etc)
+        users (list[DisplayUser]): The users associated with this agreement, represented by
+            :class:`EchosignAccount <pyEchosign.classes.account.EchosignAccount>`
+        files (list): A list of :class:`TransientDocument <pyEchosign.classes.documents.TransientDocument>` instances
+            which will become the documents within the agreement. This information is not provided when retrieving
+            agreements from Echosign.
     """
 
     def __init__(self, account: 'EchosignAccount', **kwargs):
@@ -39,20 +63,23 @@ class Agreement(object):
         self.echosign_id = kwargs.pop('echosign_id', None)
         self.name = kwargs.pop('name', None)
         self.date = kwargs.pop('date', None)
+
         provided_status = kwargs.pop('provided_status', None)
         if provided_status is not None:
             self.status = self.Status[provided_status]
         else:
             self.status = None
 
-        for kwarg in kwargs:
-            setattr(self, kwarg, kwargs[kwarg])
+        # Used for the creation of Agreements in Echosign
+        self.files = kwargs.pop('files', [])
 
     class Status(Enum):
         """ Possible status of agreements 
         
         Note: 
-            Echosign provides 'WAITING_FOR_FAXIN' in their API documentation, so pyEchosign has also included 'WAITING_FOR_FAXING' in case that's just a typo in their documentation. Once it's determined which is used, the other will be removed.
+            Echosign provides 'WAITING_FOR_FAXIN' in their API documentation, so pyEchosign has also included
+            'WAITING_FOR_FAXING' in case that's just a typo in their documentation. Once it's determined
+            which is used, the other will be removed.
         """
         WAITING_FOR_MY_SIGNATURE = 'WAITING_FOR_MY_SIGNATURE'
         WAITING_FOR_MY_APPROVAL = 'WAITING_FOR_MY_APPROVAL'
@@ -102,7 +129,8 @@ class Agreement(object):
         """ Deletes the agreement on Echosign. Agreement will not be visible in the Manage page. 
         
         Warnings:
-            This action requires the 'agreement_retention' scope, which doesn't appear to be actually available via OAuth
+            This action requires the 'agreement_retention' scope, which doesn't appear
+            to be actually available via OAuth
         """
         url = self.account.api_access_point + endpoints.DELETE_AGREEMENT + self.echosign_id
 
@@ -117,8 +145,122 @@ class Agreement(object):
             finally:
                 check_error(r)
 
+    @staticmethod
+    def __construct_recipient_agreement_request(recipients: List[Recipient]) -> dict:
+        """ Takes a list of :class:`Recipients <pyEchosign.classes.users.Recipient>` and returns the JSON required by
+        the Echosign API.
+
+        Args:
+            recipients: A list of :class:`Recipients <pyEchosign.classes.users.Recipient>`
+
+        """
+        recipient_info = []
+
+        for recipient in recipients:
+            recipient_info.append(dict(email=recipient.email))
+
+        recipient_set_info = dict(recipientSetMemberInfos=recipient_info,
+                                  securityOptions=[dict(authenticationMethod="", password="CONTENT FILTERED",
+                                                        phoneInfos=[dict(phone="", countryCode="")])],
+                                  recipientSetRole="SIGNER")
+
+        return recipient_set_info
+
+    def send_agreement(self, agreement_name: str, recipients: List[Recipient], ccs=None, days_until_signing_deadline=0,
+                       external_id='', sender_signature_required=False, merge_fields: List[Dict[str, str]] = None,
+                       message=''):
+        """ Sends this agreement to Echosign for signature
+
+        Args:
+            agreement_name: A string for the document name which will appear in the Echosign Manage page, the email
+                to recipients, etc.
+            recipients: A list of :class:`Recipients <pyEchosign.classes.users.Recipient>`.
+                The order which they are provided in the list determines the order in which they sign.
+            ccs: (optional) A list of email addresses to be CC'd on the Echosign agreement emails
+                (document sent, document fully signed, etc)
+            days_until_signing_deadline: (optional) "The number of days that remain before the document expires.
+                You cannot sign the document after it expires" Defaults to 0, for no expiration.
+            external_id: (optional) "A unique identifier for your transaction...
+                You can use the ExternalID to search for your transaction through [the] API"
+            sender_signature_required: (optional) (bool) Whether or not a sender signature is required.
+                Defaults to False. If true, the signer will sign first. The additional options of the signer signing
+                last, or sequentially isn't currently supported (because I haven't thought of a clean way to handle
+                providing that info).
+            merge_fields: (optional) A list of dictionaries, with each one providing the 'fieldName' and
+                'defaultValue' keys. The field name maps to the field on the document, and the default value is
+                what will be placed inside.
+            message: (optional) A message which will be displayed to recipients of the agreement
+
+        Returns:
+            A namedtuple representing the information received back from the API. Contains attributes:
+
+            `agreement_id`
+                *"The unique identifier that can be used to query status and download signed documents"*
+
+            `embedded_code`
+                *"Javascript snippet suitable for an embedded page taking a user to a URL"*
+
+            `expiration`
+                *"Expiration date for autologin. This is based on the user setting, API_AUTO_LOGIN_LIFETIME"*
+
+            `url`
+             *"Standalone URL to direct end users to"*
+
+        Raises:
+            ApiError: If the API returns an error, such as a 403. The exact response from the API is provided.
+
+        """
+        if ccs is None:
+            ccs = []
+
+        security_options = dict(passwordProtection="NONE", kbaProtection="NONE", webIdentityProtection="NONE",
+                                protectOpen=False, internalPassword="", externalPassword="", openPassword="")
+
+        files_data = [{'transientDocumentId': file.document_id} for file in self.files]
+
+        if merge_fields is None:
+            merge_fields = []
+
+        if sender_signature_required:
+            sender_signature_required = 'SENDER_SIGNATURE_NOT_REQUIRED'
+        else:
+            sender_signature_required = 'SENDER_SIGNS_FIRST'
+
+        recipients_data = self.__construct_recipient_agreement_request(recipients)
+
+        document_creation_info = dict(signatureType="ESIGN", name=agreement_name, callbackInfo="",
+                                      securityOptions=security_options, locale="", ccs=ccs,
+                                      externalId=external_id, signatureFlow=sender_signature_required,
+                                      fileInfos=files_data, mergeFieldInfo=merge_fields,
+                                      recipientSetInfos=recipients_data, message=message,
+                                      daysUntilSigningDeadline=days_until_signing_deadline, )
+
+        request_data = dict(documentCreationInfo=document_creation_info)
+        api_response = AgreementEndpoints(self.account).create_agreement(request_data)
+
+        if response_success(api_response):
+            response = namedtuple('Response', ('agreement_id', 'embedded_code', 'expiration', 'url'))
+
+            response_data = api_response.json()
+            embedded_code = response_data.get('embeddedCode', None)
+            expiration = response_data.get('expiration', None)
+            url = response_data.get('url', None)
+
+            response = response(response_data['agreementId'], embedded_code, expiration, url)
+
+            return response
+
+        else:
+            check_error(api_response)
+
 
 class AgreementEndpoints(object):
+    """ An internal class to handle making calls to the endpoints associated with Agreements.
+
+    Args:
+        account: An instance of :class:`EchosignAccount <pyEchosign.classes.account.EchosignAccount>` to be used for all
+            API calls
+    """
     base_api_url = None
 
     def __init__(self, account: 'EchosignAccount'):
@@ -126,15 +268,20 @@ class AgreementEndpoints(object):
         self.api_access_point = account.api_access_point
 
     def get_agreements(self):
-        """ Gets all agreements for the EchosignAccount """
-        url = self.api_access_point + endpoints.GET_AGREEMENTS
-        r = requests.get(url, headers=get_headers(self.account.access_token))
-        response_body = r.json()
-        json_agreements = response_body.get('userAgreementList', None)
-        # Check if there are errors before proceeding
-        if not response_success(r):
-            check_error(r)
-        agreements = []
+        """ Gets all agreements for the EchosignAccount - making the API call from the first iteration, and
+        then yielding each agreement thereafter."""
+
+        json_agreement = []
+        if not json_agreement:
+            url = self.api_access_point + endpoints.GET_AGREEMENTS
+            r = requests.get(url, headers=get_headers(self.account.access_token))
+            response_body = r.json()
+            json_agreements = response_body.get('userAgreementList', [])
+
+            # Check if there are errors before proceeding
+            if not response_success(r):
+                check_error(r)
+
         for json_agreement in json_agreements:
             echosign_id = json_agreement.get('agreementId', None)
             name = json_agreement.get('name', None)
@@ -148,5 +295,9 @@ class AgreementEndpoints(object):
             new_agreement = Agreement(echosign_id=echosign_id, name=name, account=self.account, status=status,
                                       date=date)
             new_agreement.users = users
-            agreements.append(new_agreement)
-        return agreements
+            yield new_agreement
+
+    def create_agreement(self, request_body):
+        url = self.api_access_point + endpoints.CREATE_AGREEMENT
+        r = requests.post(url, headers=get_headers(self.account.access_token), data=json.dumps(request_body))
+        return r

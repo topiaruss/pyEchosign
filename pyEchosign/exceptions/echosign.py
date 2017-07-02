@@ -13,11 +13,11 @@ class BaseEchosignException(Exception):
 
 
 class InvalidMultipart(BaseEchosignException, ValueError):
-    """ An invalid multipart was specified."""
+    base_echosign_error = 'An invalid multipart was specified.'
 
 
 class AccessTokenError(BaseEchosignException, ValueError):
-    """ Access token not provided or invalid """
+    base_echosign_error = 'Access token not provided or invalid'
 
 
 class FileTooLargeError(BaseEchosignException):
@@ -25,17 +25,14 @@ class FileTooLargeError(BaseEchosignException):
 
 
 class PermissionDenied(BaseEchosignException, PermissionError):
-    """ The API caller do not have the permission to execute this operation. """
+    base_echosign_error = 'The API caller do not have the permission to execute this operation.'
 
 
-class UnsupportedMediaError(BaseEchosignException, NotImplementedError):
-    """ Content type was not provided or is not supported. """
+class UnsupportedMediaError(BaseEchosignException):
+    base_echosign_error = 'Content type was not provided or is not supported.'
 
 
 class ProcessingError(BaseEchosignException):
-    """ The transient document was deleted from the system because Adobe Sign could not process the document.
-    This can happen if uploaded document contains scripts, macros or Visual Basic code. You may wish to inspect your
-    document for these elements, remove them, and try uploading the document again."""
     base_echosign_error = ('The transient document was deleted from the system because Adobe Sign could not '
                            'process the document. This can happen if uploaded document contains scripts, macros or '
                            'Visual Basic code. You may wish to inspect your document for these elements, remove them, '

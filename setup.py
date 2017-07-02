@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='pyEchosign',
-    version='0.1.1dev',
+    version='0.2.0dev',
     packages=['pyEchosign', 'pyEchosign.classes', 'pyEchosign.exceptions', 'pyEchosign.utils'],
     url='https://gitlab.com/jensastrup/pyEchosign',
     license='MIT',

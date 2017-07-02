@@ -2,7 +2,7 @@ import json
 import logging
 from collections import namedtuple
 from enum import Enum
-from typing import TYPE_CHECKING, List
+from typing import TYPE_CHECKING, List, Dict
 
 import arrow
 
@@ -166,7 +166,8 @@ class Agreement(object):
         return recipient_set_info
 
     def send_agreement(self, agreement_name: str, recipients: List[Recipient], ccs=None, days_until_signing_deadline=0,
-                       external_id='', sender_signature_required=False, merge_fields: List[dict] = None, message=''):
+                       external_id='', sender_signature_required=False, merge_fields: List[Dict[str, str]] = None,
+                       message=''):
         """ Sends this agreement to Echosign for signature
 
         Args:
@@ -178,6 +179,14 @@ class Agreement(object):
                 (document sent, document fully signed, etc)
             days_until_signing_deadline: (optional) "The number of days that remain before the document expires.
                 You cannot sign the document after it expires" Defaults to 0, for no expiration.
+            external_id: "A unique identifier for your transaction...
+                You can use the ExternalID to search for your transaction through [the] API"
+            sender_signature_required: (bool) Whether or not a sender signature is required. Defaults to False. If true,
+                the signer will sign first. The additional options of the signer signing last, or sequentially isn't
+                currently supported (because I haven't thought of a clean way to handle providing that info).
+            merge_fields: A list of dictionaries, with each one providing the 'fieldName' and 'defaultValue' keys.
+                The field name maps to the field on the document, and the default value is what will be placed inside.
+            message: A message which will be displayed to recipients of the agreement
 
         Returns:
             A namedtuple representing the information received back from the API. Contains attributes

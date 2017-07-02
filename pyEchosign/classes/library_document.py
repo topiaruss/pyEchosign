@@ -63,10 +63,8 @@ class LibraryDocument(object):
     def delete(self):
         """ Deletes the LibraryDocument from Echosign. It will not be visible on the Manage page. """
         url = self.account.api_access_point + DELETE_LIBRARY_DOCUMENT.format(self.echosign_id)
-        print(url)
         headers = get_headers(self.account.access_token)
         r = requests.delete(url, headers=headers)
-        print(r.json())
         check_error(r)
     
     # The following are only available after retrieving the LibraryDocument specifically

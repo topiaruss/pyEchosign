@@ -23,7 +23,7 @@ import sys
 import sphinx_rtd_theme
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-sys.path.insert(0, os.path.abspath('../pyEchosign/'))
+sys.path.insert(0, os.path.abspath('../'))
 # os.path.abspath('../../')
 
 # -- General configuration ------------------------------------------------

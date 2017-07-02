@@ -165,8 +165,8 @@
 <div class="section" id="echosignaccount">
 <h2>EchosignAccount<a class="headerlink" href="#echosignaccount" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
-<dt id="classes.account.EchosignAccount">
-<em class="property">class </em><code class="descname">EchosignAccount</code><span class="sig-paren">(</span><em>access_token: str</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#classes.account.EchosignAccount" title="Permalink to this definition">¶</a></dt>
+<dt id="pyEchosign.classes.account.EchosignAccount">
+<em class="property">class </em><code class="descname">EchosignAccount</code><span class="sig-paren">(</span><em>access_token: str</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pyEchosign.classes.account.EchosignAccount" title="Permalink to this definition">¶</a></dt>
 <dd><p>Saves OAuth Information for connecting to Echosign</p>
 <dl class="attribute">
 <dt id="EchosignAccount.access_token">
@@ -193,17 +193,17 @@
 </dd></dl>
 
 <dl class="method">
-<dt id="classes.account.EchosignAccount.get_agreements">
-<code class="descname">get_agreements</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#classes.account.EchosignAccount.get_agreements" title="Permalink to this definition">¶</a></dt>
+<dt id="pyEchosign.classes.account.EchosignAccount.get_agreements">
+<code class="descname">get_agreements</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyEchosign.classes.account.EchosignAccount.get_agreements" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets all agreements for the EchosignAccount</p>
-<p>Returns: A list of <code class="xref py py-class docutils literal"><span class="pre">Agreement</span></code> objects</p>
+<p>Returns: A list of <a class="reference internal" href="#pyEchosign.classes.agreement.Agreement" title="pyEchosign.classes.agreement.Agreement"><code class="xref py py-class docutils literal"><span class="pre">Agreement</span></code></a> objects</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="classes.account.EchosignAccount.get_library_documents">
-<code class="descname">get_library_documents</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#classes.account.EchosignAccount.get_library_documents" title="Permalink to this definition">¶</a></dt>
+<dt id="pyEchosign.classes.account.EchosignAccount.get_library_documents">
+<code class="descname">get_library_documents</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyEchosign.classes.account.EchosignAccount.get_library_documents" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets all Library Documents for the EchosignAccount</p>
-<p>Returns: A list of <code class="xref py py-class docutils literal"><span class="pre">Agreement</span></code> objects</p>
+<p>Returns: A list of <a class="reference internal" href="#pyEchosign.classes.library_document.LibraryDocument" title="pyEchosign.classes.library_document.LibraryDocument"><code class="xref py py-class docutils literal"><span class="pre">Agreement</span></code></a> objects</p>
 </dd></dl>
 
 </dd></dl>
@@ -212,14 +212,14 @@
 <div class="section" id="agreement">
 <h2>Agreement<a class="headerlink" href="#agreement" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
-<dt id="classes.agreement.Agreement">
-<em class="property">class </em><code class="descname">Agreement</code><a class="headerlink" href="#classes.agreement.Agreement" title="Permalink to this definition">¶</a></dt>
+<dt id="pyEchosign.classes.agreement.Agreement">
+<em class="property">class </em><code class="descname">Agreement</code><a class="headerlink" href="#pyEchosign.classes.agreement.Agreement" title="Permalink to this definition">¶</a></dt>
 <dd><p>Represents a created agreement in Echosign.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>account</strong> (<a class="reference internal" href="pyEchosign.classes.html#classes.account.EchosignAccount" title="classes.account.EchosignAccount"><em>EchosignAccount</em></a>) – An instance of <a class="reference internal" href="pyEchosign.classes.html#classes.account.EchosignAccount" title="classes.account.EchosignAccount"><code class="xref py py-class docutils literal"><span class="pre">EchosignAccount</span></code></a>.
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>account</strong> (<a class="reference internal" href="#pyEchosign.classes.account.EchosignAccount" title="pyEchosign.classes.account.EchosignAccount"><em>EchosignAccount</em></a>) – An instance of <code class="xref py py-class docutils literal"><span class="pre">EchosignAccount</span></code>.
 All Agreement actions will be conducted under this account.</p>
 </td>
 </tr>
@@ -230,10 +230,10 @@ or if only the basic information was pulled (such as when getting all agreements
 of requesting the specific agreement)</li>
 <li><strong>echosign_id</strong> (<em>str</em>) – The ID assigned to the agreement by Echosign, used to identify the agreement via the API</li>
 <li><strong>name</strong> (<em>str</em>) – The name of the document as specified by the sender</li>
-<li><strong>status</strong> (<a class="reference internal" href="pyEchosign.classes.html#classes.agreement.Agreement.Status" title="classes.agreement.Agreement.Status"><em>Agreement.Status</em></a>) – The current status of the document (OUT_FOR_SIGNATURE, SIGNED, APPROVED, etc)</li>
-<li><strong>users</strong> (<em>list</em><em>[</em><a class="reference internal" href="#classes.users.DisplayUser" title="classes.users.DisplayUser"><em>DisplayUser</em></a><em>]</em>) – The users associated with this agreement, represented by
-<a class="reference internal" href="#classes.users.DisplayUser" title="classes.users.DisplayUser"><code class="xref py py-class docutils literal"><span class="pre">DisplayUser</span></code></a></li>
-<li><strong>files</strong> (<em>list</em>) – A list of <a class="reference internal" href="pyEchosign.classes.html#classes.documents.TransientDocument" title="classes.documents.TransientDocument"><code class="xref py py-class docutils literal"><span class="pre">TransientDocument</span></code></a> instances
+<li><strong>status</strong> (<a class="reference internal" href="#pyEchosign.classes.agreement.Agreement.Status" title="pyEchosign.classes.agreement.Agreement.Status"><em>Agreement.Status</em></a>) – The current status of the document (OUT_FOR_SIGNATURE, SIGNED, APPROVED, etc)</li>
+<li><strong>users</strong> (<em>list</em><em>[</em><a class="reference internal" href="#pyEchosign.classes.users.DisplayUser" title="pyEchosign.classes.users.DisplayUser"><em>DisplayUser</em></a><em>]</em>) – The users associated with this agreement, represented by
+<code class="xref py py-class docutils literal"><span class="pre">DisplayUser</span></code></li>
+<li><strong>files</strong> (<em>list</em>) – A list of <code class="xref py py-class docutils literal"><span class="pre">TransientDocument</span></code> instances
 which will become the documents within the agreement. This information is not provided when retrieving
 agreements from Echosign.</li>
 </ul>
@@ -244,7 +244,7 @@ agreements from Echosign.</li>
 <dl class="attribute">
 <dt id="Agreement.account">
 <code class="descname">account</code><a class="headerlink" href="#Agreement.account" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>EchosignAccount</em> – An instance of <a class="reference internal" href="pyEchosign.classes.html#classes.account.EchosignAccount" title="classes.account.EchosignAccount"><code class="xref py py-class docutils literal"><span class="pre">EchosignAccount</span></code></a>.
+<dd><p><em>EchosignAccount</em> – An instance of <code class="xref py py-class docutils literal"><span class="pre">EchosignAccount</span></code>.
 All Agreement actions will be conducted under this account.</p>
 </dd></dl>
 
@@ -278,20 +278,20 @@ of requesting the specific agreement)</p>
 <dt id="Agreement.users">
 <code class="descname">users</code><a class="headerlink" href="#Agreement.users" title="Permalink to this definition">¶</a></dt>
 <dd><p><em>list[DisplayUser]</em> – The users associated with this agreement, represented by
-<a class="reference internal" href="#classes.users.DisplayUser" title="classes.users.DisplayUser"><code class="xref py py-class docutils literal"><span class="pre">DisplayUser</span></code></a></p>
+<code class="xref py py-class docutils literal"><span class="pre">DisplayUser</span></code></p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="Agreement.files">
 <code class="descname">files</code><a class="headerlink" href="#Agreement.files" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>list</em> – A list of <a class="reference internal" href="pyEchosign.classes.html#classes.documents.TransientDocument" title="classes.documents.TransientDocument"><code class="xref py py-class docutils literal"><span class="pre">TransientDocument</span></code></a> instances
+<dd><p><em>list</em> – A list of <code class="xref py py-class docutils literal"><span class="pre">TransientDocument</span></code> instances
 which will become the documents within the agreement. This information is not provided when retrieving
 agreements from Echosign.</p>
 </dd></dl>
 
 <dl class="class">
-<dt id="classes.agreement.Agreement.Status">
-<em class="property">class </em><code class="descname">Status</code><a class="headerlink" href="#classes.agreement.Agreement.Status" title="Permalink to this definition">¶</a></dt>
+<dt id="pyEchosign.classes.agreement.Agreement.Status">
+<em class="property">class </em><code class="descname">Status</code><a class="headerlink" href="#pyEchosign.classes.agreement.Agreement.Status" title="Permalink to this definition">¶</a></dt>
 <dd><p>Possible status of agreements</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -300,149 +300,163 @@ agreements from Echosign.</p>
 which is used, the other will be removed.</p>
 </div>
 <dl class="attribute">
-<dt id="classes.agreement.Agreement.Status.ACCEPTED">
-<code class="descname">ACCEPTED</code><em class="property"> = ‘ACCEPTED’</em><a class="headerlink" href="#classes.agreement.Agreement.Status.ACCEPTED" title="Permalink to this definition">¶</a></dt>
+<dt id="pyEchosign.classes.agreement.Agreement.Status.ACCEPTED">
+<code class="descname">ACCEPTED</code><em class="property"> = ‘ACCEPTED’</em><a class="headerlink" href="#pyEchosign.classes.agreement.Agreement.Status.ACCEPTED" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
-<dt id="classes.agreement.Agreement.Status.APPROVED">
-<code class="descname">APPROVED</code><em class="property"> = ‘APPROVED’</em><a class="headerlink" href="#classes.agreement.Agreement.Status.APPROVED" title="Permalink to this definition">¶</a></dt>
+<dt id="pyEchosign.classes.agreement.Agreement.Status.APPROVED">
+<code class="descname">APPROVED</code><em class="property"> = ‘APPROVED’</em><a class="headerlink" href="#pyEchosign.classes.agreement.Agreement.Status.APPROVED" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
-<dt id="classes.agreement.Agreement.Status.ARCHIVED">
-<code class="descname">ARCHIVED</code><em class="property"> = ‘ARCHIVED’</em><a class="headerlink" href="#classes.agreement.Agreement.Status.ARCHIVED" title="Permalink to this definition">¶</a></dt>
+<dt id="pyEchosign.classes.agreement.Agreement.Status.ARCHIVED">
+<code class="descname">ARCHIVED</code><em class="property"> = ‘ARCHIVED’</em><a class="headerlink" href="#pyEchosign.classes.agreement.Agreement.Status.ARCHIVED" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
-<dt id="classes.agreement.Agreement.Status.DELIVERED">
-<code class="descname">DELIVERED</code><em class="property"> = ‘DELIVERED’</em><a class="headerlink" href="#classes.agreement.Agreement.Status.DELIVERED" title="Permalink to this definition">¶</a></dt>
+<dt id="pyEchosign.classes.agreement.Agreement.Status.DELIVERED">
+<code class="descname">DELIVERED</code><em class="property"> = ‘DELIVERED’</em><a class="headerlink" href="#pyEchosign.classes.agreement.Agreement.Status.DELIVERED" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
-<dt id="classes.agreement.Agreement.Status.EXPIRED">
-<code class="descname">EXPIRED</code><em class="property"> = ‘EXPIRED’</em><a class="headerlink" href="#classes.agreement.Agreement.Status.EXPIRED" title="Permalink to this definition">¶</a></dt>
+<dt id="pyEchosign.classes.agreement.Agreement.Status.EXPIRED">
+<code class="descname">EXPIRED</code><em class="property"> = ‘EXPIRED’</em><a class="headerlink" href="#pyEchosign.classes.agreement.Agreement.Status.EXPIRED" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
-<dt id="classes.agreement.Agreement.Status.FORM">
-<code class="descname">FORM</code><em class="property"> = ‘FORM’</em><a class="headerlink" href="#classes.agreement.Agreement.Status.FORM" title="Permalink to this definition">¶</a></dt>
+<dt id="pyEchosign.classes.agreement.Agreement.Status.FORM">
+<code class="descname">FORM</code><em class="property"> = ‘FORM’</em><a class="headerlink" href="#pyEchosign.classes.agreement.Agreement.Status.FORM" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
-<dt id="classes.agreement.Agreement.Status.FORM_FILLED">
-<code class="descname">FORM_FILLED</code><em class="property"> = ‘FORM_FILLED’</em><a class="headerlink" href="#classes.agreement.Agreement.Status.FORM_FILLED" title="Permalink to this definition">¶</a></dt>
+<dt id="pyEchosign.classes.agreement.Agreement.Status.FORM_FILLED">
+<code class="descname">FORM_FILLED</code><em class="property"> = ‘FORM_FILLED’</em><a class="headerlink" href="#pyEchosign.classes.agreement.Agreement.Status.FORM_FILLED" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
-<dt id="classes.agreement.Agreement.Status.OTHER">
-<code class="descname">OTHER</code><em class="property"> = ‘OTHER’</em><a class="headerlink" href="#classes.agreement.Agreement.Status.OTHER" title="Permalink to this definition">¶</a></dt>
+<dt id="pyEchosign.classes.agreement.Agreement.Status.OTHER">
+<code class="descname">OTHER</code><em class="property"> = ‘OTHER’</em><a class="headerlink" href="#pyEchosign.classes.agreement.Agreement.Status.OTHER" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
-<dt id="classes.agreement.Agreement.Status.OUT_FOR_ACCEPTANCE">
-<code class="descname">OUT_FOR_ACCEPTANCE</code><em class="property"> = ‘OUT_FOR_ACCEPTANCE’</em><a class="headerlink" href="#classes.agreement.Agreement.Status.OUT_FOR_ACCEPTANCE" title="Permalink to this definition">¶</a></dt>
+<dt id="pyEchosign.classes.agreement.Agreement.Status.OUT_FOR_ACCEPTANCE">
+<code class="descname">OUT_FOR_ACCEPTANCE</code><em class="property"> = ‘OUT_FOR_ACCEPTANCE’</em><a class="headerlink" href="#pyEchosign.classes.agreement.Agreement.Status.OUT_FOR_ACCEPTANCE" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
-<dt id="classes.agreement.Agreement.Status.OUT_FOR_APPROVAL">
-<code class="descname">OUT_FOR_APPROVAL</code><em class="property"> = ‘OUT_FOR_APPROVAL’</em><a class="headerlink" href="#classes.agreement.Agreement.Status.OUT_FOR_APPROVAL" title="Permalink to this definition">¶</a></dt>
+<dt id="pyEchosign.classes.agreement.Agreement.Status.OUT_FOR_APPROVAL">
+<code class="descname">OUT_FOR_APPROVAL</code><em class="property"> = ‘OUT_FOR_APPROVAL’</em><a class="headerlink" href="#pyEchosign.classes.agreement.Agreement.Status.OUT_FOR_APPROVAL" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
-<dt id="classes.agreement.Agreement.Status.OUT_FOR_DELIVERY">
-<code class="descname">OUT_FOR_DELIVERY</code><em class="property"> = ‘OUT_FOR_DELIVERY’</em><a class="headerlink" href="#classes.agreement.Agreement.Status.OUT_FOR_DELIVERY" title="Permalink to this definition">¶</a></dt>
+<dt id="pyEchosign.classes.agreement.Agreement.Status.OUT_FOR_DELIVERY">
+<code class="descname">OUT_FOR_DELIVERY</code><em class="property"> = ‘OUT_FOR_DELIVERY’</em><a class="headerlink" href="#pyEchosign.classes.agreement.Agreement.Status.OUT_FOR_DELIVERY" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
-<dt id="classes.agreement.Agreement.Status.OUT_FOR_FORM_FILLING">
-<code class="descname">OUT_FOR_FORM_FILLING</code><em class="property"> = ‘OUT_FOR_FORM_FILLING’</em><a class="headerlink" href="#classes.agreement.Agreement.Status.OUT_FOR_FORM_FILLING" title="Permalink to this definition">¶</a></dt>
+<dt id="pyEchosign.classes.agreement.Agreement.Status.OUT_FOR_FORM_FILLING">
+<code class="descname">OUT_FOR_FORM_FILLING</code><em class="property"> = ‘OUT_FOR_FORM_FILLING’</em><a class="headerlink" href="#pyEchosign.classes.agreement.Agreement.Status.OUT_FOR_FORM_FILLING" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
-<dt id="classes.agreement.Agreement.Status.OUT_FOR_SIGNATURE">
-<code class="descname">OUT_FOR_SIGNATURE</code><em class="property"> = ‘OUT_FOR_SIGNATURE’</em><a class="headerlink" href="#classes.agreement.Agreement.Status.OUT_FOR_SIGNATURE" title="Permalink to this definition">¶</a></dt>
+<dt id="pyEchosign.classes.agreement.Agreement.Status.OUT_FOR_SIGNATURE">
+<code class="descname">OUT_FOR_SIGNATURE</code><em class="property"> = ‘OUT_FOR_SIGNATURE’</em><a class="headerlink" href="#pyEchosign.classes.agreement.Agreement.Status.OUT_FOR_SIGNATURE" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
-<dt id="classes.agreement.Agreement.Status.RECALLED">
-<code class="descname">RECALLED</code><em class="property"> = ‘RECALLED’</em><a class="headerlink" href="#classes.agreement.Agreement.Status.RECALLED" title="Permalink to this definition">¶</a></dt>
+<dt id="pyEchosign.classes.agreement.Agreement.Status.RECALLED">
+<code class="descname">RECALLED</code><em class="property"> = ‘RECALLED’</em><a class="headerlink" href="#pyEchosign.classes.agreement.Agreement.Status.RECALLED" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
-<dt id="classes.agreement.Agreement.Status.SIGNED">
-<code class="descname">SIGNED</code><em class="property"> = ‘SIGNED’</em><a class="headerlink" href="#classes.agreement.Agreement.Status.SIGNED" title="Permalink to this definition">¶</a></dt>
+<dt id="pyEchosign.classes.agreement.Agreement.Status.SIGNED">
+<code class="descname">SIGNED</code><em class="property"> = ‘SIGNED’</em><a class="headerlink" href="#pyEchosign.classes.agreement.Agreement.Status.SIGNED" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
-<dt id="classes.agreement.Agreement.Status.WAITING_FOR_AUTHORING">
-<code class="descname">WAITING_FOR_AUTHORING</code><em class="property"> = ‘WAITING_FOR_AUTHORING’</em><a class="headerlink" href="#classes.agreement.Agreement.Status.WAITING_FOR_AUTHORING" title="Permalink to this definition">¶</a></dt>
+<dt id="pyEchosign.classes.agreement.Agreement.Status.WAITING_FOR_AUTHORING">
+<code class="descname">WAITING_FOR_AUTHORING</code><em class="property"> = ‘WAITING_FOR_AUTHORING’</em><a class="headerlink" href="#pyEchosign.classes.agreement.Agreement.Status.WAITING_FOR_AUTHORING" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
-<dt id="classes.agreement.Agreement.Status.WAITING_FOR_FAXIN">
-<code class="descname">WAITING_FOR_FAXIN</code><em class="property"> = ‘WAITING_FOR_FAXIN’</em><a class="headerlink" href="#classes.agreement.Agreement.Status.WAITING_FOR_FAXIN" title="Permalink to this definition">¶</a></dt>
+<dt id="pyEchosign.classes.agreement.Agreement.Status.WAITING_FOR_FAXIN">
+<code class="descname">WAITING_FOR_FAXIN</code><em class="property"> = ‘WAITING_FOR_FAXIN’</em><a class="headerlink" href="#pyEchosign.classes.agreement.Agreement.Status.WAITING_FOR_FAXIN" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
-<dt id="classes.agreement.Agreement.Status.WAITING_FOR_FAXING">
-<code class="descname">WAITING_FOR_FAXING</code><em class="property"> = ‘WAITING_FOR_FAXING’</em><a class="headerlink" href="#classes.agreement.Agreement.Status.WAITING_FOR_FAXING" title="Permalink to this definition">¶</a></dt>
+<dt id="pyEchosign.classes.agreement.Agreement.Status.WAITING_FOR_FAXING">
+<code class="descname">WAITING_FOR_FAXING</code><em class="property"> = ‘WAITING_FOR_FAXING’</em><a class="headerlink" href="#pyEchosign.classes.agreement.Agreement.Status.WAITING_FOR_FAXING" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
-<dt id="classes.agreement.Agreement.Status.WAITING_FOR_MY_ACCEPTANCE">
-<code class="descname">WAITING_FOR_MY_ACCEPTANCE</code><em class="property"> = ‘WAITING_FOR_MY_ACCEPTANCE’</em><a class="headerlink" href="#classes.agreement.Agreement.Status.WAITING_FOR_MY_ACCEPTANCE" title="Permalink to this definition">¶</a></dt>
+<dt id="pyEchosign.classes.agreement.Agreement.Status.WAITING_FOR_MY_ACCEPTANCE">
+<code class="descname">WAITING_FOR_MY_ACCEPTANCE</code><em class="property"> = ‘WAITING_FOR_MY_ACCEPTANCE’</em><a class="headerlink" href="#pyEchosign.classes.agreement.Agreement.Status.WAITING_FOR_MY_ACCEPTANCE" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
-<dt id="classes.agreement.Agreement.Status.WAITING_FOR_MY_ACKNOWLEDGEMENT">
-<code class="descname">WAITING_FOR_MY_ACKNOWLEDGEMENT</code><em class="property"> = ‘WAITING_FOR_MY_ACKNOWLEDGEMENT’</em><a class="headerlink" href="#classes.agreement.Agreement.Status.WAITING_FOR_MY_ACKNOWLEDGEMENT" title="Permalink to this definition">¶</a></dt>
+<dt id="pyEchosign.classes.agreement.Agreement.Status.WAITING_FOR_MY_ACKNOWLEDGEMENT">
+<code class="descname">WAITING_FOR_MY_ACKNOWLEDGEMENT</code><em class="property"> = ‘WAITING_FOR_MY_ACKNOWLEDGEMENT’</em><a class="headerlink" href="#pyEchosign.classes.agreement.Agreement.Status.WAITING_FOR_MY_ACKNOWLEDGEMENT" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
-<dt id="classes.agreement.Agreement.Status.WAITING_FOR_MY_APPROVAL">
-<code class="descname">WAITING_FOR_MY_APPROVAL</code><em class="property"> = ‘WAITING_FOR_MY_APPROVAL’</em><a class="headerlink" href="#classes.agreement.Agreement.Status.WAITING_FOR_MY_APPROVAL" title="Permalink to this definition">¶</a></dt>
+<dt id="pyEchosign.classes.agreement.Agreement.Status.WAITING_FOR_MY_APPROVAL">
+<code class="descname">WAITING_FOR_MY_APPROVAL</code><em class="property"> = ‘WAITING_FOR_MY_APPROVAL’</em><a class="headerlink" href="#pyEchosign.classes.agreement.Agreement.Status.WAITING_FOR_MY_APPROVAL" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
-<dt id="classes.agreement.Agreement.Status.WAITING_FOR_MY_DELEGATION">
-<code class="descname">WAITING_FOR_MY_DELEGATION</code><em class="property"> = ‘WAITING_FOR_MY_DELEGATION’</em><a class="headerlink" href="#classes.agreement.Agreement.Status.WAITING_FOR_MY_DELEGATION" title="Permalink to this definition">¶</a></dt>
+<dt id="pyEchosign.classes.agreement.Agreement.Status.WAITING_FOR_MY_DELEGATION">
+<code class="descname">WAITING_FOR_MY_DELEGATION</code><em class="property"> = ‘WAITING_FOR_MY_DELEGATION’</em><a class="headerlink" href="#pyEchosign.classes.agreement.Agreement.Status.WAITING_FOR_MY_DELEGATION" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
-<dt id="classes.agreement.Agreement.Status.WAITING_FOR_MY_FORM_FILLING">
-<code class="descname">WAITING_FOR_MY_FORM_FILLING</code><em class="property"> = ‘WAITING_FOR_MY_FORM_FILLING’</em><a class="headerlink" href="#classes.agreement.Agreement.Status.WAITING_FOR_MY_FORM_FILLING" title="Permalink to this definition">¶</a></dt>
+<dt id="pyEchosign.classes.agreement.Agreement.Status.WAITING_FOR_MY_FORM_FILLING">
+<code class="descname">WAITING_FOR_MY_FORM_FILLING</code><em class="property"> = ‘WAITING_FOR_MY_FORM_FILLING’</em><a class="headerlink" href="#pyEchosign.classes.agreement.Agreement.Status.WAITING_FOR_MY_FORM_FILLING" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
-<dt id="classes.agreement.Agreement.Status.WAITING_FOR_MY_SIGNATURE">
-<code class="descname">WAITING_FOR_MY_SIGNATURE</code><em class="property"> = ‘WAITING_FOR_MY_SIGNATURE’</em><a class="headerlink" href="#classes.agreement.Agreement.Status.WAITING_FOR_MY_SIGNATURE" title="Permalink to this definition">¶</a></dt>
+<dt id="pyEchosign.classes.agreement.Agreement.Status.WAITING_FOR_MY_SIGNATURE">
+<code class="descname">WAITING_FOR_MY_SIGNATURE</code><em class="property"> = ‘WAITING_FOR_MY_SIGNATURE’</em><a class="headerlink" href="#pyEchosign.classes.agreement.Agreement.Status.WAITING_FOR_MY_SIGNATURE" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
-<dt id="classes.agreement.Agreement.Status.WIDGET">
-<code class="descname">WIDGET</code><em class="property"> = ‘WIDGET’</em><a class="headerlink" href="#classes.agreement.Agreement.Status.WIDGET" title="Permalink to this definition">¶</a></dt>
+<dt id="pyEchosign.classes.agreement.Agreement.Status.WIDGET">
+<code class="descname">WIDGET</code><em class="property"> = ‘WIDGET’</em><a class="headerlink" href="#pyEchosign.classes.agreement.Agreement.Status.WIDGET" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="method">
-<dt id="classes.agreement.Agreement.cancel">
-<code class="descname">cancel</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#classes.agreement.Agreement.cancel" title="Permalink to this definition">¶</a></dt>
+<dt id="pyEchosign.classes.agreement.Agreement.cancel">
+<code class="descname">cancel</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyEchosign.classes.agreement.Agreement.cancel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Cancels the agreement on Echosign. Agreement will still be visible in the Manage page.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="classes.agreement.Agreement.delete">
-<code class="descname">delete</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#classes.agreement.Agreement.delete" title="Permalink to this definition">¶</a></dt>
+<dt id="pyEchosign.classes.agreement.Agreement.delete">
+<code class="descname">delete</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyEchosign.classes.agreement.Agreement.delete" title="Permalink to this definition">¶</a></dt>
 <dd><p>Deletes the agreement on Echosign. Agreement will not be visible in the Manage page.</p>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
-<dl class="last docutils">
-<dt>This action requires the ‘agreement_retention’ scope, which doesn’t appear</dt>
-<dd>to be actually available via OAuth</dd>
-</dl>
+<p class="last">This action requires the ‘agreement_retention’ scope, which doesn’t appear
+to be actually available via OAuth</p>
 </div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyEchosign.classes.agreement.Agreement.send_agreement">
+<code class="descname">send_agreement</code><span class="sig-paren">(</span><em>agreement_name: str, recipients: typing.List[pyEchosign.classes.users.Recipient]</em><span class="sig-paren">)</span><a class="headerlink" href="#pyEchosign.classes.agreement.Agreement.send_agreement" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sends this agreement to Echosign for signature</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>recipients</strong> – A list of <a class="reference internal" href="#pyEchosign.classes.users.Recipient" title="pyEchosign.classes.users.Recipient"><code class="xref py py-class docutils literal"><span class="pre">Recipients</span></code></a>. The order which they are provided
+in the list determines the order in which they sign.</td>
+</tr>
+</tbody>
+</table>
+<p>Returns: A dict representing the information received back from</p>
 </dd></dl>
 
 </dd></dl>
@@ -451,15 +465,15 @@ which is used, the other will be removed.</p>
 <div class="section" id="library-document">
 <h2>Library Document<a class="headerlink" href="#library-document" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
-<dt id="classes.library_document.LibraryDocument">
-<em class="property">class </em><code class="descname">LibraryDocument</code><a class="headerlink" href="#classes.library_document.LibraryDocument" title="Permalink to this definition">¶</a></dt>
+<dt id="pyEchosign.classes.library_document.LibraryDocument">
+<em class="property">class </em><code class="descname">LibraryDocument</code><a class="headerlink" href="#pyEchosign.classes.library_document.LibraryDocument" title="Permalink to this definition">¶</a></dt>
 <dd><p>Represents a Library Document in Echosign. When pulling all Library Documents, only the echosign_id, template_type,
 modified_date, name, and scope are available. Accessing all other attributes results in an HTTP request to pull the
 full document information.</p>
 <dl class="attribute">
 <dt id="LibraryDocument.account">
 <code class="descname">account</code><a class="headerlink" href="#LibraryDocument.account" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>EchosignAccount</em> – An instance of <code class="xref py py-class docutils literal"><span class="pre">EchosignAccount</span></code>. All Agreement actions will be conducted under this account.</p>
+<dd><p><em>EchosignAccount</em> – An instance of <a class="reference internal" href="#pyEchosign.classes.account.EchosignAccount" title="pyEchosign.classes.account.EchosignAccount"><code class="xref py py-class docutils literal"><span class="pre">EchosignAccount</span></code></a>. All Agreement actions will be conducted under this account.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -499,55 +513,55 @@ full document information.</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="classes.library_document.LibraryDocument.GLOBAL">
-<code class="descname">GLOBAL</code><em class="property"> = ‘GLOBAL’</em><a class="headerlink" href="#classes.library_document.LibraryDocument.GLOBAL" title="Permalink to this definition">¶</a></dt>
+<dt id="pyEchosign.classes.library_document.LibraryDocument.GLOBAL">
+<code class="descname">GLOBAL</code><em class="property"> = ‘GLOBAL’</em><a class="headerlink" href="#pyEchosign.classes.library_document.LibraryDocument.GLOBAL" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
-<dt id="classes.library_document.LibraryDocument.PERSONAL">
-<code class="descname">PERSONAL</code><em class="property"> = ‘PERSONAL’</em><a class="headerlink" href="#classes.library_document.LibraryDocument.PERSONAL" title="Permalink to this definition">¶</a></dt>
+<dt id="pyEchosign.classes.library_document.LibraryDocument.PERSONAL">
+<code class="descname">PERSONAL</code><em class="property"> = ‘PERSONAL’</em><a class="headerlink" href="#pyEchosign.classes.library_document.LibraryDocument.PERSONAL" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
-<dt id="classes.library_document.LibraryDocument.SHARED">
-<code class="descname">SHARED</code><em class="property"> = ‘SHARED’</em><a class="headerlink" href="#classes.library_document.LibraryDocument.SHARED" title="Permalink to this definition">¶</a></dt>
+<dt id="pyEchosign.classes.library_document.LibraryDocument.SHARED">
+<code class="descname">SHARED</code><em class="property"> = ‘SHARED’</em><a class="headerlink" href="#pyEchosign.classes.library_document.LibraryDocument.SHARED" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="classes.library_document.LibraryDocument.delete">
-<code class="descname">delete</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#classes.library_document.LibraryDocument.delete" title="Permalink to this definition">¶</a></dt>
+<dt id="pyEchosign.classes.library_document.LibraryDocument.delete">
+<code class="descname">delete</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyEchosign.classes.library_document.LibraryDocument.delete" title="Permalink to this definition">¶</a></dt>
 <dd><p>Deletes the LibraryDocument from Echosign. It will not be visible on the Manage page.</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="classes.library_document.LibraryDocument.document">
-<code class="descname">document</code><em class="property"> = False</em><a class="headerlink" href="#classes.library_document.LibraryDocument.document" title="Permalink to this definition">¶</a></dt>
+<dt id="pyEchosign.classes.library_document.LibraryDocument.document">
+<code class="descname">document</code><em class="property"> = False</em><a class="headerlink" href="#pyEchosign.classes.library_document.LibraryDocument.document" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
-<dt id="classes.library_document.LibraryDocument.form_field_layer">
-<code class="descname">form_field_layer</code><em class="property"> = False</em><a class="headerlink" href="#classes.library_document.LibraryDocument.form_field_layer" title="Permalink to this definition">¶</a></dt>
+<dt id="pyEchosign.classes.library_document.LibraryDocument.form_field_layer">
+<code class="descname">form_field_layer</code><em class="property"> = False</em><a class="headerlink" href="#pyEchosign.classes.library_document.LibraryDocument.form_field_layer" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
-<dt id="classes.library_document.LibraryDocument.fully_retrieved">
-<code class="descname">fully_retrieved</code><em class="property"> = False</em><a class="headerlink" href="#classes.library_document.LibraryDocument.fully_retrieved" title="Permalink to this definition">¶</a></dt>
+<dt id="pyEchosign.classes.library_document.LibraryDocument.fully_retrieved">
+<code class="descname">fully_retrieved</code><em class="property"> = False</em><a class="headerlink" href="#pyEchosign.classes.library_document.LibraryDocument.fully_retrieved" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
-<dt id="classes.library_document.LibraryDocument.locale">
-<code class="descname">locale</code><a class="headerlink" href="#classes.library_document.LibraryDocument.locale" title="Permalink to this definition">¶</a></dt>
+<dt id="pyEchosign.classes.library_document.LibraryDocument.locale">
+<code class="descname">locale</code><a class="headerlink" href="#pyEchosign.classes.library_document.LibraryDocument.locale" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="classes.library_document.LibraryDocument.retrieve_complete_document">
-<code class="descname">retrieve_complete_document</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#classes.library_document.LibraryDocument.retrieve_complete_document" title="Permalink to this definition">¶</a></dt>
+<dt id="pyEchosign.classes.library_document.LibraryDocument.retrieve_complete_document">
+<code class="descname">retrieve_complete_document</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyEchosign.classes.library_document.LibraryDocument.retrieve_complete_document" title="Permalink to this definition">¶</a></dt>
 <dd><p>Retrieves the remaining data for the LibraryDocument, such as locale, status, and security options.</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="classes.library_document.LibraryDocument.scope">
-<code class="descname">scope</code><em class="property"> = None</em><a class="headerlink" href="#classes.library_document.LibraryDocument.scope" title="Permalink to this definition">¶</a></dt>
+<dt id="pyEchosign.classes.library_document.LibraryDocument.scope">
+<code class="descname">scope</code><em class="property"> = None</em><a class="headerlink" href="#pyEchosign.classes.library_document.LibraryDocument.scope" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -556,9 +570,30 @@ full document information.</p>
 <div class="section" id="users">
 <h2>Users<a class="headerlink" href="#users" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
-<dt id="classes.users.DisplayUser">
-<em class="property">class </em><code class="descname">DisplayUser</code><span class="sig-paren">(</span><em>email: str</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#classes.users.DisplayUser" title="Permalink to this definition">¶</a></dt>
+<dt id="pyEchosign.classes.users.DisplayUser">
+<em class="property">class </em><code class="descname">DisplayUser</code><span class="sig-paren">(</span><em>email: str</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pyEchosign.classes.users.DisplayUser" title="Permalink to this definition">¶</a></dt>
 <dd><p>Maps to the DisplayUserInfo provided by Echosign for agreements fetched in bulk</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyEchosign.classes.users.Recipient">
+<em class="property">class </em><code class="descname">Recipient</code><span class="sig-paren">(</span><em>email: str</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pyEchosign.classes.users.Recipient" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyEchosign.classes.users.DisplayUser" title="pyEchosign.classes.users.DisplayUser"><code class="xref py py-class docutils literal"><span class="pre">pyEchosign.classes.users.DisplayUser</span></code></a></p>
+<p>Provides additional attributes to facilitate sending documents to recipients, such as Security Options.</p>
+<dl class="attribute">
+<dt id="Recipient.authentication_method">
+<code class="descname">authentication_method</code><a class="headerlink" href="#Recipient.authentication_method" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em> – “The authentication method for the recipients to have access to
+view and sign the document” (Echosign API Docs). Available options are ‘NONE’ (string),
+‘INHERITED_FROM_DOCUMENT’ or ‘PASSWORD’ or ‘WEB_IDENTITY’ or ‘KBA’ or ‘PHONE’.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Recipient.password">
+<code class="descname">password</code><a class="headerlink" href="#Recipient.password" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em> – Optional - “The password required for the recipient to view and sign the document”</p>
+</dd></dl>
+
 </dd></dl>
 
 </div>

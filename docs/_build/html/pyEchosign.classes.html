@@ -219,7 +219,7 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>account</strong> (<a class="reference internal" href="#pyEchosign.classes.account.EchosignAccount" title="pyEchosign.classes.account.EchosignAccount"><em>EchosignAccount</em></a>) – An instance of <code class="xref py py-class docutils literal"><span class="pre">EchosignAccount</span></code>.
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>account</strong> (<a class="reference internal" href="#pyEchosign.classes.account.EchosignAccount" title="pyEchosign.classes.account.EchosignAccount"><em>EchosignAccount</em></a>) – An instance of <a class="reference internal" href="#pyEchosign.classes.account.EchosignAccount" title="pyEchosign.classes.account.EchosignAccount"><code class="xref py py-class docutils literal"><span class="pre">EchosignAccount</span></code></a>.
 All Agreement actions will be conducted under this account.</p>
 </td>
 </tr>
@@ -232,8 +232,8 @@ of requesting the specific agreement)</li>
 <li><strong>name</strong> (<em>str</em>) – The name of the document as specified by the sender</li>
 <li><strong>status</strong> (<a class="reference internal" href="#pyEchosign.classes.agreement.Agreement.Status" title="pyEchosign.classes.agreement.Agreement.Status"><em>Agreement.Status</em></a>) – The current status of the document (OUT_FOR_SIGNATURE, SIGNED, APPROVED, etc)</li>
 <li><strong>users</strong> (<em>list</em><em>[</em><a class="reference internal" href="#pyEchosign.classes.users.DisplayUser" title="pyEchosign.classes.users.DisplayUser"><em>DisplayUser</em></a><em>]</em>) – The users associated with this agreement, represented by
-<code class="xref py py-class docutils literal"><span class="pre">DisplayUser</span></code></li>
-<li><strong>files</strong> (<em>list</em>) – A list of <code class="xref py py-class docutils literal"><span class="pre">TransientDocument</span></code> instances
+<a class="reference internal" href="#pyEchosign.classes.account.EchosignAccount" title="pyEchosign.classes.account.EchosignAccount"><code class="xref py py-class docutils literal"><span class="pre">EchosignAccount</span></code></a></li>
+<li><strong>files</strong> (<em>list</em>) – A list of <a class="reference internal" href="#pyEchosign.classes.documents.TransientDocument" title="pyEchosign.classes.documents.TransientDocument"><code class="xref py py-class docutils literal"><span class="pre">TransientDocument</span></code></a> instances
 which will become the documents within the agreement. This information is not provided when retrieving
 agreements from Echosign.</li>
 </ul>
@@ -244,7 +244,7 @@ agreements from Echosign.</li>
 <dl class="attribute">
 <dt id="pyEchosign.classes.agreement.Agreement.account">
 <code class="descname">account</code><a class="headerlink" href="#pyEchosign.classes.agreement.Agreement.account" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>EchosignAccount</em> – An instance of <code class="xref py py-class docutils literal"><span class="pre">EchosignAccount</span></code>.
+<dd><p><em>EchosignAccount</em> – An instance of <a class="reference internal" href="#pyEchosign.classes.account.EchosignAccount" title="pyEchosign.classes.account.EchosignAccount"><code class="xref py py-class docutils literal"><span class="pre">EchosignAccount</span></code></a>.
 All Agreement actions will be conducted under this account.</p>
 </dd></dl>
 
@@ -278,13 +278,13 @@ of requesting the specific agreement)</p>
 <dt id="pyEchosign.classes.agreement.Agreement.users">
 <code class="descname">users</code><a class="headerlink" href="#pyEchosign.classes.agreement.Agreement.users" title="Permalink to this definition">¶</a></dt>
 <dd><p><em>list[DisplayUser]</em> – The users associated with this agreement, represented by
-<code class="xref py py-class docutils literal"><span class="pre">DisplayUser</span></code></p>
+<a class="reference internal" href="#pyEchosign.classes.account.EchosignAccount" title="pyEchosign.classes.account.EchosignAccount"><code class="xref py py-class docutils literal"><span class="pre">EchosignAccount</span></code></a></p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="pyEchosign.classes.agreement.Agreement.files">
 <code class="descname">files</code><a class="headerlink" href="#pyEchosign.classes.agreement.Agreement.files" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>list</em> – A list of <code class="xref py py-class docutils literal"><span class="pre">TransientDocument</span></code> instances
+<dd><p><em>list</em> – A list of <a class="reference internal" href="#pyEchosign.classes.documents.TransientDocument" title="pyEchosign.classes.documents.TransientDocument"><code class="xref py py-class docutils literal"><span class="pre">TransientDocument</span></code></a> instances
 which will become the documents within the agreement. This information is not provided when retrieving
 agreements from Echosign.</p>
 </dd></dl>
@@ -471,7 +471,7 @@ in the list determines the order in which they sign.</td>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>account</strong> – An instance of <code class="xref py py-class docutils literal"><span class="pre">EchosignAccount</span></code> to be used for all
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>account</strong> – An instance of <a class="reference internal" href="#pyEchosign.classes.account.EchosignAccount" title="pyEchosign.classes.account.EchosignAccount"><code class="xref py py-class docutils literal"><span class="pre">EchosignAccount</span></code></a> to be used for all
 API calls</td>
 </tr>
 </tbody>
@@ -697,7 +697,7 @@ arguments must be provided.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>account</strong> – The <code class="xref py py-class docutils literal"><span class="pre">EchosignAccount</span></code> to be associated with this document</li>
+<li><strong>account</strong> – The <a class="reference internal" href="#pyEchosign.classes.account.EchosignAccount" title="pyEchosign.classes.account.EchosignAccount"><code class="xref py py-class docutils literal"><span class="pre">EchosignAccount</span></code></a> to be associated with this document</li>
 <li><strong>file_name</strong> (<em>str</em>) – The name of the file</li>
 <li><strong>file</strong> – The actual file object to upload to Echosign, accepts a stream of bytes.</li>
 <li><strong>mime_type</strong> – The MIME type of the file</li>

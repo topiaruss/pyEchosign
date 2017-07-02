@@ -145,45 +145,101 @@ class Agreement(object):
                 check_error(r)
 
     @staticmethod
-    def _construct_agreement_request(recipients: List[Recipient]) -> List[dict]:
+    def __construct_recipient_agreement_request(recipients: List[Recipient]) -> List[dict]:
+        """ Takes a list of :class:`Recipients <pyEchosign.classes.users.Recipient>` and returns the JSON required by
+        the Echosign API.
+
+        Args:
+            recipients: A list of :class:`Recipients <pyEchosign.classes.users.Recipient>`
+
+        """
         recipient_info = []
 
         for recipient in recipients:
-            recipient_info.append(dict(recipientSetMemberInfos=[{
-                "fax": "",
-                "securityOptions": [{
-                    "authenticationMethod": "",
-                    "password": "CONTENT FILTERED",
-                    "phoneInfos": [{
-                        "phone": "",
-                        "countryCode": ""
-                    }]
-                }],
-                "email": recipient.email
-            }], securityOptions=[{
-                "authenticationMethod": "",
-                "password": "CONTENT FILTERED",
-                "phoneInfos": [{
-                    "phone": "",
-                    "countryCode": ""
-                }]
-            }], recipientSetRole="SIGNER"))
+            recipient_info.append(dict(recipientSetMemberInfos=[dict(email=recipient.email)]))
 
-        return recipient_info
+        recipient_set_info = dict(recipientSetMemberInfos=recipient_info,
+                                  securityOptions=[dict(authenticationMethod="", password="CONTENT FILTERED",
+                                                        phoneInfos=[dict(phone="", countryCode="")])],
+                                  recipientSetRole="SIGNER")
 
-    def send_agreement(self, agreement_name: str, recipients: List[Recipient]):
+        return recipient_set_info
+
+    def send_agreement(self, agreement_name: str, recipients: List[Recipient], ccs=None, days_until_signing_deadline=0,
+                       external_id='', sender_signature_required=False, merge_fields: List[dict] = None, message=''):
         """ Sends this agreement to Echosign for signature
 
         Args:
-            recipients: A list of :class:`Recipients <pyEchosign.classes.users.Recipient>`. The order which they are provided
-                in the list determines the order in which they sign.
+            agreement_name: A string for the document name which will appear in the Echosign Manage page, the email
+                to recipients, etc.
+            recipients: A list of :class:`Recipients <pyEchosign.classes.users.Recipient>`.
+                The order which they are provided in the list determines the order in which they sign.
+            ccs: (optional) A list of email addresses to be CC'd on the Echosign agreement emails
+                (document sent, document fully signed, etc)
+            days_until_signing_deadline: (optional) "The number of days that remain before the document expires.
+                You cannot sign the document after it expires" Defaults to 0, for no expiration.
 
-        Returns: A dict representing the information received back from
+        Returns:
+            A namedtuple representing the information received back from the API. Contains attributes
+
+            `agreement_id`
+                *"The unique identifier that can be used to query status and download signed documents"*
+
+            `embedded_code`
+                *"Javascript snippet suitable for an embedded page taking a user to a URL"*
+
+            `expiration`
+                *"Expiration date for autologin. This is based on the user setting, API_AUTO_LOGIN_LIFETIME"*
+
+            `url`
+             *"Standalone URL to direct end users to"*
+
+        Raises:
+            ApiError: If the API returns an error, such as a 403. The exact response from the API is provided.
 
         """
-        recipients_data = self._construct_agreement_request(recipients)
-        response = namedtuple('Response', ('agreement_id', 'embedded_code', 'expiration', 'url'))
-        # TODO complete this method...
+        if ccs is None:
+            ccs = []
+
+        securityOptions = dict(passwordProtection="NONE", kbaProtection="NONE", webIdentityProtection="NONE",
+                               protectOpen=False, internalPassword="", externalPassword="", openPassword="")
+
+        files_data = [{'transientDocumentId': file.document_id} for file in self.files]
+
+        if merge_fields is None:
+            merge_fields = []
+
+        if sender_signature_required:
+            sender_signature_required = 'SENDER_SIGNATURE_NOT_REQUIRED'
+        else:
+            sender_signature_required = 'SENDER_SIGNS_FIRST'
+
+        recipients_data = self.__construct_recipient_agreement_request(recipients)
+
+        document_creation_info = dict(signatureType="ESIGN", name=agreement_name, callbackInfo="",
+                                      securityOptions=securityOptions, locale="", ccs=ccs,
+                                      externalId=external_id, signatureFlow=sender_signature_required,
+                                      fileInfos=files_data, mergeFieldInfo=merge_fields,
+                                      recipientSetInfos=recipients_data, message=message,
+                                      daysUntilSigningDeadline=days_until_signing_deadline, )
+
+        request_data = dict(documentCreationInfo=document_creation_info)
+        api_response = AgreementEndpoints(self.account).create_agreement(request_data)
+
+        if response_success(api_response):
+            response = namedtuple('Response', ('agreement_id', 'embedded_code', 'expiration', 'url'))
+
+            response_data = api_response.json()
+            embedded_code = response_data.get('embeddedCode', None)
+            expiration = response_data.get('expiration', None)
+            url = response_data.get('url', None)
+
+            response = response(response_data['agreement_id'], embedded_code, expiration, url)
+
+            return response
+
+        else:
+            check_error(api_response)
 
 
 class AgreementEndpoints(object):
@@ -203,7 +259,7 @@ class AgreementEndpoints(object):
         """ Gets all agreements for the EchosignAccount - making the API call from the first iteration, and
         then yielding each agreement thereafter."""
 
-        json_agreement = None
+        json_agreement = []
         if not json_agreement:
             url = self.api_access_point + endpoints.GET_AGREEMENTS
             r = requests.get(url, headers=get_headers(self.account.access_token))
@@ -228,3 +284,8 @@ class AgreementEndpoints(object):
                                       date=date)
             new_agreement.users = users
             yield new_agreement
+
+    def create_agreement(self, request_body):
+        url = self.api_access_point + endpoints.CREATE_AGREEMENT
+        r = requests.post(url, headers=get_headers(self.account.access_token), data=json.dumps(request_body))
+        return r

@@ -43,8 +43,9 @@ class TransientDocument(object):
         # With file data provided, make request to Echosign API for transient document
         url = account.api_access_point + CREATE_TRANSIENT_DOCUMENT
         # Create post_data
-        files = dict(File=(file_name, file, mime_type))
-        r = requests.post(url, headers=get_headers(account.access_token), files=files)
+        files = {'File': (file_name, file, mime_type)}
+        print(files)
+        r = requests.post(url, headers=get_headers(account.access_token, content_type=None), files=files)
 
         if response_success(r):
             log.debug('Request to create document {} successful.'.format(self.file_name))

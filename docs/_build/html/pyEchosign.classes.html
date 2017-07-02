@@ -214,7 +214,8 @@
 <dt id="pyEchosign.classes.agreement.Agreement">
 <em class="property">class </em><code class="descname">Agreement</code><a class="headerlink" href="#pyEchosign.classes.agreement.Agreement" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
-<p>Represents a created agreement in Echosign.</p>
+<p>Represents either a created agreement in Echosign, or one built in Python which can be sent through, and created
+in Echosign.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -446,7 +447,7 @@ to be actually available via OAuth</p>
 
 <dl class="method">
 <dt id="pyEchosign.classes.agreement.Agreement.send_agreement">
-<code class="descname">send_agreement</code><span class="sig-paren">(</span><em>agreement_name: str, recipients: typing.List[pyEchosign.classes.users.Recipient], ccs=None, days_until_signing_deadline=0, external_id=”, sender_signature_required=False, merge_fields: typing.List[dict] = None, message=”</em><span class="sig-paren">)</span><a class="headerlink" href="#pyEchosign.classes.agreement.Agreement.send_agreement" title="Permalink to this definition">¶</a></dt>
+<code class="descname">send_agreement</code><span class="sig-paren">(</span><em>agreement_name: str, recipients: typing.List[pyEchosign.classes.users.Recipient], ccs=None, days_until_signing_deadline=0, external_id=”, sender_signature_required=False, merge_fields: typing.List[typing.Dict[str, str]] = None, message=”</em><span class="sig-paren">)</span><a class="headerlink" href="#pyEchosign.classes.agreement.Agreement.send_agreement" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sends this agreement to Echosign for signature</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -461,13 +462,22 @@ The order which they are provided in the list determines the order in which they
 (document sent, document fully signed, etc)</li>
 <li><strong>days_until_signing_deadline</strong> – (optional) “The number of days that remain before the document expires.
 You cannot sign the document after it expires” Defaults to 0, for no expiration.</li>
+<li><strong>external_id</strong> – (optional) “A unique identifier for your transaction…
+You can use the ExternalID to search for your transaction through [the] API”</li>
+<li><strong>sender_signature_required</strong> – (optional) (bool) Whether or not a sender signature is required.
+Defaults to False. If true, the signer will sign first. The additional options of the signer signing
+last, or sequentially isn’t currently supported (because I haven’t thought of a clean way to handle
+providing that info).</li>
+<li><strong>merge_fields</strong> – (optional) A list of dictionaries, with each one providing the ‘fieldName’ and
+‘defaultValue’ keys. The field name maps to the field on the document, and the default value is
+what will be placed inside.</li>
+<li><strong>message</strong> – (optional) A message which will be displayed to recipients of the agreement</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><p>A namedtuple representing the information received back from the API. Contains attributes</p>
-<dl class="docutils">
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><dl class="docutils">
 <dt><cite>agreement_id</cite></dt>
-<dd><p class="first last"><em>The unique identifier that can be used to query status and download signed documents</em></p>
+<dd><p class="first last"><em>”The unique identifier that can be used to query status and download signed documents”</em></p>
 </dd>
 <dt><cite>embedded_code</cite></dt>
 <dd><p class="first last"><em>”Javascript snippet suitable for an embedded page taking a user to a URL”</em></p>
@@ -482,7 +492,10 @@ You cannot sign the document after it expires” Defaults to 0, for no expiratio
 </p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-exc docutils literal"><span class="pre">ApiError</span></code> – If the API returns an error, such as a 403. The exact response from the API is provided.</p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">A namedtuple representing the information received back from the API. Contains attributes</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-exc docutils literal"><span class="pre">ApiError</span></code> – If the API returns an error, such as a 403. The exact response from the API is provided.</p>
 </td>
 </tr>
 </tbody>
@@ -725,13 +738,15 @@ arguments must be provided.</p>
 <dt id="pyEchosign.classes.documents.TransientDocument">
 <em class="property">class </em><code class="descname">TransientDocument</code><a class="headerlink" href="#pyEchosign.classes.documents.TransientDocument" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
-<p>A document which can be used in Agreements - is deleted by Echosign after 7 days.</p>
+<p>A document which can be used in Agreements - is deleted by Echosign after 7 days. The TransientDocument is created
+in Echosign on instantiation.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>account</strong> – The <a class="reference internal" href="#pyEchosign.classes.account.EchosignAccount" title="pyEchosign.classes.account.EchosignAccount"><code class="xref py py-class docutils literal"><span class="pre">EchosignAccount</span></code></a> to be associated with this document</li>
+<li><strong>account</strong> – The <a class="reference internal" href="#pyEchosign.classes.account.EchosignAccount" title="pyEchosign.classes.account.EchosignAccount"><code class="xref py py-class docutils literal"><span class="pre">EchosignAccount</span></code></a>
+to be associated with this document</li>
 <li><strong>file_name</strong> (<em>str</em>) – The name of the file</li>
 <li><strong>file</strong> – The actual file object to upload to Echosign, accepts a stream of bytes.</li>
 <li><strong>mime_type</strong> – The MIME type of the file</li>

@@ -21,7 +21,8 @@ if TYPE_CHECKING:
 
 
 class Agreement(object):
-    """ Represents a created agreement in Echosign.
+    """ Represents either a created agreement in Echosign, or one built in Python which can be sent through, and created
+    in Echosign.
 
     Args:
         account (EchosignAccount): An instance of :class:`EchosignAccount <pyEchosign.classes.account.EchosignAccount>`.
@@ -179,17 +180,19 @@ class Agreement(object):
                 (document sent, document fully signed, etc)
             days_until_signing_deadline: (optional) "The number of days that remain before the document expires.
                 You cannot sign the document after it expires" Defaults to 0, for no expiration.
-            external_id: "A unique identifier for your transaction...
+            external_id: (optional) "A unique identifier for your transaction...
                 You can use the ExternalID to search for your transaction through [the] API"
-            sender_signature_required: (bool) Whether or not a sender signature is required. Defaults to False. If true,
-                the signer will sign first. The additional options of the signer signing last, or sequentially isn't
-                currently supported (because I haven't thought of a clean way to handle providing that info).
-            merge_fields: A list of dictionaries, with each one providing the 'fieldName' and 'defaultValue' keys.
-                The field name maps to the field on the document, and the default value is what will be placed inside.
-            message: A message which will be displayed to recipients of the agreement
+            sender_signature_required: (optional) (bool) Whether or not a sender signature is required.
+                Defaults to False. If true, the signer will sign first. The additional options of the signer signing
+                last, or sequentially isn't currently supported (because I haven't thought of a clean way to handle
+                providing that info).
+            merge_fields: (optional) A list of dictionaries, with each one providing the 'fieldName' and
+                'defaultValue' keys. The field name maps to the field on the document, and the default value is
+                what will be placed inside.
+            message: (optional) A message which will be displayed to recipients of the agreement
 
         Returns:
-            A namedtuple representing the information received back from the API. Contains attributes
+            A namedtuple representing the information received back from the API. Contains attributes:
 
             `agreement_id`
                 *"The unique identifier that can be used to query status and download signed documents"*

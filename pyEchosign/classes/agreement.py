@@ -201,8 +201,8 @@ class Agreement(object):
         if ccs is None:
             ccs = []
 
-        securityOptions = dict(passwordProtection="NONE", kbaProtection="NONE", webIdentityProtection="NONE",
-                               protectOpen=False, internalPassword="", externalPassword="", openPassword="")
+        security_options = dict(passwordProtection="NONE", kbaProtection="NONE", webIdentityProtection="NONE",
+                                protectOpen=False, internalPassword="", externalPassword="", openPassword="")
 
         files_data = [{'transientDocumentId': file.document_id} for file in self.files]
 
@@ -217,7 +217,7 @@ class Agreement(object):
         recipients_data = self.__construct_recipient_agreement_request(recipients)
 
         document_creation_info = dict(signatureType="ESIGN", name=agreement_name, callbackInfo="",
-                                      securityOptions=securityOptions, locale="", ccs=ccs,
+                                      securityOptions=security_options, locale="", ccs=ccs,
                                       externalId=external_id, signatureFlow=sender_signature_required,
                                       fileInfos=files_data, mergeFieldInfo=merge_fields,
                                       recipientSetInfos=recipients_data, message=message,

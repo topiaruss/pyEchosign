@@ -72,11 +72,11 @@ class TransientDocument(object):
 
 
 class RecipientInfo(object):
-    email: str = None
-    fax: str = None
+    email= None
+    fax = None
     role = None
-    private_message: str = None
-    signing_order: int = None
+    private_message = None
+    signing_order = None
 
     # Acceptable Options for role
     SIGNER = 'SIGNER'
@@ -101,10 +101,10 @@ class FileInfo(object):
         transient_document: A :class:`TransientDocument` (or ID) to use in the agreement
 
     """
-    library_document_id: str = None
-    library_document_name: str = None
+    library_document_id = None
+    library_document_name = None
     transient_document = None
-    web_file: dict = None
+    web_file = None
 
     def __init__(self, *args, **kwargs):
         self.library_document_id = kwargs.pop('library_document_id', None)
@@ -114,17 +114,17 @@ class FileInfo(object):
 
 
 class DocumentCreationInfo(object):
-    files_info: list = []
-    name: str = None
-    signature_type: str = 'ESIGN'
-    callback_info: str = None
-    cc: list = []
-    days_until_signing_deadline: int = None
-    external_id: str = None
-    locale: str = None
-    message: str = None
-    reminder_frequency: str = None
-    signature_flow: str = None
+    files_info = []
+    name = None
+    signature_type = 'ESIGN'
+    callback_info = None
+    cc = []
+    days_until_signing_deadline = None
+    external_id = None
+    locale = None
+    message = None
+    reminder_frequency = None
+    signature_flow = None
 
 
 class AgreementCreator(object):

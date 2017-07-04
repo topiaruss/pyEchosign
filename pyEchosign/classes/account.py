@@ -33,12 +33,15 @@ class EchosignAccount(object):
 
     access_token = None
 
-    def get_agreements(self):
-        """ Gets all agreements for the EchosignAccount 
+    def get_agreements(self, query=None):
+        """ Gets all agreements for the EchosignAccount
+
+        Keyword Args:
+            query: (str) A search query to filter results by
         
         Returns: A list of :class:`Agreement <pyEchosign.classes.agreement.Agreement>` objects
         """
-        return AgreementEndpoints(self).get_agreements()
+        return AgreementEndpoints(self).get_agreements(query=query)
 
     def get_library_documents(self):
         """ Gets all Library Documents for the EchosignAccount

@@ -64,14 +64,20 @@ class Agreement(object):
         self.name = kwargs.pop('name', None)
         self.date = kwargs.pop('date', None)
 
-        provided_status = kwargs.pop('provided_status', None)
-        if provided_status is not None:
-            self.status = self.Status[provided_status]
-        else:
-            self.status = None
+        status = kwargs.pop('status', None)
+        if status is not None:
+            self.status = self.Status[status]
 
         # Used for the creation of Agreements in Echosign
         self.files = kwargs.pop('files', [])
+
+    def __str__(self):
+        if self.name is not None:
+            return 'Echosign Agreement: {}'.format(self.name)
+        elif self.echosign_id is not None:
+            return 'Echosign Agreement: {}'.format(self.echosign_id)
+        else:
+            return super(Agreement, self).__str__()
 
     class Status(Enum):
         """ Possible status of agreements 
@@ -260,6 +266,7 @@ class AgreementEndpoints(object):
     Args:
         account: An instance of :class:`EchosignAccount <pyEchosign.classes.account.EchosignAccount>` to be used for all
             API calls
+
     """
     base_api_url = None
 
@@ -267,14 +274,24 @@ class AgreementEndpoints(object):
         self.account = account
         self.api_access_point = account.api_access_point
 
-    def get_agreements(self):
+    def get_agreements(self, query=None):
         """ Gets all agreements for the EchosignAccount - making the API call from the first iteration, and
-        then yielding each agreement thereafter."""
+        then yielding each agreement thereafter.
+
+        Keyword Args:
+            query: (str) A search query to filter results by
+
+        """
 
         json_agreement = []
         if not json_agreement:
             url = self.api_access_point + endpoints.GET_AGREEMENTS
-            r = requests.get(url, headers=get_headers(self.account.access_token))
+            params = dict()
+
+            if query is not None:
+                params.update({'query': query})
+
+            r = requests.get(url, headers=get_headers(self.account.access_token), params=params)
             response_body = r.json()
             json_agreements = response_body.get('userAgreementList', [])
 

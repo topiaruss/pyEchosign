@@ -1,14 +1,13 @@
-from io import IOBase
-
 import logging
+from io import IOBase
 from typing import TYPE_CHECKING
 
-import requests
 import arrow
+import requests
 
 from pyEchosign.utils.endpoints import CREATE_TRANSIENT_DOCUMENT
-from pyEchosign.utils.request_parameters import get_headers
 from pyEchosign.utils.handle_response import check_error, response_success
+from pyEchosign.utils.request_parameters import get_headers
 
 log = logging.getLogger('pyEchosign.' + __name__)
 if TYPE_CHECKING:
@@ -71,26 +70,6 @@ class TransientDocument(object):
         return self.file_name
 
 
-class RecipientInfo(object):
-    email= None
-    fax = None
-    role = None
-    private_message = None
-    signing_order = None
-
-    # Acceptable Options for role
-    SIGNER = 'SIGNER'
-    APPROVER = 'APPROVER'
-    ACCEPTOR = 'ACCEPTOR'
-    FORM_FILLER = 'FORM_FILLER'
-    CERTIFIED_RECIPIENT = 'CERTIFIED_RECIPIENT'
-    DELEGATE_TO_SIGNER = 'DELEGATE_TO_SIGNER'
-    DELEGATE_TO_APPROVER = 'DELEGATE_TO_APPROVER'
-    DELEGATE_TO_ACCEPTOR = 'DELEGATE_TO_ACCEPTOR'
-    DELEGATE_TO_FORM_FILLER = 'DELEGATE_TO_FORM_FILLER'
-    DELEGATE_TO_CERTIFIED_RECIPIENT = 'DELEGATE_TO_CERTIFIED_RECIPIENT'
-
-
 class FileInfo(object):
     """ Used with DocumentCreationInfo to specify which documents should be used in an agreement. One of the following
     arguments must be provided.
@@ -113,19 +92,4 @@ class FileInfo(object):
         self.web_file = kwargs.pop('web_file', None)
 
 
-class DocumentCreationInfo(object):
-    files_info = []
-    name = None
-    signature_type = 'ESIGN'
-    callback_info = None
-    cc = []
-    days_until_signing_deadline = None
-    external_id = None
-    locale = None
-    message = None
-    reminder_frequency = None
-    signature_flow = None
 
-
-class AgreementCreator(object):
-    pass

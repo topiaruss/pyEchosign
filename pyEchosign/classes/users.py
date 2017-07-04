@@ -40,3 +40,23 @@ class Recipient(DisplayUser):
         super().__init__(email, **kwargs)
         self.authentication_method = kwargs.get('authentication_method', 'NONE')
         self.password = kwargs.get('password', None)
+
+
+class RecipientInfo(object):
+    email= None
+    fax = None
+    role = None
+    private_message = None
+    signing_order = None
+
+    # Acceptable Options for role
+    SIGNER = 'SIGNER'
+    APPROVER = 'APPROVER'
+    ACCEPTOR = 'ACCEPTOR'
+    FORM_FILLER = 'FORM_FILLER'
+    CERTIFIED_RECIPIENT = 'CERTIFIED_RECIPIENT'
+    DELEGATE_TO_SIGNER = 'DELEGATE_TO_SIGNER'
+    DELEGATE_TO_APPROVER = 'DELEGATE_TO_APPROVER'
+    DELEGATE_TO_ACCEPTOR = 'DELEGATE_TO_ACCEPTOR'
+    DELEGATE_TO_FORM_FILLER = 'DELEGATE_TO_FORM_FILLER'
+    DELEGATE_TO_CERTIFIED_RECIPIENT = 'DELEGATE_TO_CERTIFIED_RECIPIENT'

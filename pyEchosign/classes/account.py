@@ -39,7 +39,7 @@ class EchosignAccount(object):
         Keyword Args:
             query: (str) A search query to filter results by
         
-        Returns: A list of :class:`Agreement <pyEchosign.classes.agreement.Agreement>` objects
+        Returns: An iterator of :class:`Agreement <pyEchosign.classes.agreement.Agreement>` objects
         """
         return AgreementEndpoints(self).get_agreements(query=query)
 

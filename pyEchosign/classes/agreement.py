@@ -281,6 +281,8 @@ class AgreementEndpoints(object):
         Keyword Args:
             query: (str) A search query to filter results by
 
+        Returns: An iterator of :class:`Agreement <pyEchosign.classes.agreement.Agreement>` objects
+
         """
 
         json_agreement = []

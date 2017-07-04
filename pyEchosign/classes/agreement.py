@@ -138,7 +138,7 @@ class Agreement(object):
     def delete(self):
         """ Deletes the agreement on Echosign. Agreement will not be visible in the Manage page. 
         
-        Warnings:
+        Notes:
             This action requires the 'agreement_retention' scope, which doesn't appear
             to be actually available via OAuth
         """

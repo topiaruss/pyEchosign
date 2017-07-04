@@ -1,8 +1,9 @@
 from setuptools import setup
+from pyEchosign import __release__
 
 setup(
     name='pyEchosign',
-    version='0.2.0dev',
+    version=__release__,
     packages=['pyEchosign', 'pyEchosign.classes', 'pyEchosign.exceptions', 'pyEchosign.utils'],
     url='https://gitlab.com/jensastrup/pyEchosign',
     license='MIT',

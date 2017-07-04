@@ -70,26 +70,25 @@ class TransientDocument(object):
         return self.file_name
 
 
-class FileInfo(object):
-    """ Used with DocumentCreationInfo to specify which documents should be used in an agreement. One of the following
-    arguments must be provided.
+class AgreementDocument(object):
+    """ Represents a document used in an Agreement.
 
-    Attributes:
-        library_document_id: "The ID for a library document that is available to the sender"
-        library_document_name: "The name of a library document that is available to the sender"
-        transient_document: A :class:`TransientDocument` (or ID) to use in the agreement
+        Attributes:
+            document_id: The ID of the Document which can be used to retrieve its file stream
+            mime_type: The MIME type of the document
+            name: The name of the document
+            page_count: The number of pages in the document
+            supporting_document: Whether or not this document is a "supporting document" as specified by the API
+            field_name: If a supporting document, what the name is of the supporting document field
 
     """
-    library_document_id = None
-    library_document_name = None
-    transient_document = None
-    web_file = None
+    def __init__(self, document_id: str, mime_type: str, name: str, page_count: int,
+                 supporting_document=False, field_name=None):
+        self.document_id = document_id
+        self.mime_type = mime_type
+        self.name = name
+        self.page_count = page_count
 
-    def __init__(self, *args, **kwargs):
-        self.library_document_id = kwargs.pop('library_document_id', None)
-        self.library_document_name = kwargs.pop('library_document_name', None)
-        self.transient_document = kwargs.pop('transient_document', None)
-        self.web_file = kwargs.pop('web_file', None)
-
-
+        self.supporting_document = supporting_document
+        self.field_name = field_name
 

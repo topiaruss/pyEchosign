@@ -8,6 +8,8 @@ import arrow
 
 import requests
 
+from pyEchosign.classes.documents import AgreementDocument
+from pyEchosign.exceptions.internal import ApiError
 from .users import UserEndpoints, Recipient
 
 from pyEchosign.utils import endpoints
@@ -70,6 +72,8 @@ class Agreement(object):
 
         # Used for the creation of Agreements in Echosign
         self.files = kwargs.pop('files', [])
+
+        self._documents = None
 
     def __str__(self):
         if self.name is not None:
@@ -259,6 +263,56 @@ class Agreement(object):
         else:
             check_error(api_response)
 
+    @property
+    def documents(self):
+        """ Retrieve the :class:`AgreementDocuments <pyEchosign.classes.documents.AgreementDocument>` associated with
+        this agreement. If the files have not already been retrieved, this will result in an additional request to
+        the API.
+
+        Returns: A list of :class:`AgreementDocument <pyEchosign.classes.documents.AgreementDocument>`
+
+        """
+        # If _documents is None, no (successful) API call has been made to retrieve them
+        if self._documents is None:
+            url = self.account.api_access_point + 'agreements/{}/documents'.format(self.echosign_id)
+            r = requests.get(url, headers=get_headers(self.account.access_token))
+            # Raise Exception if there was an error
+            check_error(r)
+            try:
+                data = r.json()
+            except ValueError:
+                raise ApiError('Unexpected response from Echosign API: Status {} - {}'.format(r.status_code, r.content))
+            else:
+                self._documents = []
+
+                def document_data_to_document(json_data):
+                    """ Coverts JSON received from API into an AgreementDocument and appends to Agreement.documents """
+                    for document_data in json_data:
+                        # Documents and Supporting Documents are not mixed together - we could get either ID
+                        try:
+                            document_id = document_data.get('documentId')
+                        except KeyError:
+                            document_id = document_data.get('supportingDocumentId')
+
+                        mime_type = document_data.get('mimeType')
+                        name = document_data.get('name')
+                        page_count = document_data.get('numPages')
+                        document = AgreementDocument(document_id, mime_type, name, page_count)
+
+                        # If this is a supporting document, there will be a field name
+                        field_name = document_data.get('fieldName', None)
+
+                        if field_name is not None:
+                            document.field_name = field_name
+
+                        self._documents.append(document)
+
+                # Take both sections of documents from the response and turn into AgreementDocuments
+                document_data_to_document(data.get('documents', []))
+                document_data_to_document(data.get('supportingDocuments', []))
+
+        return self._documents
+
 
 class AgreementEndpoints(object):
     """ An internal class to handle making calls to the endpoints associated with Agreements.
@@ -320,3 +374,4 @@ class AgreementEndpoints(object):
         url = self.api_access_point + endpoints.CREATE_AGREEMENT
         r = requests.post(url, headers=get_headers(self.account.access_token), data=json.dumps(request_body))
         return r
+

@@ -74,7 +74,7 @@ class AgreementDocument(object):
     """ Represents a document used in an Agreement.
 
         Attributes:
-            document_id: The ID of the Document which can be used to retrieve its file stream
+            echosign_id: The ID of the Document which can be used to retrieve its file stream
             mime_type: The MIME type of the document
             name: The name of the document
             page_count: The number of pages in the document
@@ -82,13 +82,19 @@ class AgreementDocument(object):
             field_name: If a supporting document, what the name is of the supporting document field
 
     """
-    def __init__(self, document_id: str, mime_type: str, name: str, page_count: int,
+    def __init__(self, echosign_id: str, mime_type: str, name: str, page_count: int,
                  supporting_document=False, field_name=None):
-        self.document_id = document_id
+        self.echosign_id = echosign_id
         self.mime_type = mime_type
         self.name = name
         self.page_count = page_count
 
         self.supporting_document = supporting_document
         self.field_name = field_name
+
+    def __str__(self):
+        return 'AgreementDocument: {}'.format(self.name)
+
+    def __repr__(self):
+        return 'AgreementDocument: {}'.format(self.name)
 

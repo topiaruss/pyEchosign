@@ -202,7 +202,7 @@ class Agreement(object):
             message: (optional) A message which will be displayed to recipients of the agreement
 
         Returns:
-            A namedtuple representing the information received back from the API. Contains attributes:
+            A namedtuple representing the information received back from the API. Contains the following attributes
 
             `agreement_id`
                 *"The unique identifier that can be used to query status and download signed documents"*
@@ -263,6 +263,32 @@ class Agreement(object):
         else:
             check_error(api_response)
 
+    @staticmethod
+    def _document_data_to_document(json_data: dict) -> List:
+        """ Coverts JSON received from API into an AgreementDocument and appends to Agreement.documents """
+        documents = []
+        for document_data in json_data:
+            # Documents and Supporting Documents are not mixed together - we could get either ID
+            try:
+                echosign_id = document_data.get('documentId')
+            except KeyError:
+                echosign_id = document_data.get('supportingDocumentId')
+
+            mime_type = document_data.get('mimeType')
+            name = document_data.get('name')
+            page_count = document_data.get('numPages')
+            document = AgreementDocument(echosign_id, mime_type, name, page_count)
+
+            # If this is a supporting document, there will be a field name
+            field_name = document_data.get('fieldName', None)
+
+            if field_name is not None:
+                document.field_name = field_name
+
+            documents.append(document)
+
+        return documents
+
     @property
     def documents(self):
         """ Retrieve the :class:`AgreementDocuments <pyEchosign.classes.documents.AgreementDocument>` associated with
@@ -285,31 +311,10 @@ class Agreement(object):
             else:
                 self._documents = []
 
-                def document_data_to_document(json_data):
-                    """ Coverts JSON received from API into an AgreementDocument and appends to Agreement.documents """
-                    for document_data in json_data:
-                        # Documents and Supporting Documents are not mixed together - we could get either ID
-                        try:
-                            document_id = document_data.get('documentId')
-                        except KeyError:
-                            document_id = document_data.get('supportingDocumentId')
-
-                        mime_type = document_data.get('mimeType')
-                        name = document_data.get('name')
-                        page_count = document_data.get('numPages')
-                        document = AgreementDocument(document_id, mime_type, name, page_count)
-
-                        # If this is a supporting document, there will be a field name
-                        field_name = document_data.get('fieldName', None)
-
-                        if field_name is not None:
-                            document.field_name = field_name
-
-                        self._documents.append(document)
-
                 # Take both sections of documents from the response and turn into AgreementDocuments
-                document_data_to_document(data.get('documents', []))
-                document_data_to_document(data.get('supportingDocuments', []))
+                documents = self._document_data_to_document(data.get('documents', []))
+                supporting_documents = self._document_data_to_document(data.get('supportingDocuments', []))
+                self._documents = documents + supporting_documents
 
         return self._documents
 

@@ -21,6 +21,8 @@ log = logging.getLogger('pyEchosign.' + __name__)
 if TYPE_CHECKING:
     from .account import EchosignAccount
 
+__all__ = ['Agreement']
+
 
 class Agreement(object):
     """ Represents either a created agreement in Echosign, or one built in Python which can be sent through, and created

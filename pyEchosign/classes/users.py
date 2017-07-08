@@ -1,3 +1,6 @@
+__all__ = ['Recipient']
+
+
 class UserEndpoints(object):
     @classmethod
     def get_users_from_bulk_agreements(cls, data: dict):
@@ -43,7 +46,7 @@ class Recipient(DisplayUser):
 
 
 class RecipientInfo(object):
-    email= None
+    email = None
     fax = None
     role = None
     private_message = None

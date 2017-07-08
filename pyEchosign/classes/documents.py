@@ -13,6 +13,8 @@ log = logging.getLogger('pyEchosign.' + __name__)
 if TYPE_CHECKING:
     from .account import EchosignAccount
 
+__all__ = ['TransientDocument']
+
 
 class TransientDocument(object):
     """
@@ -24,16 +26,18 @@ class TransientDocument(object):
             to be associated with this document
         file_name (str): The name of the file
         file: The actual file object to upload to Echosign, accepts a stream of bytes.
-        mime_type: The MIME type of the file
+        mime_type: (optional) The MIME type of the file. Echosign will infer the type from the file extension if not
+            provided.
     
     Attributes:
         file_name: The name of the file
         file: The actual file object to upload to Echosign
         mime_type: The MIME type of the file
         document_id: The ID provided by Echosign, used to reference it in creating agreements
-        expiration_date: The date Echosign will delete this document (not provided by Echosign, calculated for convenience
+        expiration_date: The date Echosign will delete this document
+            (not provided by Echosign, calculated for convenience)
     """
-    def __init__(self, account: 'EchosignAccount', file_name: str, file: IOBase, mime_type: str):
+    def __init__(self, account: 'EchosignAccount', file_name: str, file: IOBase, mime_type: str = None):
         self.file_name = file_name
         self.file = file
         self.mime_type = mime_type
@@ -43,8 +47,14 @@ class TransientDocument(object):
 
         # With file data provided, make request to Echosign API for transient document
         url = account.api_access_point + CREATE_TRANSIENT_DOCUMENT
+
         # Create post_data
-        files = {'File': (file_name, file, mime_type)}
+        file_tuple = (file_name, file)
+        # Only add the mime type if provided
+        if mime_type is not None:
+            file_tuple = file_tuple + (mime_type, )
+
+        files = dict(File=file_tuple)
         r = requests.post(url, headers=get_headers(account.access_token, content_type=None), files=files)
 
         if response_success(r):

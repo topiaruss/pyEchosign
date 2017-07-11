@@ -3,6 +3,7 @@ from unittest.mock import Mock, patch
 
 from pyEchosign.classes.agreement import Agreement
 from pyEchosign.classes.account import EchosignAccount
+from pyEchosign.exceptions.internal import ApiError
 
 
 class TestAccount(TestCase):

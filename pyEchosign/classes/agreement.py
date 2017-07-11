@@ -234,9 +234,9 @@ class Agreement(object):
             merge_fields = []
 
         if sender_signature_required:
-            sender_signature_required = 'SENDER_SIGNATURE_NOT_REQUIRED'
-        else:
             sender_signature_required = 'SENDER_SIGNS_FIRST'
+        else:
+            sender_signature_required = 'SENDER_SIGNATURE_NOT_REQUIRED'
 
         recipients_data = self.__construct_recipient_agreement_request(recipients)
 

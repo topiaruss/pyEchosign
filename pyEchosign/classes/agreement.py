@@ -158,7 +158,7 @@ class Agreement(object):
                 check_error(r)
 
     @staticmethod
-    def __construct_recipient_agreement_request(recipients: List[Recipient]) -> dict:
+    def __construct_recipient_agreement_request(recipients: List[Recipient]) -> list:
         """ Takes a list of :class:`Recipients <pyEchosign.classes.users.Recipient>` and returns the JSON required by
         the Echosign API.
 
@@ -166,21 +166,27 @@ class Agreement(object):
             recipients: A list of :class:`Recipients <pyEchosign.classes.users.Recipient>`
 
         """
-        recipient_info = []
+        recipient_set = []
 
         for recipient in recipients:
-            recipient_info.append(dict(email=recipient.email))
+            recipient_info = dict(email=recipient.email)
 
-        recipient_set_info = dict(recipientSetMemberInfos=recipient_info,
-                                  securityOptions=[dict(authenticationMethod="", password="CONTENT FILTERED",
-                                                        phoneInfos=[dict(phone="", countryCode="")])],
-                                  recipientSetRole="SIGNER")
+            recipient_set_info = dict(recipientSetMemberInfos=recipient_info,
+                                      securityOptions=[dict(authenticationMethod="", password="CONTENT FILTERED",
+                                                            phoneInfos=[dict(phone="", countryCode="")])],
+                                      recipientSetRole="SIGNER")
+            recipient_set.append(recipient_set_info)
 
-        return recipient_set_info
+        return recipient_set
+
+    class SignatureFlow(Enum):
+        SEQUENTIAL = 'SEQUENTIAL'
+        PARALLEL = 'PARALLEL'
+        SENDER_SIGNS_ONLY = 'SENDER_SIGNS_ONLY'
 
     def send_agreement(self, agreement_name: str, recipients: List[Recipient], ccs=None, days_until_signing_deadline=0,
-                       external_id='', sender_signature_required=False, merge_fields: List[Dict[str, str]] = None,
-                       message=''):
+                       external_id='', signature_flow=SignatureFlow.SEQUENTIAL, message='',
+                       merge_fields: List[Dict[str, str]] = None):
         """ Sends this agreement to Echosign for signature
 
         Args:
@@ -194,10 +200,7 @@ class Agreement(object):
                 You cannot sign the document after it expires" Defaults to 0, for no expiration.
             external_id: (optional) "A unique identifier for your transaction...
                 You can use the ExternalID to search for your transaction through [the] API"
-            sender_signature_required: (optional) (bool) Whether or not a sender signature is required.
-                Defaults to False. If true, the signer will sign first. The additional options of the signer signing
-                last, or sequentially isn't currently supported (because I haven't thought of a clean way to handle
-                providing that info).
+            signature_flow: (optional) (SignatureFlow): The routing style of this agreement, defaults to Sequential.
             merge_fields: (optional) A list of dictionaries, with each one providing the 'fieldName' and
                 'defaultValue' keys. The field name maps to the field on the document, and the default value is
                 what will be placed inside.
@@ -233,16 +236,11 @@ class Agreement(object):
         if merge_fields is None:
             merge_fields = []
 
-        if sender_signature_required:
-            sender_signature_required = 'SENDER_SIGNS_FIRST'
-        else:
-            sender_signature_required = 'SENDER_SIGNATURE_NOT_REQUIRED'
-
         recipients_data = self.__construct_recipient_agreement_request(recipients)
 
         document_creation_info = dict(signatureType="ESIGN", name=agreement_name, callbackInfo="",
                                       securityOptions=security_options, locale="", ccs=ccs,
-                                      externalId=external_id, signatureFlow=sender_signature_required,
+                                      externalId=external_id, signatureFlow=signature_flow,
                                       fileInfos=files_data, mergeFieldInfo=merge_fields,
                                       recipientSetInfos=recipients_data, message=message,
                                       daysUntilSigningDeadline=days_until_signing_deadline, )

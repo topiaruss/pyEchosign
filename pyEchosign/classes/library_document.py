@@ -28,7 +28,8 @@ class LibraryDocument(object):
         scope (str): The visibility of this LibraryDocument, either 'PERSONAL', 'SHARED', or 'GLOBAL"
     """
 
-    def __init__(self, account: 'EchosignAccount', echosign_id: str, template_type: list, name: str, modified_date: str, scope: str):
+    def __init__(self, account, echosign_id, template_type, name, modified_date, scope):
+        # type: (EchosignAccount, str, list, str, str, str) -> None
         self.account = account
         self.echosign_id = echosign_id
         if 'DOCUMENT' in template_type:

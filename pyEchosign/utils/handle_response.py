@@ -1,13 +1,15 @@
 from requests import Response
 
+from pyEchosign.exceptions.echosign import PermissionDenied
 from pyEchosign.exceptions.internal import ApiError
 
 
-def check_error(response: Response):
+def check_error(response):
+    # type: (Response) -> None
     """ Takes a requests package response object and checks the error code and raises the proper exception """
     if response.status_code == 401:
-        raise PermissionError('Echosign API returned a 401, your access token may be invalid if you believe your '
-                              'account should have access to perform this action.')
+        raise PermissionDenied('Echosign API returned a 401, your access token may be invalid if you believe your '
+                               'account should have access to perform this action.')
 
     elif not response_success(response):
         try:
@@ -18,5 +20,6 @@ def check_error(response: Response):
                        .format(response.status_code, json_response, response.content))
 
 
-def response_success(response: Response):
+def response_success(response):
+    # type: (Response) -> bool
     return 199 < response.status_code < 300

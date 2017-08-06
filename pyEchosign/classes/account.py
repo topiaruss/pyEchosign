@@ -1,9 +1,10 @@
 import logging
+from typing import List
 
 import requests
 
-from .library_document import LibraryDocumentsEndpoint
-from .agreement import AgreementEndpoints
+from pyEchosign.classes.library_document import LibraryDocumentsEndpoint
+from pyEchosign.classes.agreement import AgreementEndpoints, Agreement
 from pyEchosign.utils import endpoints
 
 log = logging.getLogger('pyOutlook - {}'.format(__name__))
@@ -19,7 +20,8 @@ class EchosignAccount(object):
         user_email: The email of the user to specify as the API caller, if not provided the caller is inferred from the token
         api_access_point: The API endpoint used as a base for all API calls
     """
-    def __init__(self, access_token: str, **kwargs):
+    def __init__(self, access_token, **kwargs):
+        # type: (str) -> None
         self.access_token = access_token
         self.user_id = kwargs.pop('user_id', None)
         self.user_email = kwargs.pop('user_email', None)
@@ -34,6 +36,7 @@ class EchosignAccount(object):
     access_token = None
 
     def get_agreements(self, query=None):
+        # type: (str) -> List[Agreement]
         """ Gets all agreements for the EchosignAccount
 
         Keyword Args:

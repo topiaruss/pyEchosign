@@ -37,7 +37,8 @@ class TransientDocument(object):
         expiration_date: The date Echosign will delete this document
             (not provided by Echosign, calculated for convenience)
     """
-    def __init__(self, account: 'EchosignAccount', file_name: str, file: IOBase, mime_type: str = None):
+    def __init__(self, account, file_name, file, mime_type=None):
+        # type: (EchosignAccount, str, IOBase, str) -> None
         self.file_name = file_name
         self.file = file
         self.mime_type = mime_type
@@ -92,8 +93,8 @@ class AgreementDocument(object):
             field_name: If a supporting document, what the name is of the supporting document field
 
     """
-    def __init__(self, echosign_id: str, mime_type: str, name: str, page_count: int,
-                 supporting_document=False, field_name=None):
+    def __init__(self, echosign_id, mime_type, name, page_count, supporting_document=False, field_name=None):
+        # type: (str, str, str, int, bool, str) -> None
         self.echosign_id = echosign_id
         self.mime_type = mime_type
         self.name = name

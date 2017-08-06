@@ -3,7 +3,8 @@ __all__ = ['Recipient']
 
 class UserEndpoints(object):
     @classmethod
-    def get_users_from_bulk_agreements(cls, data: dict):
+    def get_users_from_bulk_agreements(cls, data):
+        # type: (dict) -> list
         """ Takes a response from the GET /agreements call and returns a set of `DisplayUser` """
         users = []
         for user_data in data:
@@ -17,7 +18,8 @@ class UserEndpoints(object):
 
 class DisplayUser(object):
     """ Maps to the DisplayUserInfo provided by Echosign for agreements fetched in bulk """
-    def __init__(self, email: str, **kwargs):
+    def __init__(self, email, **kwargs):
+        # type: (str) -> None
         self.email = email
         self.company = kwargs.pop('company', None)
         self.full_name = kwargs.pop('full_name', None)
@@ -39,8 +41,9 @@ class Recipient(DisplayUser):
          password (str): Optional - "The password required for the recipient to view and sign the document"
 
      """
-    def __init__(self, email: str, **kwargs):
-        super().__init__(email, **kwargs)
+    def __init__(self, email, **kwargs):
+        # type: (str) -> None
+        super(Recipient, self).__init__(email, **kwargs)
         self.authentication_method = kwargs.get('authentication_method', 'NONE')
         self.password = kwargs.get('password', None)
 

@@ -1,7 +1,6 @@
 import json
 import logging
 from collections import namedtuple
-from enum import Enum
 from typing import TYPE_CHECKING, List, Dict
 
 import arrow
@@ -61,7 +60,8 @@ class Agreement(object):
             agreements from Echosign.
     """
 
-    def __init__(self, account: 'EchosignAccount', **kwargs):
+    def __init__(self, account, **kwargs):
+        # type: (EchosignAccount) -> None
         self.account = account
         self.fully_retrieved = kwargs.pop('fully_retrieved', None)
         self.echosign_id = kwargs.pop('echosign_id', None)
@@ -85,7 +85,7 @@ class Agreement(object):
         else:
             return super(Agreement, self).__str__()
 
-    class Status(Enum):
+    class Status(object):
         """ Possible status of agreements 
         
         Note: 
@@ -158,7 +158,8 @@ class Agreement(object):
                 check_error(r)
 
     @staticmethod
-    def __construct_recipient_agreement_request(recipients: List[Recipient]) -> list:
+    def __construct_recipient_agreement_request(recipients):
+        # type: (List[Recipient]) -> list
         """ Takes a list of :class:`Recipients <pyEchosign.classes.users.Recipient>` and returns the JSON required by
         the Echosign API.
 
@@ -179,14 +180,15 @@ class Agreement(object):
 
         return recipient_set
 
-    class SignatureFlow(Enum):
+    class SignatureFlow(object):
         SEQUENTIAL = 'SEQUENTIAL'
         PARALLEL = 'PARALLEL'
         SENDER_SIGNS_ONLY = 'SENDER_SIGNS_ONLY'
 
-    def send_agreement(self, agreement_name: str, recipients: List[Recipient], ccs=None, days_until_signing_deadline=0,
+    def send_agreement(self, agreement_name, recipients, ccs=None, days_until_signing_deadline=0,
                        external_id='', signature_flow=SignatureFlow.SEQUENTIAL, message='',
-                       merge_fields: List[Dict[str, str]] = None):
+                       merge_fields=None):
+        # type: (str, List[Recipient], list, int, str, Agreement.SignatureFlow, str, List[Dict[str, str]]) -> None
         """ Sends this agreement to Echosign for signature
 
         Args:
@@ -264,7 +266,8 @@ class Agreement(object):
             check_error(api_response)
 
     @staticmethod
-    def _document_data_to_document(json_data: dict) -> List:
+    def _document_data_to_document(json_data):
+        # type: (dict) -> list
         """ Coverts JSON received from API into an AgreementDocument and appends to Agreement.documents """
         documents = []
         for document_data in json_data:
@@ -329,7 +332,8 @@ class AgreementEndpoints(object):
     """
     base_api_url = None
 
-    def __init__(self, account: 'EchosignAccount'):
+    def __init__(self, account):
+        # type: (EchosignAccount) -> None
         self.account = account
         self.api_access_point = account.api_access_point
 

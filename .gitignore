@@ -5,3 +5,4 @@ dist/
 build/
 pyEchosign.egg-info/
 */_build/
+docs/_build/

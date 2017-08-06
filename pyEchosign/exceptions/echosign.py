@@ -24,7 +24,7 @@ class FileTooLargeError(BaseEchosignException):
     pass
 
 
-class PermissionDenied(BaseEchosignException, PermissionError):
+class PermissionDenied(BaseEchosignException):
     base_echosign_error = 'The API caller do not have the permission to execute this operation.'
 
 

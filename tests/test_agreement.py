@@ -1,5 +1,11 @@
 from unittest import TestCase
-from unittest.mock import Mock, patch
+
+from pyEchosign.exceptions.echosign import PermissionDenied
+
+try:
+    from unittest.mock import Mock, patch
+except ImportError:
+    from mock import Mock, patch
 
 from pyEchosign.classes.agreement import Agreement
 from pyEchosign.classes.account import EchosignAccount
@@ -47,7 +53,7 @@ class TestAccount(TestCase):
         # Assign our mock response as the result of our patched function
         self.mock_put.return_value = mock_response
 
-        with self.assertRaises(PermissionError):
+        with self.assertRaises(PermissionDenied):
             agreement.cancel()
 
     def test_cancel_agreement_500_raises_error(self):
@@ -104,6 +110,6 @@ class TestAccount(TestCase):
         # Assign our mock response as the result of our patched function
         self.mock_put.return_value = mock_response
 
-        with self.assertRaises(PermissionError):
+        with self.assertRaises(PermissionDenied):
             agreement.cancel()
 

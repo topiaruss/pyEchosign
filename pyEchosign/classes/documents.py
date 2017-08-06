@@ -5,7 +5,6 @@ from typing import TYPE_CHECKING
 import arrow
 import requests
 
-from pyEchosign.utils.endpoints import CREATE_TRANSIENT_DOCUMENT
 from pyEchosign.utils.handle_response import check_error, response_success
 from pyEchosign.utils.request_parameters import get_headers
 
@@ -47,7 +46,7 @@ class TransientDocument(object):
         self.expiration_date = None
 
         # With file data provided, make request to Echosign API for transient document
-        url = account.api_access_point + CREATE_TRANSIENT_DOCUMENT
+        url = account.api_access_point + 'transientDocuments'
 
         # Create post_data
         file_tuple = (file_name, file)

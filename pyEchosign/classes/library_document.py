@@ -3,7 +3,6 @@ from typing import TYPE_CHECKING
 import arrow
 import requests
 
-from pyEchosign.utils.endpoints import GET_LIBRARY_DOCUMENT, GET_LIBRARY_DOCUMENTS, DELETE_LIBRARY_DOCUMENT
 from pyEchosign.utils.request_parameters import get_headers
 from pyEchosign.utils.handle_response import check_error
 
@@ -52,7 +51,7 @@ class LibraryDocument(object):
 
     def retrieve_complete_document(self):
         """ Retrieves the remaining data for the LibraryDocument, such as locale, status, and security options. """
-        url = self.account.api_access_point + GET_LIBRARY_DOCUMENT.format(self.echosign_id)
+        url = self.account.api_access_point + 'libraryDocuments/{}'.format(self.echosign_id)
         headers = get_headers(self.account.access_token)
         r = requests.get(url, headers=headers)
 
@@ -64,7 +63,7 @@ class LibraryDocument(object):
 
     def delete(self):
         """ Deletes the LibraryDocument from Echosign. It will not be visible on the Manage page. """
-        url = self.account.api_access_point + DELETE_LIBRARY_DOCUMENT.format(self.echosign_id)
+        url = self.account.api_access_point + 'libraryDocuments/{}'.format(self.echosign_id)
         headers = get_headers(self.account.access_token)
         r = requests.delete(url, headers=headers)
         check_error(r)
@@ -90,7 +89,7 @@ class LibraryDocumentsEndpoint(object):
         self.account = account
 
     def get_library_documents(self):
-        url = self.account.api_access_point + GET_LIBRARY_DOCUMENTS
+        url = self.account.api_access_point + 'libraryDocuments'
         headers = get_headers(self.account.access_token)
         r = requests.get(url, headers=headers)
         response_data = r.json()

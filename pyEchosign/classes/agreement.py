@@ -123,7 +123,7 @@ class Agreement(object):
 
     def cancel(self):
         """ Cancels the agreement on Echosign. Agreement will still be visible in the Manage page. """
-        url = self.account.api_access_point + endpoints.CANCEL_AGREEMENT + self.echosign_id + '/status'
+        url = '{}agreements/{}/status'.format(self.account.api_access_point, self.echosign_id)
         body = dict(value='CANCEL')
         r = requests.put(url, headers=get_headers(self.account.access_token), data=json.dumps(body))
 
@@ -144,7 +144,7 @@ class Agreement(object):
             This action requires the 'agreement_retention' scope, which doesn't appear
             to be actually available via OAuth
         """
-        url = self.account.api_access_point + endpoints.DELETE_AGREEMENT + self.echosign_id
+        url = self.account.api_access_point + 'agreements/' + self.echosign_id
 
         r = requests.delete(url, headers=get_headers(self.account.access_token))
 
@@ -350,7 +350,7 @@ class AgreementEndpoints(object):
 
         json_agreement = []
         if not json_agreement:
-            url = self.api_access_point + endpoints.GET_AGREEMENTS
+            url = self.api_access_point + 'agreements'
             params = dict()
 
             if query is not None:
@@ -380,7 +380,7 @@ class AgreementEndpoints(object):
             yield new_agreement
 
     def create_agreement(self, request_body):
-        url = self.api_access_point + endpoints.CREATE_AGREEMENT
+        url = self.api_access_point + 'agreements'
         r = requests.post(url, headers=get_headers(self.account.access_token), data=json.dumps(request_body))
         return r
 

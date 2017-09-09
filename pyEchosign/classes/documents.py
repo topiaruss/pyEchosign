@@ -1,6 +1,6 @@
 import logging
-from io import IOBase
-from typing import TYPE_CHECKING
+from io import IOBase, FileIO, BytesIO
+from typing import TYPE_CHECKING, Union
 
 import arrow
 import requests
@@ -37,7 +37,7 @@ class TransientDocument(object):
             (not provided by Echosign, calculated for convenience)
     """
     def __init__(self, account, file_name, file, mime_type=None):
-        # type: (EchosignAccount, str, IOBase, str) -> None
+        # type: (EchosignAccount, str, Union[IOBase, FileIO, BytesIO], str) -> None
         self.file_name = file_name
         self.file = file
         self.mime_type = mime_type

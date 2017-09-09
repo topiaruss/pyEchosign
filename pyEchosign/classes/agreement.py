@@ -185,15 +185,15 @@ class Agreement(object):
         PARALLEL = 'PARALLEL'
         SENDER_SIGNS_ONLY = 'SENDER_SIGNS_ONLY'
 
-    def send_agreement(self, agreement_name, recipients, ccs=None, days_until_signing_deadline=0,
-                       external_id='', signature_flow=SignatureFlow.SEQUENTIAL, message='',
-                       merge_fields=None):
-        # type: (str, List[Recipient], list, int, str, Agreement.SignatureFlow, str, List[Dict[str, str]]) -> None
+    def send(self, recipients, agreement_name=None, ccs=None, days_until_signing_deadline=0,
+             external_id='', signature_flow=SignatureFlow.SEQUENTIAL, message='',
+             merge_fields=None):
+        # type: (List[Recipient], str, list, int, str, Agreement.SignatureFlow, str, List[Dict[str, str]]) -> None
         """ Sends this agreement to Echosign for signature
 
         Args:
             agreement_name: A string for the document name which will appear in the Echosign Manage page, the email
-                to recipients, etc.
+                to recipients, etc. Defaults to the name for the Agreement.
             recipients: A list of :class:`Recipients <pyEchosign.classes.users.Recipient>`.
                 The order which they are provided in the list determines the order in which they sign.
             ccs: (optional) A list of email addresses to be CC'd on the Echosign agreement emails
@@ -227,6 +227,9 @@ class Agreement(object):
             ApiError: If the API returns an error, such as a 403. The exact response from the API is provided.
 
         """
+        if agreement_name is None:
+            agreement_name = self.name
+
         if ccs is None:
             ccs = []
 
@@ -383,4 +386,3 @@ class AgreementEndpoints(object):
         url = self.api_access_point + 'agreements'
         r = requests.post(url, headers=get_headers(self.account.access_token), data=json.dumps(request_body))
         return r
-

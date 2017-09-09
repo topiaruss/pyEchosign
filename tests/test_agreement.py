@@ -24,6 +24,9 @@ class TestAccount(TestCase):
     def test_cancel_agreement_passes(self):
         mock_response = Mock()
 
+        self.mock_get_patcher = patch('pyEchosign.classes.account.requests.get')
+        self.mock_get = self.mock_get_patcher.start()
+
         e = EchosignAccount('a string')
         e.api_access_point = 'http://echosign.com'
         agreement = Agreement(account=e)
@@ -40,6 +43,9 @@ class TestAccount(TestCase):
 
     def test_cancel_agreement_401_raises_error(self):
         mock_response = Mock()
+
+        self.mock_get_patcher = patch('pyEchosign.classes.account.requests.get')
+        self.mock_get = self.mock_get_patcher.start()
 
         e = EchosignAccount('an invalid string')
         e.api_access_point = 'http://echosign.com'
@@ -60,6 +66,9 @@ class TestAccount(TestCase):
         """ Test that an invalid response due to an issue with the API, not the package, raises an Exception """
         mock_response = Mock()
 
+        self.mock_get_patcher = patch('pyEchosign.classes.account.requests.get')
+        self.mock_get = self.mock_get_patcher.start()
+
         account = EchosignAccount('an invalid string')
         account.api_access_point = 'http://echosign.com'
 
@@ -79,6 +88,9 @@ class TestAccount(TestCase):
     def test_delete_agreement_passes(self):
         mock_response = Mock()
 
+        self.mock_get_patcher = patch('pyEchosign.classes.account.requests.get')
+        self.mock_get = self.mock_get_patcher.start()
+
         account = EchosignAccount('an invalid string')
         account.api_access_point = 'http://echosign.com'
 
@@ -97,6 +109,9 @@ class TestAccount(TestCase):
     def test_delete_agreement_401_raises_error(self):
         mock_response = Mock()
 
+        self.mock_get_patcher = patch('pyEchosign.classes.account.requests.get')
+        self.mock_get = self.mock_get_patcher.start()
+
         account = EchosignAccount('an invalid string')
         account.api_access_point = 'http://echosign.com'
 
@@ -113,3 +128,33 @@ class TestAccount(TestCase):
         with self.assertRaises(PermissionDenied):
             agreement.cancel()
 
+    def test_create_agreement(self):
+        json_response = dict(userAgreementList=[dict(displayDate='2017-09-09T09:33:53-07:00', esign=True, displayUserSetInfos=[
+            {'displayUserSetMemberInfos': [{'email': 'test@email.com'}]}], agreementId='123', name='test_agreement',
+                             latestVersionId='v1', status='WAITING_FOR_MY_SIGNATURE')])
+
+        mock_response = Mock()
+
+        self.mock_get_patcher = patch('pyEchosign.classes.account.requests.get')
+        self.mock_get = self.mock_get_patcher.start()
+
+        account = EchosignAccount('account')
+        account.api_access_point = 'http://echosign.com'
+        mock_response.json.return_value = json_response
+        mock_response.status_code = 200
+
+        mock_agreement_get_patcher = patch('pyEchosign.classes.agreement.requests.get')
+        mock_agreement_get = mock_agreement_get_patcher.start()
+
+        mock_agreement_get.return_value = mock_response
+
+        agreements = account.get_agreements()
+        agreements = list(agreements)
+
+        self.assertEqual(len(agreements), 1)
+        self.assertEqual(agreements[0].name, 'test_agreement')
+
+        # Reset the patch for the Account - otherwise exceptions will ensue
+
+        self.mock_get_patcher = patch('pyEchosign.classes.account.requests.get')
+        self.mock_get = self.mock_get_patcher.start()

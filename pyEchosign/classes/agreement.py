@@ -70,9 +70,8 @@ class Agreement(object):
 
         status = kwargs.pop('status', None)
         if status is not None:
-            self.status = self.Status[status]
-
-        # Used for the creation of Agreements in Echosign
+            self.status = self.Status.__getattribute__(self.Status, status)
+            # Used for the creation of Agreements in Echosign
         self.files = kwargs.pop('files', [])
 
         self._documents = None
@@ -84,6 +83,9 @@ class Agreement(object):
             return 'Echosign Agreement: {}'.format(self.echosign_id)
         else:
             return super(Agreement, self).__str__()
+
+    def __repr__(self):
+        return str(self)
 
     class Status(object):
         """ Possible status of agreements 

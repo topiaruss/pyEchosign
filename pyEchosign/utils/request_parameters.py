@@ -13,7 +13,7 @@ def get_headers(access_token, api_user_email=None, content_type='application/jso
     if content_type is not None:
         headers.update({'Content-Type': content_type})
     if api_user_email is not None:
-        headers.update({'x-user-email': api_user_email})
+        headers.update({'x-api-user': 'email:{}'.format(api_user_email)})
 
     return headers
 

@@ -175,7 +175,7 @@ class Agreement(object):
         """ Cancels the agreement on Echosign. Agreement will still be visible in the Manage page. """
         url = '{}agreements/{}/status'.format(self.account.api_access_point, self.echosign_id)
         body = dict(value='CANCEL')
-        r = requests.put(url, headers=account_headers(self.account), data=json.dumps(body))
+        r = requests.put(url, headers=get_headers(self.account.access_token), data=json.dumps(body))
 
         if response_success(r):
             log.debug('Request to cancel agreement {} successful.'.format(self.echosign_id))
@@ -196,7 +196,7 @@ class Agreement(object):
         """
         url = self.account.api_access_point + 'agreements/' + self.echosign_id
 
-        r = requests.delete(url, headers=account_headers(self.account))
+        r = requests.delete(url, headers=get_headers(self.account.access_token))
 
         if response_success(r):
             log.debug('Request to delete agreement {} successful.'.format(self.echosign_id))
@@ -403,7 +403,7 @@ class AgreementEndpoints(object):
             if query is not None:
                 params.update({'query': query})
 
-            r = requests.get(url, headers=account_headers(self.account), params=params)
+            r = requests.get(url, headers=get_headers(self.account.access_token), params=params)
             response_body = r.json()
             json_agreements = response_body.get('userAgreementList', [])
 
@@ -433,5 +433,5 @@ class AgreementEndpoints(object):
 
     def create_agreement(self, request_body):
         url = self.api_access_point + 'agreements'
-        r = requests.post(url, headers=account_headers(self.account), data=json.dumps(request_body))
+        r = requests.post(url, headers=get_headers(self.account.access_token), data=json.dumps(request_body))
         return r

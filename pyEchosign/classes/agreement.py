@@ -9,6 +9,7 @@ import requests
 
 from pyEchosign.classes.documents import AgreementDocument
 from pyEchosign.exceptions.internal import ApiError
+from pyEchosign.utils.utils import find_user_in_list
 from .users import User
 
 from pyEchosign.utils import endpoints
@@ -68,7 +69,6 @@ class Agreement(object):
         self.name = kwargs.pop('name', None)
         self.date = kwargs.pop('date', None)
         self.users = kwargs.pop('users', [])
-        self._users_index = dict((user.email, dict(user, index=index)) for (index, user) in enumerate(self.users))
 
         status = kwargs.pop('status', None)
         if status is not None:
@@ -355,14 +355,17 @@ class Agreement(object):
             data = r.json()
             url_sets = data['signingUrlSetInfos']
 
+            # Each signing set will have its own URLs
             for set in url_sets:
                 urls = set['signingUrls']
                 for url in urls:
                     try:
                         email = url['email']
-                        matching_user = self._users_index[email]  # type: User
+                        # Find the user in this Agreement's list of users that has a matching email
+                        matching_user = find_user_in_list(self.users, 'email', email)
                     except KeyError:
                         continue
+                    # Set the signing URL for that recipient
                     matching_user._signing_url = url['esignUrl']
 
 

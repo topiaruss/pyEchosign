@@ -11,14 +11,16 @@ class User(object):
     """ Maps to the DisplayUserInfo provided by Echosign for agreements fetched in bulk.
     Provides additional attributes to facilitate sending documents to recipients, such as Security Options.
 
-     Attributes:
-         authentication_method (str): "The authentication method for the recipients to have access to
-            view and sign the document" (Echosign API Docs). Available options are 'NONE' (string),
+    Attributes:
+        agreement (Agreement): The :class:`Agreement <pyEchosign.classes.agreement.Agreement>` to be associated with
+            this User
+        authentication_method (str): A "The authentication method for the recipients to have access to view and
+            sign the document" (Echosign API Docs). Available options are 'NONE' (string),
             'INHERITED_FROM_DOCUMENT' or 'PASSWORD' or 'WEB_IDENTITY' or 'KBA' or 'PHONE'.
-         password (str): Optional - "The password required for the recipient to view and sign the document"
-         signing_url (str): If this recipient is associated with an `Agreement <pyEchosign.classes.agreement.Agreement>`
-            this is the URL that the user can visit to complete/sign the agreement.
-         agreement (Agreement): The `Agreement <pyEchosign.classes.agreement.Agreement>` for associated with this User
+        password (str): Optional - "The password required for the recipient to view and sign the document"
+        signing_url (str): If this recipient is associated with an
+            :class:`Agreement <pyEchosign.classes.agreement.Agreement>` this is the URL that the user can visit to
+            complete/sign the agreement.
 
      """
     def __init__(self, email, **kwargs):

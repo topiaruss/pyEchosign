@@ -35,7 +35,6 @@ Transient Documents
 
 Users
 -----
-.. autoclass:: pyEchosign.classes.users.DisplayUser
-.. autoclass:: pyEchosign.classes.users.Recipient
+.. autoclass:: pyEchosign.classes.users.User
    :members:
    :show-inheritance:

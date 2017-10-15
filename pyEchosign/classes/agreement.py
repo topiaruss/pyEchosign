@@ -244,7 +244,7 @@ class Agreement(object):
         Args:
             agreement_name: A string for the document name which will appear in the Echosign Manage page, the email
                 to recipients, etc. Defaults to the name for the Agreement.
-            recipients: A list of :class:`Recipients <pyEchosign.classes.users.Recipient>`.
+            recipients: A list of :class:`Users <pyEchosign.classes.users.User>`.
                 The order which they are provided in the list determines the order in which they sign.
             ccs: (optional) A list of email addresses to be CC'd on the Echosign agreement emails
                 (document sent, document fully signed, etc)
@@ -346,7 +346,8 @@ class Agreement(object):
         return documents
 
     def retrieve_signing_urls(self):
-        """ Associate the signing URLs for this agreement with its `recipients <pyEchosign.classes.users.User>` """
+        """ Associate the signing URLs for this agreement with its
+        :class:`recipients <pyEchosign.classes.users.User>` """
         endpoint = '{}agreements/{}/signingUrls'.format(self.account.api_access_point, self.echosign_id)
         headers = get_headers(self.account.access_token)
         r = requests.get(endpoint, headers=headers)

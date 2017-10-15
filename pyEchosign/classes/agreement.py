@@ -411,6 +411,8 @@ class AgreementEndpoints(object):
             if not response_success(r):
                 check_error(r)
 
+        agreements = []
+
         for json_agreement in json_agreements:
             new_agreement = Agreement(account=self.account)
             echosign_id = json_agreement.get('agreementId', None)
@@ -429,7 +431,9 @@ class AgreementEndpoints(object):
             new_agreement.date = date
             new_agreement.users = users
 
-            yield new_agreement
+            agreements.append(new_agreement)
+
+        return agreements
 
     def create_agreement(self, request_body):
         url = self.api_access_point + 'agreements'

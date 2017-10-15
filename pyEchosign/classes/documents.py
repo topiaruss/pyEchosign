@@ -6,7 +6,7 @@ import arrow
 import requests
 
 from pyEchosign.utils.handle_response import check_error, response_success
-from pyEchosign.utils.request_parameters import get_headers
+from pyEchosign.utils.request_parameters import get_headers, account_headers
 
 log = logging.getLogger('pyEchosign.' + __name__)
 if TYPE_CHECKING:
@@ -55,7 +55,7 @@ class TransientDocument(object):
             file_tuple = file_tuple + (mime_type, )
 
         files = dict(File=file_tuple)
-        r = requests.post(url, headers=get_headers(account.access_token, content_type=None), files=files)
+        r = requests.post(url, headers=account_headers(account, content_type=None), files=files)
 
         if response_success(r):
             log.debug('Request to create document {} successful.'.format(self.file_name))

@@ -9,10 +9,11 @@ import requests
 
 from pyEchosign.classes.documents import AgreementDocument
 from pyEchosign.exceptions.internal import ApiError
-from .users import UserEndpoints, Recipient
+from pyEchosign.utils.utils import find_user_in_list
+from .users import User
 
 from pyEchosign.utils import endpoints
-from pyEchosign.utils.request_parameters import get_headers
+from pyEchosign.utils.request_parameters import account_headers, get_headers
 from pyEchosign.utils.handle_response import check_error, response_success
 
 log = logging.getLogger('pyEchosign.' + __name__)
@@ -67,6 +68,7 @@ class Agreement(object):
         self.echosign_id = kwargs.pop('echosign_id', None)
         self.name = kwargs.pop('name', None)
         self.date = kwargs.pop('date', None)
+        self.users = kwargs.pop('users', [])
 
         status = kwargs.pop('status', None)
         if status is not None:
@@ -75,6 +77,7 @@ class Agreement(object):
         self.files = kwargs.pop('files', [])
 
         self._documents = None
+        self._signing_url = None
 
     def __str__(self):
         if self.name is not None:
@@ -123,6 +126,51 @@ class Agreement(object):
         WAITING_FOR_AUTHORING = 'WAITING_FOR_AUTHORING'
         OTHER = 'OTHER'
 
+    @classmethod
+    def json_to_agreement(cls, account, json_data):
+        echosign_id = json_data.get('agreementId', None)
+        name = json_data.get('name', None)
+        status = json_data.get('status', None)
+        user_set = json_data.get('displayUserSetInfos', None)[0]
+        user_set = user_set.get('displayUserSetMemberInfos', None)
+        users = User.json_to_users(user_set)
+        date = json_data.get('displayDate', None)
+        if date is not None:
+            date = arrow.get(date)
+        new_agreement = Agreement(echosign_id=echosign_id, name=name, account=account, status=status,
+                                  date=date)
+        new_agreement.users = users
+        return new_agreement
+
+    @property
+    def documents(self):
+        """ Retrieve the :class:`AgreementDocuments <pyEchosign.classes.documents.AgreementDocument>` associated with
+        this agreement. If the files have not already been retrieved, this will result in an additional request to
+        the API.
+
+        Returns: A list of :class:`AgreementDocument <pyEchosign.classes.documents.AgreementDocument>`
+
+        """
+        # If _documents is None, no (successful) API call has been made to retrieve them
+        if self._documents is None:
+            url = self.account.api_access_point + 'agreements/{}/documents'.format(self.echosign_id)
+            r = requests.get(url, headers=account_headers(self.account))
+            # Raise Exception if there was an error
+            check_error(r)
+            try:
+                data = r.json()
+            except ValueError:
+                raise ApiError('Unexpected response from Echosign API: Status {} - {}'.format(r.status_code, r.content))
+            else:
+                self._documents = []
+
+                # Take both sections of documents from the response and turn into AgreementDocuments
+                documents = self._document_data_to_document(data.get('documents', []))
+                supporting_documents = self._document_data_to_document(data.get('supportingDocuments', []))
+                self._documents = documents + supporting_documents
+
+        return self._documents
+
     def cancel(self):
         """ Cancels the agreement on Echosign. Agreement will still be visible in the Manage page. """
         url = '{}agreements/{}/status'.format(self.account.api_access_point, self.echosign_id)
@@ -161,7 +209,7 @@ class Agreement(object):
 
     @staticmethod
     def __construct_recipient_agreement_request(recipients):
-        # type: (List[Recipient]) -> list
+        # type: (List[User]) -> list
         """ Takes a list of :class:`Recipients <pyEchosign.classes.users.Recipient>` and returns the JSON required by
         the Echosign API.
 
@@ -190,7 +238,7 @@ class Agreement(object):
     def send(self, recipients, agreement_name=None, ccs=None, days_until_signing_deadline=0,
              external_id='', signature_flow=SignatureFlow.SEQUENTIAL, message='',
              merge_fields=None):
-        # type: (List[Recipient], str, list, int, str, Agreement.SignatureFlow, str, List[Dict[str, str]]) -> None
+        # type: (List[User], str, list, int, str, Agreement.SignatureFlow, str, List[Dict[str, str]]) -> None
         """ Sends this agreement to Echosign for signature
 
         Args:
@@ -297,34 +345,28 @@ class Agreement(object):
 
         return documents
 
-    @property
-    def documents(self):
-        """ Retrieve the :class:`AgreementDocuments <pyEchosign.classes.documents.AgreementDocument>` associated with
-        this agreement. If the files have not already been retrieved, this will result in an additional request to
-        the API.
+    def retrieve_signing_urls(self):
+        """ Associate the signing URLs for this agreement with its `recipients <pyEchosign.classes.users.User>` """
+        endpoint = '{}agreements/{}/signingUrls'.format(self.account.api_access_point, self.echosign_id)
+        headers = get_headers(self.account.access_token)
+        r = requests.get(endpoint, headers=headers)
 
-        Returns: A list of :class:`AgreementDocument <pyEchosign.classes.documents.AgreementDocument>`
+        if response_success(r):
+            data = r.json()
+            url_sets = data['signingUrlSetInfos']
 
-        """
-        # If _documents is None, no (successful) API call has been made to retrieve them
-        if self._documents is None:
-            url = self.account.api_access_point + 'agreements/{}/documents'.format(self.echosign_id)
-            r = requests.get(url, headers=get_headers(self.account.access_token))
-            # Raise Exception if there was an error
-            check_error(r)
-            try:
-                data = r.json()
-            except ValueError:
-                raise ApiError('Unexpected response from Echosign API: Status {} - {}'.format(r.status_code, r.content))
-            else:
-                self._documents = []
-
-                # Take both sections of documents from the response and turn into AgreementDocuments
-                documents = self._document_data_to_document(data.get('documents', []))
-                supporting_documents = self._document_data_to_document(data.get('supportingDocuments', []))
-                self._documents = documents + supporting_documents
-
-        return self._documents
+            # Each signing set will have its own URLs
+            for set in url_sets:
+                urls = set['signingUrls']
+                for url in urls:
+                    try:
+                        email = url['email']
+                        # Find the user in this Agreement's list of users that has a matching email
+                        matching_user = find_user_in_list(self.users, 'email', email)
+                    except KeyError:
+                        continue
+                    # Set the signing URL for that recipient
+                    matching_user._signing_url = url['esignUrl']
 
 
 class AgreementEndpoints(object):
@@ -370,18 +412,23 @@ class AgreementEndpoints(object):
                 check_error(r)
 
         for json_agreement in json_agreements:
+            new_agreement = Agreement(account=self.account)
             echosign_id = json_agreement.get('agreementId', None)
             name = json_agreement.get('name', None)
             status = json_agreement.get('status', None)
             user_set = json_agreement.get('displayUserSetInfos', None)[0]
             user_set = user_set.get('displayUserSetMemberInfos', None)
-            users = UserEndpoints.get_users_from_bulk_agreements(user_set)
+            users = User.json_to_users(user_set, agreement=new_agreement)
             date = json_agreement.get('displayDate', None)
             if date is not None:
                 date = arrow.get(date)
-            new_agreement = Agreement(echosign_id=echosign_id, name=name, account=self.account, status=status,
-                                      date=date)
+
+            new_agreement.echosign_id = echosign_id
+            new_agreement.name = name
+            new_agreement.status = status
+            new_agreement.date = date
             new_agreement.users = users
+
             yield new_agreement
 
     def create_agreement(self, request_body):

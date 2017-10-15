@@ -12,8 +12,7 @@ from pyEchosign.exceptions.internal import ApiError
 from pyEchosign.utils.utils import find_user_in_list
 from .users import User
 
-from pyEchosign.utils import endpoints
-from pyEchosign.utils.request_parameters import account_headers, get_headers
+from pyEchosign.utils.request_parameters import get_headers
 from pyEchosign.utils.handle_response import check_error, response_success
 
 log = logging.getLogger('pyEchosign.' + __name__)
@@ -154,7 +153,7 @@ class Agreement(object):
         # If _documents is None, no (successful) API call has been made to retrieve them
         if self._documents is None:
             url = self.account.api_access_point + 'agreements/{}/documents'.format(self.echosign_id)
-            r = requests.get(url, headers=account_headers(self.account))
+            r = requests.get(url, headers=get_headers(self.account.access_token))
             # Raise Exception if there was an error
             check_error(r)
             try:

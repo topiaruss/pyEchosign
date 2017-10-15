@@ -16,8 +16,3 @@ def get_headers(access_token, api_user_email=None, content_type='application/jso
         headers.update({'x-api-user': 'email:{}'.format(api_user_email)})
 
     return headers
-
-
-def account_headers(account, content_type='application/json'):
-    """ Creates the headers automatically from the EchosignAccount details """
-    return get_headers(account.access_token, api_user_email=account.user_email, content_type=content_type)

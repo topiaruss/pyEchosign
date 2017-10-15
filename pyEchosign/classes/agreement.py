@@ -11,7 +11,6 @@ from pyEchosign.classes.documents import AgreementDocument
 from pyEchosign.exceptions.internal import ApiError
 from .users import UserEndpoints, Recipient
 
-from pyEchosign.utils import endpoints
 from pyEchosign.utils.request_parameters import get_headers
 from pyEchosign.utils.handle_response import check_error, response_success
 
@@ -190,7 +189,7 @@ class Agreement(object):
     def send(self, recipients, agreement_name=None, ccs=None, days_until_signing_deadline=0,
              external_id='', signature_flow=SignatureFlow.SEQUENTIAL, message='',
              merge_fields=None):
-        # type: (List[Recipient], str, list, int, str, Agreement.SignatureFlow, str, List[Dict[str, str]]) -> None
+        # type: (List[Recipient], str, list, int, str, Agreement.SignatureFlow, str, List[Dict[str, str]]) -> namedtuple
         """ Sends this agreement to Echosign for signature
 
         Args:
@@ -253,7 +252,8 @@ class Agreement(object):
                                       daysUntilSigningDeadline=days_until_signing_deadline, )
 
         request_data = dict(documentCreationInfo=document_creation_info)
-        api_response = AgreementEndpoints(self.account).create_agreement(request_data)
+        url = self.account.api_access_point + 'agreements'
+        api_response = requests.post(url, headers=get_headers(self.account.access_token), data=json.dumps(request_data))
 
         if response_success(api_response):
             response = namedtuple('Response', ('agreement_id', 'embedded_code', 'expiration', 'url'))
@@ -383,8 +383,3 @@ class AgreementEndpoints(object):
                                       date=date)
             new_agreement.users = users
             yield new_agreement
-
-    def create_agreement(self, request_body):
-        url = self.api_access_point + 'agreements'
-        r = requests.post(url, headers=get_headers(self.account.access_token), data=json.dumps(request_body))
-        return r

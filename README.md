@@ -2,13 +2,14 @@
 [![PyPI](https://img.shields.io/pypi/pyversions/pyEchosign.svg)](https://pypi.python.org/pypi/pyEchosign)
 [![Documentation Status](https://readthedocs.org/projects/pyechosign/badge/?version=stable)](http://pyechosign.readthedocs.io/en/stable/?badge=stable)
 
-# Maintained on GitLab
-This project is maintained on [GitLab](https://gitlab.com/jensastrup/pyEchosign) and mirrored to [GitHub](https://github.com/JensAstrup/pyEchosign). Issues opened on the latter are still addressed.
-
-# pyEchosign
+# About
 A Python module for connecting to the Adobe Echosign REST API, without the hassle of dealing with the JSON formatting for requests/responses and the REST endpoints and their varying requirements
 
+## Documentation
 The most up to date documentation can be found on [pyEchosign's RTD page](http://pyEchosign.readthedocs.io/en/latest/).
+
+## Maintained on GitLab
+This project is maintained on [GitLab](https://gitlab.com/jensastrup/pyEchosign) and mirrored to [GitHub](https://github.com/JensAstrup/pyEchosign). Issues opened on the latter are still addressed.
 
 # Quickstart
 

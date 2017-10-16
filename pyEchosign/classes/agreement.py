@@ -290,12 +290,15 @@ class Agreement(object):
         if merge_fields is None:
             merge_fields = []
 
+        converted_merge_fields = [dict(fieldName=field['field_name'], defaultValue=field['default_value']) for field in
+                                  merge_fields]
+
         recipients_data = self.__construct_recipient_agreement_request(recipients)
 
         document_creation_info = dict(signatureType="ESIGN", name=agreement_name, callbackInfo="",
                                       securityOptions=security_options, locale="", ccs=ccs,
                                       externalId=external_id, signatureFlow=signature_flow,
-                                      fileInfos=files_data, mergeFieldInfo=merge_fields,
+                                      fileInfos=files_data, mergeFieldInfo=converted_merge_fields,
                                       recipientSetInfos=recipients_data, message=message,
                                       daysUntilSigningDeadline=days_until_signing_deadline, )
 

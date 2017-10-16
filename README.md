@@ -43,7 +43,7 @@ agreement.files = [file]
 
 # If your document utilizes merge fields, you can specify which fields should be merged with what values. 
 # If you have no idea what this is, just ignore it - it's not required :)
-merge_fields = [dict(fieldName='some_field_name', defaultValue='some default value')]
+merge_fields = [dict(field_name='some_field_name', default_value='some default value')]
 
 recipients = [Recipient('dude@gmail.com'), Recipient('i_sign_second@gmail.com')]
 

@@ -41,6 +41,8 @@ agreement = Agreement(account, name='My Agreement')
 file = TransientDocument(account, 'To be Signed.pdf', 'some bytes', 'application/pdf')
 agreement.files = [file]
 
+# If your document utilizes merge fields, you can specify which fields should be merged with what values. 
+# If you have no idea what this is, just ignore it - it's not required :)
 merge_fields = [dict(fieldName='some_field_name', defaultValue='some default value')]
 
 recipients = [Recipient('dude@gmail.com'), Recipient('i_sign_second@gmail.com')]
@@ -64,7 +66,7 @@ agreements[0]
 
 agreements = account.get_agreements('query')
 agreements[0]
->>> Some Agreement Title with the Word query In It
+>>> 'Some Agreement Title with the Word query In It'
 ```
 
 ### Manage Agreements
@@ -98,7 +100,7 @@ agreement.delete()
 ## JSON Deserialization
 Most classes contain two methods to facilitate the process of receiving JSON from the REST API and turning that into 
 Python classes. One, `json_to_X()` will handle the JSON formatting for a single instance, while the second - 
-`json_to_Xs()` processes JSON for multiple instances. Generally, the latter is simple returning a list comprehension that
+`json_to_Xs()` processes JSON for multiple instances. Generally, the latter is simply returning a list comprehension that
 calls the former.
 
 While this is primarily useful for internal purposes - every method retrieving an `Agreement` from the API will call

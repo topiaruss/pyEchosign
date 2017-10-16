@@ -28,8 +28,26 @@ account = EchosignAccount(token)
 account.access_token = 'new access token'
 ```
 
-## Agreements
-Agreements represent one agreement in Echosign, which can be composed of multiple documents.
+## Sending Agreements
+
+```python 
+from pyEchosign import *
+
+account = EchosignAccount('')
+
+agreement = Agreement(account, name='My Agreement')
+
+# MIME type is optional - it will be inferred from the file extension by Adobe if not provided
+file = TransientDocument(account, 'To be Signed.pdf', 'some bytes', 'application/pdf')
+agreement.files = [file]
+
+merge_fields = [dict(fieldName='some_field_name', defaultValue='some default value')]
+
+recipients = [Recipient('dude@gmail.com'), Recipient('i_sign_second@gmail.com')]
+
+agreement.send(recipients, merge_fields=merge_fields, ccs=['please_cc_me@gmail.com'])
+
+```
 
 ### get_agreements()
 This method retrieves the most recent 9 agreements from the account. A query can be specified to search through the 
@@ -48,3 +66,45 @@ agreements = account.get_agreements('query')
 agreements[0]
 >>> Some Agreement Title with the Word query In It
 ```
+
+### Manage Agreements
+You can either cancel an agreement, which will make it still visible on the user's Manage page, or delete it which 
+removes it entirely.
+
+```python
+from pyEchosign import *
+
+account = EchosignAccount('')
+
+agreements = account.get_agreements()
+agreement = agreements[0]
+
+print(agreement.status)
+>>> Agreement.Status.OUT_FOR_SIGNATURE
+
+agreement.cancel()
+# Still visible, but no longer waiting for signature
+
+print(agreement.status)
+>>> Agreement.Status.RECALLED
+
+agreement.delete()
+# and now it's gone
+
+```
+
+# Notes
+
+## JSON Deserialization
+Most classes contain two methods to facilitate the process of receiving JSON from the REST API and turning that into 
+Python classes. One, `json_to_X()` will handle the JSON formatting for a single instance, while the second - 
+`json_to_Xs()` processes JSON for multiple instances. Generally, the latter is simple returning a list comprehension that
+calls the former.
+
+While this is primarily useful for internal purposes - every method retrieving an `Agreement` from the API will call
+`Agreement.json_to_agreement()` for example - the methods are not private and available for use. Any changes to their 
+interface will only be made following deprecation warnings.
+
+## Internal Methods and Classes
+All protected and private methods; and any classes, functions, or methods found under `pyEchosign.utils` are subject to 
+change without deprecation warnings however.  

@@ -252,8 +252,8 @@ class Agreement(object):
             external_id: (optional) "A unique identifier for your transaction...
                 You can use the ExternalID to search for your transaction through [the] API"
             signature_flow: (optional) (SignatureFlow): The routing style of this agreement, defaults to Sequential.
-            merge_fields: (optional) A list of dictionaries, with each one providing the 'fieldName' and
-                'defaultValue' keys. The field name maps to the field on the document, and the default value is
+            merge_fields: (optional) A list of dictionaries, with each one providing the 'field_name' and
+                'default_value' keys. The field name maps to the field on the document, and the default value is
                 what will be placed inside.
             message: (optional) A message which will be displayed to recipients of the agreement
 

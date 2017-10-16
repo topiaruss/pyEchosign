@@ -51,7 +51,7 @@ agreement.send(recipients, merge_fields=merge_fields, ccs=['please_cc_me@gmail.c
 
 ```
 
-### get_agreements()
+## Retrieving Agreements
 This method retrieves the most recent 9 agreements from the account. A query can be specified to search through the 
 account's agreements.
 
@@ -69,7 +69,7 @@ agreements[0]
 >>> 'Some Agreement Title with the Word query In It'
 ```
 
-### Manage Agreements
+## Manage Agreements
 You can either cancel an agreement, which will make it still visible on the user's Manage page, or delete it which 
 removes it entirely.
 

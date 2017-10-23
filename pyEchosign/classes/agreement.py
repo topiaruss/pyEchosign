@@ -136,10 +136,14 @@ class Agreement(object):
         date = json_data.get('displayDate', None)
         if date is not None:
             date = arrow.get(date)
-        new_agreement = Agreement(echosign_id=echosign_id, name=name, account=account, status=status,
-                                  date=date)
+        new_agreement = Agreement(echosign_id=echosign_id, name=name, account=account, status=status, date=date)
         new_agreement.users = users
         return new_agreement
+
+    @classmethod
+    def json_to_agreements(cls, account, json_data):
+        json_data = json_data.get('userAgreementList')
+        return [cls.json_to_agreement(account, agreement_data) for agreement_data in json_data]
 
     @property
     def documents(self):
@@ -303,7 +307,8 @@ class Agreement(object):
                                       daysUntilSigningDeadline=days_until_signing_deadline, )
 
         request_data = dict(documentCreationInfo=document_creation_info)
-        api_response = AgreementEndpoints(self.account).create_agreement(request_data)
+        url = self.account.api_access_point + 'agreements'
+        api_response = requests.post(url, headers=get_headers(self.account.access_token), data=json.dumps(request_data))
 
         if response_success(api_response):
             response = namedtuple('Response', ('agreement_id', 'embedded_code', 'expiration', 'url'))
@@ -370,75 +375,3 @@ class Agreement(object):
                         continue
                     # Set the signing URL for that recipient
                     matching_user._signing_url = url['esignUrl']
-
-
-class AgreementEndpoints(object):
-    """ An internal class to handle making calls to the endpoints associated with Agreements.
-
-    Args:
-        account: An instance of :class:`EchosignAccount <pyEchosign.classes.account.EchosignAccount>` to be used for all
-            API calls
-
-    """
-    base_api_url = None
-
-    def __init__(self, account):
-        # type: (EchosignAccount) -> None
-        self.account = account
-        self.api_access_point = account.api_access_point
-
-    def get_agreements(self, query=None):
-        """ Gets all agreements for the EchosignAccount - making the API call from the first iteration, and
-        then yielding each agreement thereafter.
-
-        Keyword Args:
-            query: (str) A search query to filter results by
-
-        Returns: An iterator of :class:`Agreement <pyEchosign.classes.agreement.Agreement>` objects
-
-        """
-
-        json_agreement = []
-        if not json_agreement:
-            url = self.api_access_point + 'agreements'
-            params = dict()
-
-            if query is not None:
-                params.update({'query': query})
-
-            r = requests.get(url, headers=get_headers(self.account.access_token), params=params)
-            response_body = r.json()
-            json_agreements = response_body.get('userAgreementList', [])
-
-            # Check if there are errors before proceeding
-            if not response_success(r):
-                check_error(r)
-
-        agreements = []
-
-        for json_agreement in json_agreements:
-            new_agreement = Agreement(account=self.account)
-            echosign_id = json_agreement.get('agreementId', None)
-            name = json_agreement.get('name', None)
-            status = json_agreement.get('status', None)
-            user_set = json_agreement.get('displayUserSetInfos', None)[0]
-            user_set = user_set.get('displayUserSetMemberInfos', None)
-            users = User.json_to_users(user_set, agreement=new_agreement)
-            date = json_agreement.get('displayDate', None)
-            if date is not None:
-                date = arrow.get(date)
-
-            new_agreement.echosign_id = echosign_id
-            new_agreement.name = name
-            new_agreement.status = status
-            new_agreement.date = date
-            new_agreement.users = users
-
-            agreements.append(new_agreement)
-
-        return agreements
-
-    def create_agreement(self, request_body):
-        url = self.api_access_point + 'agreements'
-        r = requests.post(url, headers=get_headers(self.account.access_token), data=json.dumps(request_body))
-        return r

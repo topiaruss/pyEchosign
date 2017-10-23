@@ -49,6 +49,20 @@ class LibraryDocument(object):
     GLOBAL = 'GLOBAL'
     scope = None
 
+    @classmethod
+    def json_to_agreement(cls, account, json_data):
+        echosign_id = json_data.get('libraryDocumentId')
+        template_type = json_data.get('libraryTemplateTypes')
+        modified_date = json_data.get('modifiedDate')
+        name = json_data.get('name')
+        scope = json_data.get('scope')
+        return LibraryDocument(account, echosign_id, template_type, name, modified_date, scope)
+
+    @classmethod
+    def json_to_agreements(cls, account, json_data):
+        response_data = json_data.get('libraryDocumentList')
+        return [cls.json_to_agreement(account, doc_data) for doc_data in response_data]
+
     def retrieve_complete_document(self):
         """ Retrieves the remaining data for the LibraryDocument, such as locale, status, and security options. """
         url = self.account.api_access_point + 'libraryDocuments/{}'.format(self.echosign_id)
@@ -82,27 +96,3 @@ class LibraryDocument(object):
         if not self.fully_retrieved:
             self.retrieve_complete_document()
         return self._locale
-
-
-class LibraryDocumentsEndpoint(object):
-    def __init__(self, account):
-        self.account = account
-
-    def get_library_documents(self):
-        url = self.account.api_access_point + 'libraryDocuments'
-        headers = get_headers(self.account.access_token)
-        r = requests.get(url, headers=headers)
-        response_data = r.json()
-        response_data = response_data.get('libraryDocumentList')
-        return_data = []
-
-        for document in response_data:
-            echosign_id = document.get('libraryDocumentId')
-            template_type = document.get('libraryTemplateTypes')
-            modified_date = document.get('modifiedDate')
-            name = document.get('name')
-            scope = document.get('scope')
-            library_document = LibraryDocument(self.account, echosign_id, template_type, name, modified_date, scope)
-            return_data.append(library_document)
-
-        return return_data

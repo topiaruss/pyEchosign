@@ -3,9 +3,11 @@ from typing import List
 
 import requests
 
-from pyEchosign.classes.library_document import LibraryDocumentsEndpoint
-from pyEchosign.classes.agreement import AgreementEndpoints, Agreement
+from pyEchosign.classes.agreement import Agreement
+from pyEchosign.classes.library_document import LibraryDocument
 from pyEchosign.utils import endpoints
+from pyEchosign.utils.handle_response import check_error
+from pyEchosign.utils.request_parameters import get_headers
 
 log = logging.getLogger('pyOutlook - {}'.format(__name__))
 __all__ = ['EchosignAccount']
@@ -44,13 +46,28 @@ class EchosignAccount(object):
         
         Returns: An iterator of :class:`Agreement <pyEchosign.classes.agreement.Agreement>` objects
         """
-        return AgreementEndpoints(self).get_agreements(query=query)
+        url = self.api_access_point + 'agreements'
+        params = dict()
+
+        if query is not None:
+            params.update({'query': query})
+
+        r = requests.get(url, headers=get_headers(self.access_token), params=params)
+        check_error(r)
+        response_body = r.json()
+        return Agreement.json_to_agreements(self, response_body)
 
     def get_library_documents(self):
         """ Gets all Library Documents for the EchosignAccount
 
         Returns: A list of :class:`Agreement <pyEchosign.classes.library_document.LibraryDocument>` objects
         """
-        return LibraryDocumentsEndpoint(self).get_library_documents()
+        url = self.api_access_point + 'libraryDocuments'
+        headers = get_headers(self.access_token)
+        r = requests.get(url, headers=headers)
+        response_data = r.json()
 
+        check_error(response_data)
+
+        return LibraryDocument.json_to_agreements(response_data)
 

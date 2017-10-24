@@ -45,8 +45,8 @@ release:
   before_script:
     - pip install twine
     - echo "[server-login]" >> ~/.pypirc
-    - echo "username=" ${$TWINE_USERNAME} >> ~/.pypirc
-    - echo "password=" ${$TWINE_PASSWORD} >> ~/.pypirc
+    - echo "username=" $TWINE_USERNAME >> ~/.pypirc
+    - echo "password=" $TWINE_PASSWORD >> ~/.pypirc
   script:
     - twine upload dist/*
   dependencies:

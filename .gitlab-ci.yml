@@ -33,6 +33,9 @@ build:
   script:
     - python setup.py bdist_wheel --universal
     - python setup.py sdist
+  artifacts:
+    paths:
+    - dist/
   only:
     - tags
 
@@ -43,5 +46,7 @@ release:
     - pip install twine
   script:
     - twine upload -u $TWINE_USERNAME -p $TWINE_PASSWORD dist/*
+  dependencies:
+    - build
   only:
     - tags

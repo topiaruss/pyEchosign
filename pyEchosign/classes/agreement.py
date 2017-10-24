@@ -186,6 +186,17 @@ class Agreement(object):
 
         return BytesIO(response.content)
 
+    @property
+    def audit_trail_file(self):
+        # type: () -> BytesIO
+        """ The PDF file of the audit trail."""
+        endpoint = '{}agreements/{}/auditTrail'.format(self.account.api_access_point, self.echosign_id)
+
+        response = requests.get(endpoint, headers=get_headers(self.account.access_token))
+        check_error(response)
+
+        return BytesIO(response.content)
+
     def cancel(self):
         """ Cancels the agreement on Echosign. Agreement will still be visible in the Manage page. """
         url = '{}agreements/{}/status'.format(self.account.api_access_point, self.echosign_id)

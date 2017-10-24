@@ -28,7 +28,7 @@ python3.6:
 
 release:
   stage: release
-  image: python3.6
+  image: python:3.6
   before_script:
     - pip install twine
   script:

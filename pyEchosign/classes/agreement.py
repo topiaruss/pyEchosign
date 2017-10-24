@@ -6,6 +6,7 @@ from typing import TYPE_CHECKING, List, Dict
 import arrow
 
 import requests
+from io import StringIO, BytesIO
 
 from pyEchosign.classes.documents import AgreementDocument
 from pyEchosign.exceptions.internal import ApiError
@@ -173,6 +174,17 @@ class Agreement(object):
                 self._documents = documents + supporting_documents
 
         return self._documents
+
+    @property
+    def combined_document(self):
+        # type: () -> BytesIO
+        """ The PDF file containing all documents within this agreement."""
+        endpoint = '{}agreements/{}/combinedDocument'.format(self.account.api_access_point, self.echosign_id)
+
+        response = requests.get(endpoint, headers=get_headers(self.account.access_token))
+        check_error(response)
+
+        return BytesIO(response.content)
 
     def cancel(self):
         """ Cancels the agreement on Echosign. Agreement will still be visible in the Manage page. """

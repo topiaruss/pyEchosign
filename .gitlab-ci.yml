@@ -1,5 +1,6 @@
 stages:
   - tests
+  - build
   - release
 
 python2.7:
@@ -26,14 +27,21 @@ python3.6:
   script:
    - nosetests --cover-package=pyEchosign --with-coverage
 
+build:
+  stage: build
+  image: python:3.6
+  script:
+    - python setup.py bdist_wheel --universal
+    - python setup.py sdist
+  only:
+    - tags
+
 release:
   stage: release
   image: python:3.6
   before_script:
     - pip install twine
   script:
-    - python setup.py bdist_wheel --universal
-    - python setup.py sdist
-    - twine upload dist/*
+    - twine upload -u $TWINE_USERNAME -p $TWINE_PASSWORD dist/*
   only:
     - tags

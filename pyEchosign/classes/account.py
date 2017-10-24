@@ -67,7 +67,7 @@ class EchosignAccount(object):
         r = requests.get(url, headers=headers)
         response_data = r.json()
 
-        check_error(response_data)
+        check_error(r)
 
-        return LibraryDocument.json_to_agreements(response_data)
+        return LibraryDocument.json_to_agreements(self, response_data)
 

@@ -2,6 +2,7 @@ from typing import TYPE_CHECKING
 
 import arrow
 import requests
+from io import BytesIO
 
 from pyEchosign.utils.request_parameters import get_headers
 from pyEchosign.utils.handle_response import check_error
@@ -40,6 +41,12 @@ class LibraryDocument(object):
         self.modified_date = date.datetime
         self.scope = scope
 
+    def __str__(self):
+        return self.name
+
+    def __repr__(self):
+        return self.name
+
     fully_retrieved = False
     document = False
     form_field_layer = False
@@ -62,6 +69,17 @@ class LibraryDocument(object):
     def json_to_agreements(cls, account, json_data):
         response_data = json_data.get('libraryDocumentList')
         return [cls.json_to_agreement(account, doc_data) for doc_data in response_data]
+
+    @property
+    def audit_trail_file(self):
+        # type: () -> BytesIO
+        """ The PDF file of the audit for this Library Document."""
+        endpoint = '{}libraryDocuments/{}/auditTrail'.format(self.account.api_access_point, self.echosign_id)
+
+        response = requests.get(endpoint, headers=get_headers(self.account.access_token))
+        check_error(response)
+
+        return BytesIO(response.content)
 
     def retrieve_complete_document(self):
         """ Retrieves the remaining data for the LibraryDocument, such as locale, status, and security options. """

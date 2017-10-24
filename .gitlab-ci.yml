@@ -44,7 +44,7 @@ release:
   image: python:3.6
   before_script:
     - pip install twine
-    - echo "[server-login]" >> ~/.pypirc
+    - echo "[pypi]" >> ~/.pypirc
     - echo "username=" $TWINE_USERNAME >> ~/.pypirc
     - echo "password=" $TWINE_PASSWORD >> ~/.pypirc
   script:

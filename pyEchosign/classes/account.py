@@ -44,7 +44,7 @@ class EchosignAccount(object):
         Keyword Args:
             query: (str) A search query to filter results by
         
-        Returns: An iterator of :class:`Agreement <pyEchosign.classes.agreement.Agreement>` objects
+        Returns: A list of :class:`Agreement <pyEchosign.classes.agreement.Agreement>` objects
         """
         url = self.api_access_point + 'agreements'
         params = dict()

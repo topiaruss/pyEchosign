@@ -1,22 +1,10 @@
 import os
 
 from setuptools import setup
-from setuptools.command.build_py import build_py
 
 version = os.environ.get('CI_COMMIT_TAG', None)
 
-
-class BuildPyCommand(build_py):
-    def run(self):
-        if version is None:
-            raise RuntimeError('CI_COMMIT_TAG must defined as an environment variable to build.')
-        build_py.run(self)
-
-
 setup(
-    cmdclass={
-        'build_py': BuildPyCommand,
-    },
     name='pyEchosign',
     version=version,
     packages=['pyEchosign', 'pyEchosign.classes', 'pyEchosign.exceptions', 'pyEchosign.utils'],

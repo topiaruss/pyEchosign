@@ -1,5 +1,7 @@
 from unittest import TestCase
 
+from six import StringIO
+
 from pyEchosign.exceptions.echosign import PermissionDenied
 
 try:
@@ -21,6 +23,9 @@ class TestAccount(TestCase):
         cls.mock_put_patcher = patch('pyEchosign.classes.agreement.requests.put')
         cls.mock_put = cls.mock_put_patcher.start()
 
+        cls.mock_post_patcher = patch('pyEchosign.classes.agreement.requests.post')
+        cls.mock_post = cls.mock_post_patcher.start()
+        
     def test_cancel_agreement_passes(self):
         mock_response = Mock()
 
@@ -158,3 +163,56 @@ class TestAccount(TestCase):
 
         self.mock_get_patcher = patch('pyEchosign.classes.account.requests.get')
         self.mock_get = self.mock_get_patcher.start()
+        
+    def test_send_reminder(self):
+        """ Test that reminders are sent without exceptions """
+        mock_response = Mock()
+        
+        account = EchosignAccount('account')
+        account.api_access_point = 'http://echosign.com'
+        mock_response.status_code = 200
+
+        self.mock_post.return_value = mock_response
+
+        agreement = Agreement(account=account)
+        agreement.name = 'Test Agreement'
+        agreement.fully_retrieved = False
+        agreement.echosign_id = '123'
+        agreement.date = '2017-02-19T08:22:34-08:00'
+
+        agreement.send_reminder()
+
+        agreement.send_reminder('Test')
+
+        agreement.send_reminder(None)
+
+    def test_get_form_data(self):
+        """ Test that form data is retrieved and returned correctly """
+        mock_response = Mock()
+
+        account = EchosignAccount('account')
+        account.api_access_point = 'http://echosign.com'
+        mock_response.status_code = 200
+
+        agreement = Agreement(account=account)
+        agreement.name = 'Test Agreement'
+        agreement.fully_retrieved = False
+        agreement.echosign_id = '123'
+        agreement.date = '2017-02-19T08:22:34-08:00'
+
+        mock_response.text = 'Column,Column2,Column3'
+        mock_response.status_code = 200
+
+        mock_get_patcher = patch('pyEchosign.classes.agreement.requests.get')
+        mock_get = mock_get_patcher.start()
+
+        mock_get.return_value = mock_response
+
+        form_data = agreement.get_form_data()
+
+        self.assertIsInstance(form_data, StringIO)
+
+        data = form_data.read()
+        self.assertEqual(data, mock_response.text)
+
+        mock_get_patcher.stop()

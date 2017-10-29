@@ -1,9 +1,12 @@
+import os
+
 from setuptools import setup
-from pyEchosign import __release__
+
+version = os.environ.get('CI_COMMIT_TAG', None)
 
 setup(
     name='pyEchosign',
-    version=__release__,
+    version=version,
     packages=['pyEchosign', 'pyEchosign.classes', 'pyEchosign.exceptions', 'pyEchosign.utils'],
     url='https://gitlab.com/jensastrup/pyEchosign',
     license='MIT',
@@ -19,7 +22,10 @@ setup(
         'Intended Audience :: Developers',
         'Topic :: Office/Business',
         'License :: OSI Approved :: MIT License',
+        'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6',
         'Natural Language :: English'
     ]
 )

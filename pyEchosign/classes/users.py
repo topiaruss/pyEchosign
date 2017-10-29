@@ -1,25 +1,35 @@
-__all__ = ['Recipient']
+import typing
+from pyEchosign.exceptions.internal import MissingAgreement
+
+if typing.TYPE_CHECKING:
+    from pyEchosign import Agreement
+
+__all__ = ['User']
 
 
-class UserEndpoints(object):
-    @classmethod
-    def get_users_from_bulk_agreements(cls, data):
-        # type: (dict) -> list
-        """ Takes a response from the GET /agreements call and returns a set of `DisplayUser` """
-        users = []
-        for user_data in data:
-            email = user_data.get('email')
-            name = user_data.get('fullName', None)
-            company = user_data.get('company', None)
-            user = DisplayUser(email, full_name=name, company=company)
-            users.append(user)
-        return users
+class User(object):
+    """ Maps to the DisplayUserInfo provided by Echosign for agreements fetched in bulk.
+    Provides additional attributes to facilitate sending documents to recipients, such as Security Options.
 
+    Attributes:
+        agreement (Agreement): The :class:`Agreement <pyEchosign.classes.agreement.Agreement>` to be associated with
+            this User
+        authentication_method (str): A "The authentication method for the recipients to have access to view and
+            sign the document" (Echosign API Docs). Available options are 'NONE' (string),
+            'INHERITED_FROM_DOCUMENT' or 'PASSWORD' or 'WEB_IDENTITY' or 'KBA' or 'PHONE'.
+        password (str): Optional - "The password required for the recipient to view and sign the document"
+        signing_url (str): If this recipient is associated with an
+            :class:`Agreement <pyEchosign.classes.agreement.Agreement>` this is the URL that the user can visit to
+            complete/sign the agreement.
 
-class DisplayUser(object):
-    """ Maps to the DisplayUserInfo provided by Echosign for agreements fetched in bulk """
+     """
     def __init__(self, email, **kwargs):
         # type: (str) -> None
+        self.authentication_method = kwargs.get('authentication_method', 'NONE')
+        self.password = kwargs.get('password', None)
+        self.agreement = kwargs.get('agreement', None)  # type: Agreement
+        self._signing_url = kwargs.get('signing_url', None)
+
         self.email = email
         self.company = kwargs.pop('company', None)
         self.full_name = kwargs.pop('full_name', None)
@@ -30,22 +40,26 @@ class DisplayUser(object):
         else:
             return self.email
 
+    @classmethod
+    def json_to_user(cls, user_data, agreement=None):
+        email = user_data.get('email')
+        name = user_data.get('fullName', None)
+        company = user_data.get('company', None)
+        user = User(email, full_name=name, company=company, agreement=agreement)
+        return user
 
-class Recipient(DisplayUser):
-    """ Provides additional attributes to facilitate sending documents to recipients, such as Security Options.
+    @classmethod
+    def json_to_users(cls, user_data, agreement=None):
+        return [cls.json_to_user(data, agreement) for data in user_data]
 
-     Attributes:
-         authentication_method (str): "The authentication method for the recipients to have access to
-            view and sign the document" (Echosign API Docs). Available options are 'NONE' (string),
-            'INHERITED_FROM_DOCUMENT' or 'PASSWORD' or 'WEB_IDENTITY' or 'KBA' or 'PHONE'.
-         password (str): Optional - "The password required for the recipient to view and sign the document"
+    @property
+    def signing_url(self):
+        if self._signing_url is None:
+            if self.agreement is None:
+                raise MissingAgreement('An agreement must be tied to this User in order to retrieve the signing URL')
+            self.agreement.get_signing_urls()
 
-     """
-    def __init__(self, email, **kwargs):
-        # type: (str) -> None
-        super(Recipient, self).__init__(email, **kwargs)
-        self.authentication_method = kwargs.get('authentication_method', 'NONE')
-        self.password = kwargs.get('password', None)
+        return self._signing_url
 
 
 class RecipientInfo(object):

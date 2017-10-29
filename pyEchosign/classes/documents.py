@@ -5,8 +5,9 @@ from typing import TYPE_CHECKING, Union
 import arrow
 import requests
 
+from pyEchosign.exceptions.internal import ApiError
 from pyEchosign.utils.handle_response import check_error, response_success
-from pyEchosign.utils.request_parameters import get_headers, account_headers
+from pyEchosign.utils.request_parameters import get_headers
 
 log = logging.getLogger('pyEchosign.' + __name__)
 if TYPE_CHECKING:
@@ -55,7 +56,7 @@ class TransientDocument(object):
             file_tuple = file_tuple + (mime_type, )
 
         files = dict(File=file_tuple)
-        r = requests.post(url, headers=account_headers(account, content_type=None), files=files)
+        r = requests.post(url, headers=get_headers(account.access_token, content_type=None), files=files)
 
         if response_success(r):
             log.debug('Request to create document {} successful.'.format(self.file_name))
@@ -64,7 +65,7 @@ class TransientDocument(object):
             # If there was no document ID, something went wrong
             if self.document_id is None:
                 log.error('Did not receive a transientDocumentId from Echosign. Received: {}'.format(r.content))
-                # TODO raise an exception here?
+                raise ApiError('Did not receive a Transient Document ID from Echosign')
             else:
                 today = arrow.now()
                 # Document will expire in 7 days from creation

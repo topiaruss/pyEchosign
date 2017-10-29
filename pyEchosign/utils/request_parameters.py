@@ -2,6 +2,7 @@ def get_headers(access_token, api_user_email=None, content_type='application/jso
     """
     Generates the headers for a request to the API - can specify which user the API call should be made under.
     Args:
+        content_type: What content type should be specified in the request headers. Defaults to application/json.
         access_token: The access token of the account making the request
         api_user_email: If the access token covers more than one user, enter the email of the user the call should be made under
 
@@ -16,8 +17,3 @@ def get_headers(access_token, api_user_email=None, content_type='application/jso
         headers.update({'x-api-user': 'email:{}'.format(api_user_email)})
 
     return headers
-
-
-def account_headers(account, content_type='application/json'):
-    """ Creates the headers automatically from the EchosignAccount details """
-    return get_headers(account.access_token, api_user_email=account.user_email, content_type=content_type)

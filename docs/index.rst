@@ -9,9 +9,13 @@ Welcome to pyEchosign's documentation!
 .. include:: ../README.rst
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
 
-   pyEchosign
+   quickstart
+   EchosignAccount
+   Agreement
+   documents
+   Users
 
 Any content in between double quotes ("like this") is taken from the `Echosign API documentation`_.
 

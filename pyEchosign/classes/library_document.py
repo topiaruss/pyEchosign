@@ -40,16 +40,24 @@ class LibraryDocument(object):
         date = arrow.get(modified_date)
         self.modified_date = date.datetime
         self.scope = scope
+        self.fully_retrieved = False
+        self.document = False
+        self.form_field_layer = False
+
+        # The following are only available after retrieving the LibraryDocument specifically
+        self._events = None
+        self._latest_version_id = None
+        self._locale = None
+        self._participants = None
+        self._status = None
+        self._message = None
+        self._security_options = None
 
     def __str__(self):
         return self.name
 
     def __repr__(self):
         return self.name
-
-    fully_retrieved = False
-    document = False
-    form_field_layer = False
 
     PERSONAL = 'PERSONAL'
     SHARED = 'SHARED'
@@ -69,6 +77,12 @@ class LibraryDocument(object):
     def json_to_agreements(cls, account, json_data):
         response_data = json_data.get('libraryDocumentList')
         return [cls.json_to_agreement(account, doc_data) for doc_data in response_data]
+
+    @property
+    def locale(self):
+        if not self.fully_retrieved:
+            self.retrieve_complete_document()
+        return self._locale
 
     @property
     def audit_trail_file(self):
@@ -91,6 +105,8 @@ class LibraryDocument(object):
 
         response_data = r.json()
         self._locale = response_data.get('locale')
+        self._status = response_data.get('status')
+        self._security_options = response_data.get('securityOptions')
         self.fully_retrieved = True
 
     def delete(self):
@@ -99,18 +115,3 @@ class LibraryDocument(object):
         headers = get_headers(self.account.access_token)
         r = requests.delete(url, headers=headers)
         check_error(r)
-    
-    # The following are only available after retrieving the LibraryDocument specifically
-    _events = None
-    _latest_version_id = None
-    _locale = None
-    _participants = None
-    _status = None
-    _message = None
-    _security_options = None
-
-    @property
-    def locale(self):
-        if not self.fully_retrieved:
-            self.retrieve_complete_document()
-        return self._locale

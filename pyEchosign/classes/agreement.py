@@ -375,7 +375,7 @@ class Agreement(object):
         else:
             check_error(api_response)
 
-    def retrieve_signing_urls(self):
+    def get_signing_urls(self):
         """ Associate the signing URLs for this agreement with its
         :class:`recipients <pyEchosign.classes.users.User>` """
         endpoint = '{}agreements/{}/signingUrls'.format(self.account.api_access_point, self.echosign_id)
@@ -412,3 +412,17 @@ class Agreement(object):
         r = requests.post(url, data=json.dumps(payload), headers=self.account.headers())
 
         check_error(r)
+
+    def get_form_data(self):
+        """ Retrieves the form data for this agreement as CSV.
+
+        Returns: StringIO
+
+        """
+        url = '{}agreements/{}/formData'.format(self.account.api_access_point, self.echosign_id)
+
+        r = requests.get(url, headers=self.account.headers())
+
+        check_error(r)
+
+        return StringIO(r.text)

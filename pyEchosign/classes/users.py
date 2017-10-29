@@ -57,7 +57,7 @@ class User(object):
         if self._signing_url is None:
             if self.agreement is None:
                 raise MissingAgreement('An agreement must be tied to this User in order to retrieve the signing URL')
-            self.agreement.retrieve_signing_urls()
+            self.agreement.get_signing_urls()
 
         return self._signing_url
 

@@ -6,7 +6,7 @@ from typing import TYPE_CHECKING, List, Dict
 import arrow
 
 import requests
-from io import StringIO, BytesIO
+from six import StringIO, BytesIO
 
 from pyEchosign.classes.documents import AgreementDocument
 from pyEchosign.exceptions.internal import ApiError

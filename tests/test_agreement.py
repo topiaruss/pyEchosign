@@ -1,5 +1,6 @@
-from io import StringIO
 from unittest import TestCase
+
+from six import StringIO
 
 from pyEchosign.exceptions.echosign import PermissionDenied
 

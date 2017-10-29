@@ -197,6 +197,56 @@ class Agreement(object):
 
         return BytesIO(response.content)
 
+    @staticmethod
+    def _document_data_to_document(json_data):
+        # type: (dict) -> list
+        """ Coverts JSON received from API into an AgreementDocument and appends to Agreement.documents """
+        documents = []
+        for document_data in json_data:
+            # Documents and Supporting Documents are not mixed together - we could get either ID
+            try:
+                echosign_id = document_data.get('documentId')
+            except KeyError:
+                echosign_id = document_data.get('supportingDocumentId')
+
+            mime_type = document_data.get('mimeType')
+            name = document_data.get('name')
+            page_count = document_data.get('numPages')
+            document = AgreementDocument(echosign_id, mime_type, name, page_count)
+
+            # If this is a supporting document, there will be a field name
+            field_name = document_data.get('fieldName', None)
+
+            if field_name is not None:
+                document.field_name = field_name
+
+            documents.append(document)
+
+        return documents
+
+    @staticmethod
+    def __construct_recipient_agreement_request(recipients):
+        # type: (List[User]) -> list
+        """ Takes a list of :class:`Recipients <pyEchosign.classes.users.Recipient>` and returns the JSON required by
+        the Echosign API.
+
+        Args:
+            recipients: A list of :class:`Recipients <pyEchosign.classes.users.Recipient>`
+
+        """
+        recipient_set = []
+
+        for recipient in recipients:
+            recipient_info = dict(email=recipient.email)
+
+            recipient_set_info = dict(recipientSetMemberInfos=recipient_info,
+                                      securityOptions=[dict(authenticationMethod="", password="CONTENT FILTERED",
+                                                            phoneInfos=[dict(phone="", countryCode="")])],
+                                      recipientSetRole="SIGNER")
+            recipient_set.append(recipient_set_info)
+
+        return recipient_set
+
     def cancel(self):
         """ Cancels the agreement on Echosign. Agreement will still be visible in the Manage page. """
         url = '{}agreements/{}/status'.format(self.account.api_access_point, self.echosign_id)
@@ -232,29 +282,6 @@ class Agreement(object):
                                                                                                 r.content))
             finally:
                 check_error(r)
-
-    @staticmethod
-    def __construct_recipient_agreement_request(recipients):
-        # type: (List[User]) -> list
-        """ Takes a list of :class:`Recipients <pyEchosign.classes.users.Recipient>` and returns the JSON required by
-        the Echosign API.
-
-        Args:
-            recipients: A list of :class:`Recipients <pyEchosign.classes.users.Recipient>`
-
-        """
-        recipient_set = []
-
-        for recipient in recipients:
-            recipient_info = dict(email=recipient.email)
-
-            recipient_set_info = dict(recipientSetMemberInfos=recipient_info,
-                                      securityOptions=[dict(authenticationMethod="", password="CONTENT FILTERED",
-                                                            phoneInfos=[dict(phone="", countryCode="")])],
-                                      recipientSetRole="SIGNER")
-            recipient_set.append(recipient_set_info)
-
-        return recipient_set
 
     class SignatureFlow(object):
         SEQUENTIAL = 'SEQUENTIAL'
@@ -347,33 +374,6 @@ class Agreement(object):
 
         else:
             check_error(api_response)
-
-    @staticmethod
-    def _document_data_to_document(json_data):
-        # type: (dict) -> list
-        """ Coverts JSON received from API into an AgreementDocument and appends to Agreement.documents """
-        documents = []
-        for document_data in json_data:
-            # Documents and Supporting Documents are not mixed together - we could get either ID
-            try:
-                echosign_id = document_data.get('documentId')
-            except KeyError:
-                echosign_id = document_data.get('supportingDocumentId')
-
-            mime_type = document_data.get('mimeType')
-            name = document_data.get('name')
-            page_count = document_data.get('numPages')
-            document = AgreementDocument(echosign_id, mime_type, name, page_count)
-
-            # If this is a supporting document, there will be a field name
-            field_name = document_data.get('fieldName', None)
-
-            if field_name is not None:
-                document.field_name = field_name
-
-            documents.append(document)
-
-        return documents
 
     def retrieve_signing_urls(self):
         """ Associate the signing URLs for this agreement with its

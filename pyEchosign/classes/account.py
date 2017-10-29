@@ -37,6 +37,17 @@ class EchosignAccount(object):
 
     access_token = None
 
+    def headers(self, content_type='application/json'):
+        """ Return headers using account information
+
+        Args:
+            content_type: The Content-Type to use in the request headers. Defaults to application/json
+
+        Returns: A dict of headers
+
+        """
+        return get_headers(self.access_token, self.user_email, content_type)
+
     def get_agreements(self, query=None):
         # type: (str) -> List[Agreement]
         """ Gets all agreements for the EchosignAccount

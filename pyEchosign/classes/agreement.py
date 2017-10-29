@@ -398,3 +398,17 @@ class Agreement(object):
                         continue
                     # Set the signing URL for that recipient
                     matching_user._signing_url = url['esignUrl']
+
+    def send_reminder(self, comment=''):
+        """ Send a reminder for an agreement to the participants.
+
+        Args:
+            comment: An optional comment that will be sent with the reminder
+
+        """
+        url = self.account.api_access_point + 'reminders'
+        payload = dict(agreementId=self.echosign_id, comment=comment)
+
+        r = requests.post(url, data=json.dumps(payload), headers=self.account.headers())
+
+        check_error(r)

@@ -358,7 +358,7 @@ class Agreement(object):
 
         request_data = dict(documentCreationInfo=document_creation_info)
         url = self.account.api_access_point + 'agreements'
-        api_response = requests.post(url, headers=get_headers(self.account.access_token), data=json.dumps(request_data))
+        api_response = requests.post(url, headers=self.account.headers(), data=json.dumps(request_data))
 
         if response_success(api_response):
             response = namedtuple('Response', ('agreement_id', 'embedded_code', 'expiration', 'url'))

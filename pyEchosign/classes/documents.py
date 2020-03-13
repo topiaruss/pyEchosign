@@ -69,7 +69,7 @@ class TransientDocument(object):
             else:
                 today = arrow.now()
                 # Document will expire in 7 days from creation
-                self.expiration_date = today.replace(days=+7).datetime
+                self.expiration_date = today.shift(days=+7).datetime
         else:
             try:
                 log.error('Error encountered creating document {}. Received message: {}'.

@@ -46,7 +46,7 @@ agreement.files = [file]
 # If you have no idea what this is, just ignore it - it's not required :)
 merge_fields = [dict(field_name='some_field_name', default_value='some default value')]
 
-recipients = [Recipient('dude@gmail.com'), Recipient('i_sign_second@gmail.com')]
+recipients = [User('dude@gmail.com'), User('i_sign_second@gmail.com')]
 
 agreement.send(recipients, merge_fields=merge_fields, ccs=['please_cc_me@gmail.com'])
 

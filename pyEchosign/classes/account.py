@@ -71,6 +71,17 @@ class EchosignAccount(object):
             return Agreement.json_to_agreements(self, response_body)
         return []
 
+    def get_agreement(self, echosign_id):
+        """ Gets the agreement with the speciied echosign_id (agreement_id)
+        Args: echosign_id: The ID associated with the desired agreement
+        Returns: A :class:`Agreement <pyEchosign.classes.agreement.Agreement>` object
+        """
+        url = self.api_access_point + 'agreements/' + echosign_id
+        r = requests.get(url, headers=get_headers(self.access_token))
+        check_error(r)
+        response_body = r.json()
+        return Agreement.json_to_agreement(self, response_body)
+
     def get_library_documents(self):
         """ Gets all Library Documents for the EchosignAccount
 

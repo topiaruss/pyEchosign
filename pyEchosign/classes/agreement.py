@@ -131,9 +131,11 @@ class Agreement(object):
         echosign_id = json_data.get('agreementId', None)
         name = json_data.get('name', None)
         status = json_data.get('status', None)
-        user_set = json_data.get('displayUserSetInfos', None)[0]
-        user_set = user_set.get('displayUserSetMemberInfos', None)
-        users = User.json_to_users(user_set)
+        user_set = json_data.get('displayUserSetInfos', None)
+        users = []
+        if user_set:
+            user_set = user_set[0].get('displayUserSetMemberInfos', None)
+            users = User.json_to_users(user_set)
         date = json_data.get('displayDate', None)
         if date is not None:
             date = arrow.get(date)

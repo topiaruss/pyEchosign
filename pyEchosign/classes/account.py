@@ -66,7 +66,9 @@ class EchosignAccount(object):
         r = requests.get(url, headers=get_headers(self.access_token), params=params)
         check_error(r)
         response_body = r.json()
-        return Agreement.json_to_agreements(self, response_body)
+        if response_body:
+            return Agreement.json_to_agreements(self, response_body)
+        return []
 
     def get_library_documents(self):
         """ Gets all Library Documents for the EchosignAccount

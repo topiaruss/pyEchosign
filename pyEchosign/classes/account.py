@@ -5,6 +5,7 @@ import requests
 
 from pyEchosign.classes.agreement import Agreement
 from pyEchosign.classes.library_document import LibraryDocument
+from pyEchosign.classes.webhook import Webhook
 from pyEchosign.utils import endpoints
 from pyEchosign.utils.handle_response import check_error
 from pyEchosign.utils.request_parameters import get_headers
@@ -29,12 +30,12 @@ class EchosignAccount(object):
         self.user_email = kwargs.pop('user_email', None)
 
         log.debug('EchosignAccount instantiated. Requesting base_uris from API...')
-        headers = {'Access-Token': access_token}
+        headers = get_headers(access_token)
         response = requests.get(endpoints.BASE_URIS, headers=headers)
         check_error(response)
         response_body = response.json()
         log.debug('Received status code {} from Echosign API'.format(response.status_code))
-        self.api_access_point = response_body.get('api_access_point') + endpoints.API_URL_EXTENSION
+        self.api_access_point = response_body.get('apiAccessPoint') + endpoints.API_URL_EXTENSION
 
     access_token = None
 
@@ -49,20 +50,17 @@ class EchosignAccount(object):
         """
         return get_headers(self.access_token, self.user_email, content_type)
 
-    def get_agreements(self, query=None):
+    def get_agreements(self, params=None):
         # type: (str) -> List[Agreement]
         """ Gets all agreements for the EchosignAccount
 
         Keyword Args:
-            query: (str) A search query to filter results by
-        
+            params: (dict) Valid params include externalId (str), groupId(str), showHiddenAgreements(bool),
+                           cursor(str), pageSize(int)
+
         Returns: A list of :class:`Agreement <pyEchosign.classes.agreement.Agreement>` objects
         """
         url = self.api_access_point + 'agreements'
-        params = dict()
-
-        if query is not None:
-            params.update({'query': query})
 
         r = requests.get(url, headers=get_headers(self.access_token), params=params)
         check_error(r)
@@ -85,7 +83,7 @@ class EchosignAccount(object):
     def get_library_documents(self):
         """ Gets all Library Documents for the EchosignAccount
 
-        Returns: A list of :class:`Agreement <pyEchosign.classes.library_document.LibraryDocument>` objects
+        Returns: A list of :class:`LibraryDocument <pyEchosign.classes.library_document.LibraryDocument>` objects
         """
         url = self.api_access_point + 'libraryDocuments'
         headers = get_headers(self.access_token)
@@ -96,3 +94,16 @@ class EchosignAccount(object):
 
         return LibraryDocument.json_to_agreements(self, response_data)
 
+    def get_webhooks(self):
+        """ Get all webhooks for this EchosignAccount
+
+        Returns a list of :class:`Webhook <pyEchosign.classes.webhook.Webhook>` objects
+        """
+        url = self.api_access_point + 'webhooks'
+        headers = get_headers(self.access_token)
+        r = requests.get(url, headers=headers)
+        response_data = r.json()
+        check_error(r)
+        if response_data.get('userWebhookList'):
+            return [Webhook(self, **webhook_data) for webhook_data in response_data.get('userWebhookList')]
+        return []

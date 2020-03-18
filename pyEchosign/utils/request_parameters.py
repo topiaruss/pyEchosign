@@ -9,7 +9,7 @@ def get_headers(access_token, api_user_email=None, content_type='application/jso
     Returns: A dictionary to be used as the headers argument in requests
 
     """
-    headers = {'Access-Token': access_token}
+    headers = {'Authorization': 'Bearer ' + access_token}
 
     if content_type is not None:
         headers.update({'Content-Type': content_type})

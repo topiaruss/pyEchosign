@@ -113,6 +113,7 @@ class Agreement(object):
         APPROVED = 'APPROVED'
         DELIVERED = 'DELIVERED'
         ACCEPTED = 'ACCEPTED'
+        CANCELLED = 'CANCELLED'
         FORM_FILLED = 'FORM_FILLED'
         RECALLED = 'RECALLED'
         # This was directly taken from Echosign
@@ -128,10 +129,10 @@ class Agreement(object):
 
     @classmethod
     def json_to_agreement(cls, account, json_data):
-        echosign_id = json_data.get('agreementId', None)
+        echosign_id = json_data.get('id', None)
         name = json_data.get('name', None)
         status = json_data.get('status', None)
-        user_set = json_data.get('displayUserSetInfos', None)[0]
+        user_set = json_data.get('displayParticipantSetInfos', None)[0]
         user_set = user_set.get('displayUserSetMemberInfos', None)
         users = User.json_to_users(user_set)
         date = json_data.get('displayDate', None)
@@ -235,22 +236,21 @@ class Agreement(object):
 
         """
         recipient_set = []
-
+        members = []
         for recipient in recipients:
-            recipient_info = dict(email=recipient.email)
+            members.append(dict(email=recipient.email))
 
-            recipient_set_info = dict(recipientSetMemberInfos=recipient_info,
-                                      securityOptions=[dict(authenticationMethod="", password="CONTENT FILTERED",
-                                                            phoneInfos=[dict(phone="", countryCode="")])],
-                                      recipientSetRole="SIGNER")
-            recipient_set.append(recipient_set_info)
+        recipient_set_info = dict(memberInfos=members,
+                                  order=1,
+                                  role="SIGNER")
+        recipient_set.append(recipient_set_info)
 
         return recipient_set
 
     def cancel(self):
         """ Cancels the agreement on Echosign. Agreement will still be visible in the Manage page. """
-        url = '{}agreements/{}/status'.format(self.account.api_access_point, self.echosign_id)
-        body = dict(value='CANCEL')
+        url = '{}agreements/{}/state'.format(self.account.api_access_point, self.echosign_id)
+        body = dict(state='CANCELLED')
         r = requests.put(url, headers=get_headers(self.account.access_token), data=json.dumps(body))
 
         if response_success(r):
@@ -263,16 +263,11 @@ class Agreement(object):
             finally:
                 check_error(r)
 
-    def delete(self):
-        """ Deletes the agreement on Echosign. Agreement will not be visible in the Manage page. 
-        
-        Note:
-            This action requires the 'agreement_retention' scope, which doesn't appear
-            to be actually available via OAuth
-        """
-        url = self.account.api_access_point + 'agreements/' + self.echosign_id
-
-        r = requests.delete(url, headers=get_headers(self.account.access_token))
+    def hide(self):
+        """ Hides the agreement on Echosign. Agreement will not be visible in the Manage page. """
+        url = self.account.api_access_point + 'agreements/' + self.echosign_id + '/me/visibility'
+        payload = dict(visibility='HIDE')
+        r = requests.put(url, data=json.dumps(payload), headers=get_headers(self.account.access_token))
 
         if response_success(r):
             log.debug('Request to delete agreement {} successful.'.format(self.echosign_id))
@@ -283,15 +278,8 @@ class Agreement(object):
             finally:
                 check_error(r)
 
-    class SignatureFlow(object):
-        SEQUENTIAL = 'SEQUENTIAL'
-        PARALLEL = 'PARALLEL'
-        SENDER_SIGNS_ONLY = 'SENDER_SIGNS_ONLY'
-
-    def send(self, recipients, agreement_name=None, ccs=None, days_until_signing_deadline=0,
-             external_id='', signature_flow=SignatureFlow.SEQUENTIAL, message='',
-             merge_fields=None):
-        # type: (List[User], str, list, int, str, Agreement.SignatureFlow, str, List[Dict[str, str]]) -> None
+    def send(self, recipients, agreement_name=None, ccs=None, external_id='', message='', merge_fields=None):
+        # type: (List[User], str, list, str, str, List[Dict[str, str]]) -> None
         """ Sends this agreement to Echosign for signature
 
         Args:
@@ -301,11 +289,8 @@ class Agreement(object):
                 The order which they are provided in the list determines the order in which they sign.
             ccs: (optional) A list of email addresses to be CC'd on the Echosign agreement emails
                 (document sent, document fully signed, etc)
-            days_until_signing_deadline: (optional) "The number of days that remain before the document expires.
-                You cannot sign the document after it expires" Defaults to 0, for no expiration.
             external_id: (optional) "A unique identifier for your transaction...
                 You can use the ExternalID to search for your transaction through [the] API"
-            signature_flow: (optional) (SignatureFlow): The routing style of this agreement, defaults to Sequential.
             merge_fields: (optional) A list of dictionaries, with each one providing the 'field_name' and
                 'default_value' keys. The field name maps to the field on the document, and the default value is
                 what will be placed inside.
@@ -336,8 +321,9 @@ class Agreement(object):
         if ccs is None:
             ccs = []
 
-        security_options = dict(passwordProtection="NONE", kbaProtection="NONE", webIdentityProtection="NONE",
-                                protectOpen=False, internalPassword="", externalPassword="", openPassword="")
+        ccInfo = []
+        for cc in ccs:
+            ccInfo.append(dict(email=cc))
 
         files_data = [{'transientDocumentId': file.document_id} for file in self.files]
 
@@ -349,16 +335,13 @@ class Agreement(object):
 
         recipients_data = self.__construct_recipient_agreement_request(recipients)
 
-        document_creation_info = dict(signatureType="ESIGN", name=agreement_name, callbackInfo="",
-                                      securityOptions=security_options, locale="", ccs=ccs,
-                                      externalId=external_id, signatureFlow=signature_flow,
+        document_creation_info = dict(signatureType="ESIGN", name=agreement_name, state='IN_PROCESS',
+                                      ccs=ccInfo, externalId=external_id,
                                       fileInfos=files_data, mergeFieldInfo=converted_merge_fields,
-                                      recipientSetInfos=recipients_data, message=message,
-                                      daysUntilSigningDeadline=days_until_signing_deadline, )
+                                      participantSetsInfo=recipients_data, message=message)
 
-        request_data = dict(documentCreationInfo=document_creation_info)
         url = self.account.api_access_point + 'agreements'
-        api_response = requests.post(url, headers=self.account.headers(), data=json.dumps(request_data))
+        api_response = requests.post(url, headers=self.account.headers(), data=json.dumps(document_creation_info))
 
         if response_success(api_response):
             response = namedtuple('Response', ('agreement_id', 'embedded_code', 'expiration', 'url'))
@@ -368,7 +351,7 @@ class Agreement(object):
             expiration = response_data.get('expiration', None)
             url = response_data.get('url', None)
 
-            response = response(response_data['agreementId'], embedded_code, expiration, url)
+            response = response(response_data['id'], embedded_code, expiration, url)
 
             return response
 
@@ -399,6 +382,12 @@ class Agreement(object):
                     # Set the signing URL for that recipient
                     matching_user._signing_url = url['esignUrl']
 
+    def get_participant_sets(self):
+        url = '{}agreements/{}/members'.format(self.account.api_access_point, self.echosign_id)
+        response = requests.get(url, headers=self.account.headers())
+        check_error(response)
+        return response.json().get('participantSets', [])
+
     def send_reminder(self, comment=''):
         """ Send a reminder for an agreement to the participants.
 
@@ -406,8 +395,16 @@ class Agreement(object):
             comment: An optional comment that will be sent with the reminder
 
         """
-        url = self.account.api_access_point + 'reminders'
-        payload = dict(agreementId=self.echosign_id, comment=comment)
+        participant_ids = []
+        participants = self.get_participant_sets()
+        for participant in participants:
+            if participant.get('status') == 'WAITING_FOR_MY_SIGNATURE':
+                for member in participant.get('memberInfos', []):
+                    participant_ids.append(member.get('id'))
+
+        url = '{}agreements/{}/reminders'.format(self.account.api_access_point, self.echosign_id)
+
+        payload = dict(recipientParticipantIds=participant_ids, status='ACTIVE', note=comment)
 
         r = requests.post(url, data=json.dumps(payload), headers=self.account.headers())
 
@@ -424,5 +421,4 @@ class Agreement(object):
         r = requests.get(url, headers=self.account.headers())
 
         check_error(r)
-
         return StringIO(r.text)

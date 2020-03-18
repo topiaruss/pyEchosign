@@ -49,20 +49,17 @@ class EchosignAccount(object):
         """
         return get_headers(self.access_token, self.user_email, content_type)
 
-    def get_agreements(self, query=None):
+    def get_agreements(self, params=None):
         # type: (str) -> List[Agreement]
         """ Gets all agreements for the EchosignAccount
 
         Keyword Args:
-            query: (str) A search query to filter results by
-        
+            params: (dict) Valid params include externalId (str), groupId(str), showHiddenAgreements(bool),
+                           cursor(str), pageSize(int)
+
         Returns: A list of :class:`Agreement <pyEchosign.classes.agreement.Agreement>` objects
         """
         url = self.api_access_point + 'agreements'
-        params = dict()
-
-        if query is not None:
-            params.update({'query': query})
 
         r = requests.get(url, headers=get_headers(self.access_token), params=params)
         check_error(r)

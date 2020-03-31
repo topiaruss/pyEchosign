@@ -31,8 +31,8 @@ class EchosignAccount(object):
         log.debug('EchosignAccount instantiated. Requesting base_uris from API...')
         headers = {'Access-Token': access_token}
         response = requests.get(endpoints.BASE_URIS, headers=headers)
-        response_body = response.json()
         check_error(response)
+        response_body = response.json()
         log.debug('Received status code {} from Echosign API'.format(response.status_code))
         self.api_access_point = response_body.get('api_access_point') + endpoints.API_URL_EXTENSION
 

@@ -32,17 +32,13 @@ class LibraryDocument(object):
         # type: (EchosignAccount, str, list, str, str, str) -> None
         self.account = account
         self.echosign_id = echosign_id
-        if 'DOCUMENT' in template_type:
-            self.document = True
-        if 'FORM_FIELD_LAYER' in template_type:
-            self.form_field_layer = True
         self.name = name
         date = arrow.get(modified_date)
         self.modified_date = date.datetime
         self.scope = scope
         self.fully_retrieved = False
-        self.document = False
-        self.form_field_layer = False
+        self.document = 'DOCUMENT' in template_type
+        self.form_field_layer = 'FORM_FIELD_LAYER' in template_type
 
         # The following are only available after retrieving the LibraryDocument specifically
         self._events = None
@@ -66,8 +62,8 @@ class LibraryDocument(object):
 
     @classmethod
     def json_to_agreement(cls, account, json_data):
-        echosign_id = json_data.get('libraryDocumentId')
-        template_type = json_data.get('libraryTemplateTypes')
+        echosign_id = json_data.get('id')
+        template_type = json_data.get('templateTypes')
         modified_date = json_data.get('modifiedDate')
         name = json_data.get('name')
         scope = json_data.get('scope')

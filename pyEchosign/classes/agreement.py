@@ -69,7 +69,7 @@ class Agreement(object):
         self.name = kwargs.pop('name', None)
         self.date = kwargs.pop('date', None)
         self.users = kwargs.pop('users', [])
-
+        self.formFieldLayerTemplates = kwargs.pop('templates', [])
         status = kwargs.pop('status', None)
         if status is not None:
             self.status = self.Status.__getattribute__(self.Status, status)
@@ -78,6 +78,8 @@ class Agreement(object):
 
         self._documents = None
         self._signing_url = None
+        self.signers = []
+        self.templates = []
 
     def __str__(self):
         if self.name is not None:
@@ -200,6 +202,15 @@ class Agreement(object):
 
         return BytesIO(response.content)
 
+    @property
+    def form_fields(self):
+        endpoint = '{}agreements/{}/formFields'.format(self.account.api_access_point, self.echosign_id)
+
+        response = requests.get(endpoint, headers=get_headers(self.account.access_token))
+        check_error(response)
+
+        return response.json()
+
     @staticmethod
     def _document_data_to_document(json_data):
         # type: (dict) -> list
@@ -227,27 +238,37 @@ class Agreement(object):
 
         return documents
 
-    @staticmethod
-    def __construct_recipient_agreement_request(recipients):
-        # type: (List[User]) -> list
-        """ Takes a list of :class:`Recipients <pyEchosign.classes.users.Recipient>` and returns the JSON required by
-        the Echosign API.
+    def add_signer(self, recipients):
+        """ Adds signer(s) to this agreement.
+            Each call adds another signer.
+            If multiple recipients are passed in, ANY of the recipients can sign at this step.
+
+            Example:
+                add_signer([User1]) - User1 signs first
+                add_signer([User2, User3]) - After User1 signs, EITHER User2 or User3 can sign.
 
         Args:
-            recipients: A list of :class:`Recipients <pyEchosign.classes.users.Recipient>`
-
+            recipients: A list of :class:`Users <pyEchosign.classes.users.User>` or a single User.
         """
-        recipient_set = []
-        members = []
-        for recipient in recipients:
-            members.append(dict(email=recipient.email))
-
-        recipient_set_info = dict(memberInfos=members,
-                                  order=1,
+        if not isinstance(recipients, list):
+            recipients = [recipients]
+        recipient_set_info = dict(memberInfos=[dict(email=recipient.email) for recipient in recipients],
+                                  order=len(self.signers) + 1,
                                   role="SIGNER")
-        recipient_set.append(recipient_set_info)
+        self.signers.append(recipient_set_info)
 
-        return recipient_set
+    def add_field_layer_template(self, documents):
+        """ Adds the field layer template to this agreement.
+         Args:
+            documents: A list of :class:`LibraryDocument <pyEchosign.classes.library_document.LibraryDocument>` or a
+            single LibraryDocument.
+        """
+        if not isinstance(documents, list):
+            documents = [documents]
+
+        for document in documents:
+            if document.form_field_layer:
+                self.templates.append({'libraryDocumentId': document.echosign_id})
 
     def cancel(self):
         """ Cancels the agreement on Echosign. Agreement will still be visible in the Manage page. """
@@ -280,7 +301,7 @@ class Agreement(object):
             finally:
                 check_error(r)
 
-    def send(self, recipients, agreement_name=None, ccs=None, external_id='', message='', merge_fields=None):
+    def send(self, recipients=None, agreement_name=None, ccs=None, external_id='', message='', merge_fields=None):
         # type: (List[User], str, list, str, str, List[Dict[str, str]]) -> None
         """ Sends this agreement to Echosign for signature
 
@@ -323,9 +344,9 @@ class Agreement(object):
         if ccs is None:
             ccs = []
 
-        ccInfo = []
+        cc_info = []
         for cc in ccs:
-            ccInfo.append(dict(email=cc))
+            cc_info.append(dict(email=cc))
 
         files_data = [{'transientDocumentId': file.document_id} for file in self.files]
 
@@ -335,13 +356,15 @@ class Agreement(object):
         converted_merge_fields = [dict(fieldName=field['field_name'], defaultValue=field['default_value']) for field in
                                   merge_fields]
 
-        recipients_data = self.__construct_recipient_agreement_request(recipients)
+        if recipients:
+            for recipient in recipients:
+                self.add_signer(recipient)
 
         document_creation_info = dict(signatureType="ESIGN", name=agreement_name, state='IN_PROCESS',
-                                      ccs=ccInfo, externalId=external_id,
-                                      fileInfos=files_data, mergeFieldInfo=converted_merge_fields,
-                                      participantSetsInfo=recipients_data, message=message)
-
+                                      ccs=cc_info, externalId=external_id, fileInfos=files_data,
+                                      mergeFieldInfo=converted_merge_fields, participantSetsInfo=self.signers,
+                                      message=message, formFieldLayerTemplates=self.templates)
+        print(document_creation_info)
         url = self.account.api_access_point + 'agreements'
         api_response = requests.post(url, headers=self.account.headers(), data=json.dumps(document_creation_info))
 

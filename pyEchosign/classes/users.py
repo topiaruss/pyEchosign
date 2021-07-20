@@ -4,7 +4,7 @@ from pyEchosign.exceptions.internal import MissingAgreement
 if typing.TYPE_CHECKING:
     from pyEchosign import Agreement
 
-__all__ = ['User']
+__all__ = ['User', 'RecipientInfo']
 
 
 class User(object):
@@ -63,13 +63,6 @@ class User(object):
 
 
 class RecipientInfo(object):
-    email = None
-    fax = None
-    role = None
-    private_message = None
-    signing_order = None
-
-    # Acceptable Options for role
     SIGNER = 'SIGNER'
     APPROVER = 'APPROVER'
     ACCEPTOR = 'ACCEPTOR'
@@ -80,3 +73,21 @@ class RecipientInfo(object):
     DELEGATE_TO_ACCEPTOR = 'DELEGATE_TO_ACCEPTOR'
     DELEGATE_TO_FORM_FILLER = 'DELEGATE_TO_FORM_FILLER'
     DELEGATE_TO_CERTIFIED_RECIPIENT = 'DELEGATE_TO_CERTIFIED_RECIPIENT'
+
+    # Acceptable Options for role
+    ACCEPTABLE_ROLES = [SIGNER, APPROVER, ACCEPTOR, FORM_FILLER, CERTIFIED_RECIPIENT,
+                        DELEGATE_TO_SIGNER, DELEGATE_TO_APPROVER, DELEGATE_TO_ACCEPTOR,
+                        DELEGATE_TO_FORM_FILLER, DELEGATE_TO_CERTIFIED_RECIPIENT]
+
+    email = None
+    fax = None
+    role = SIGNER
+    private_message = None
+    signing_order = None
+
+    def __init__(self, email, **kwargs):
+        self.email = email
+        for k, v in kwargs:
+            self.k = v
+        assert self.role in self.ACCEPTABLE_ROLES
+
